@@ -61,7 +61,7 @@ export const CONTENT_CLUSTERS: readonly ClusterMeta[] = [
     id: 'astrology-guides',
     name: 'Astrology Guides',
     description: 'Master the fundamentals of natal charts, planetary houses, transits, and celestial mechanics.',
-    icon: '/images/ic_horoscope.png',
+    icon: '/images/ic_extras.png',
   },
   {
     id: 'ai-astrology',
@@ -476,7 +476,7 @@ export const FEATURE_PAGES: readonly FeaturePageData[] = [
     id: 'numerology',
     title: 'Numerology',
     tagline: 'Discover personalized numerology insights and explore the meanings associated with your numbers.',
-    icon: '/images/ic_fnumbers.png',
+    icon: '/images/ic_numbers.png',
     userBenefit: 'Discover personalized numerology insights and explore the meanings associated with your numbers.',
     description: 'Discover personalized numerology insights and explore the meanings associated with your numbers. Calculate your core Life Path, Expression, and Soul numbers from your birth date and name to uncover complementary personal insights alongside your zodiac profile.',
     exampleUseCases: [
@@ -540,7 +540,7 @@ export const FEATURE_PAGES: readonly FeaturePageData[] = [
     id: 'personal_astro_calendar',
     title: 'Personal Astro Calendar',
     tagline: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar.',
-    icon: '/images/ic_horoscope.png',
+    icon: '/images/ic_calendar.png',
     userBenefit: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar.',
     description: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar. Stay informed about upcoming key transit phases, lunar cycles, and peak focus windows to pace your activities and personal decisions with clarity.',
     exampleUseCases: [
@@ -613,7 +613,7 @@ export const TOOLS_LIST: readonly ToolMeta[] = [
     slug: 'birth-chart',
     title: 'Birth Chart Preview',
     tagline: 'Explore the key dimensions of your astrological profile and houses.',
-    icon: '/images/ic_ascendant.png',
+    icon: '/images/ic_horoscope.png',
     description: 'Input your birth details to preview the core components of your astrological profile and see what full chart insights reveal.',
     features: [
       'Sun sign and core personality baseline',

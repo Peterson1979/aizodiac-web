@@ -6,11 +6,11 @@
 
 :root {
   /* Color Palette: Deep Space & Constellations */
-  --bg-darkest: #05070e;
-  --bg-primary: #090c19;
-  --bg-surface: #10162f;
-  --bg-surface-glass: rgba(16, 22, 47, 0.65);
-  --bg-surface-elevated: rgba(26, 34, 70, 0.75);
+  --bg-darkest: #04060e;
+  --bg-primary: #070a17;
+  --bg-surface: #0f152f;
+  --bg-surface-glass: rgba(15, 22, 47, 0.72);
+  --bg-surface-elevated: rgba(24, 32, 68, 0.82);
 
   /* Accents */
   --accent-purple: #8b5cf6;
@@ -26,19 +26,19 @@
   --text-highlight: #e2e8f0;
 
   /* Borders & Shadows */
-  --border-subtle: rgba(148, 163, 184, 0.12);
-  --border-active: rgba(139, 92, 246, 0.4);
-  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(148, 163, 184, 0.14);
+  --border-active: rgba(139, 92, 246, 0.45);
+  --border-glass: rgba(255, 255, 255, 0.1);
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-glow: 0 0 32px rgba(139, 92, 246, 0.2);
-  --shadow-glow-gold: 0 0 32px rgba(245, 158, 11, 0.15);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 36px rgba(139, 92, 246, 0.28);
+  --shadow-glow-gold: 0 0 36px rgba(245, 158, 11, 0.2);
 
   /* Gradients */
   --grad-cosmic: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f59e0b 100%);
   --grad-nebula: linear-gradient(135deg, #38bdf8 0%, #8b5cf6 50%, #ec4899 100%);
-  --grad-surface: linear-gradient(180deg, rgba(26, 34, 70, 0.4) 0%, rgba(16, 22, 47, 0.8) 100%);
+  --grad-surface: linear-gradient(180deg, rgba(26, 34, 70, 0.45) 0%, rgba(15, 22, 47, 0.85) 100%);
   --grad-text: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
   --grad-gold-text: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
 
@@ -75,24 +75,65 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* AI Zodiac Living Starfield Atmosphere */
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--bg-darkest);
-  background-image: 
-    radial-gradient(1px 1px at 25px 35px, rgba(255, 255, 255, 0.45), transparent 100%),
-    radial-gradient(1.5px 1.5px at 120px 80px, rgba(253, 230, 138, 0.5), transparent 100%),
-    radial-gradient(1px 1px at 210px 180px, rgba(255, 255, 255, 0.4), transparent 100%),
-    radial-gradient(1.5px 1.5px at 340px 290px, rgba(196, 181, 253, 0.5), transparent 100%),
-    radial-gradient(1px 1px at 480px 120px, rgba(255, 255, 255, 0.35), transparent 100%),
-    radial-gradient(ellipse 90% 50% at 50% -20%, rgba(139, 92, 246, 0.18), transparent 70%),
-    radial-gradient(ellipse 70% 45% at 85% 75%, rgba(56, 189, 248, 0.1), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 15% 55%, rgba(236, 72, 153, 0.08), transparent 50%),
-    linear-gradient(180deg, #05070e 0%, #090c19 50%, #05070e 100%);
+  background-image:
+    /* Layer 1: Bright Crisp Star Constellations (Gold & Cyan) */
+    radial-gradient(2px 2px at 40px 60px, rgba(253, 230, 138, 0.95), transparent 100%),
+    radial-gradient(1.5px 1.5px at 180px 140px, rgba(255, 255, 255, 0.9), transparent 100%),
+    radial-gradient(2.5px 2.5px at 320px 220px, rgba(56, 189, 248, 0.9), transparent 100%),
+    radial-gradient(1.5px 1.5px at 460px 80px, rgba(255, 255, 255, 0.85), transparent 100%),
+    radial-gradient(2px 2px at 580px 280px, rgba(245, 158, 11, 0.9), transparent 100%),
+    
+    /* Layer 2: Medium Starfield Cluster */
+    radial-gradient(1.5px 1.5px at 90px 310px, rgba(196, 181, 253, 0.85), transparent 100%),
+    radial-gradient(1px 1px at 240px 420px, rgba(255, 255, 255, 0.8), transparent 100%),
+    radial-gradient(2px 2px at 390px 360px, rgba(253, 230, 138, 0.9), transparent 100%),
+    radial-gradient(1px 1px at 520px 490px, rgba(255, 255, 255, 0.75), transparent 100%),
+    radial-gradient(1.5px 1.5px at 670px 190px, rgba(56, 189, 248, 0.8), transparent 100%),
+
+    /* Layer 3: Distant Stellar Dust Grid */
+    radial-gradient(1px 1px at 130px 190px, rgba(255, 255, 255, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 280px 70px, rgba(255, 255, 255, 0.65), transparent 100%),
+    radial-gradient(1.5px 1.5px at 410px 530px, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 620px 380px, rgba(255, 255, 255, 0.6), transparent 100%),
+
+    /* Layer 4: Deep Space Aurora & Nebula Glowing Hubs */
+    radial-gradient(ellipse 90% 55% at 50% -10%, rgba(139, 92, 246, 0.28), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 85% 65%, rgba(56, 189, 248, 0.18), transparent 65%),
+    radial-gradient(ellipse 65% 45% at 12% 45%, rgba(236, 72, 153, 0.16), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 70% 20%, rgba(245, 158, 11, 0.12), transparent 70%),
+    linear-gradient(180deg, #04060e 0%, #080b18 45%, #050711 100%);
+
   background-attachment: fixed;
-  background-size: 500px 500px, 600px 600px, 450px 450px, 700px 700px, 550px 550px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-size:
+    650px 650px, 750px 750px, 600px 600px, 800px 800px, 700px 700px,
+    550px 550px, 620px 620px, 680px 680px, 590px 590px, 720px 720px,
+    480px 480px, 510px 510px, 540px 540px, 470px 470px,
+    100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  animation: cosmic-drift 120s linear infinite alternate;
   overflow-x: hidden;
+}
+
+@keyframes cosmic-drift {
+  0% {
+    background-position:
+      0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px,
+      0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px,
+      0px 0px, 0px 0px, 0px 0px, 0px 0px,
+      0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+  100% {
+    background-position:
+      60px 40px, -40px 50px, 50px -30px, -30px -40px, 45px 35px,
+      -35px 45px, 40px -25px, -25px 35px, 30px 40px, -45px -30px,
+      20px -20px, -15px 25px, 25px 15px, -20px -15px,
+      0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
 }
 
 /* Typography Utility Classes */
@@ -132,81 +173,84 @@ a:hover {
 /* Glassmorphic Card */
 .glass-card {
   background: var(--bg-surface-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
-  padding: 1.75rem;
+  padding: 1.85rem;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .glass-card:hover {
   border-color: var(--border-active);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-glow);
 }
 
 /* Feature & Category Icon System (~2x Larger with Responsive Scaling) */
 .icon-box-lg {
-  width: 68px;
-  height: 68px;
-  border-radius: var(--radius-md);
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.28);
+  width: 104px;
+  height: 104px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(139, 92, 246, 0.18) 0%, rgba(26, 34, 70, 0.6) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.38);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.65rem;
+  padding: 0.95rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(139, 92, 246, 0.2);
   transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .glass-card:hover .icon-box-lg {
-  transform: scale(1.06);
-  border-color: rgba(245, 158, 11, 0.5);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+  transform: scale(1.08);
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.45), 0 0 24px rgba(245, 158, 11, 0.3);
 }
 
 .icon-img-lg {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(139, 92, 246, 0.4));
+  filter: drop-shadow(0 8px 18px rgba(139, 92, 246, 0.45));
 }
 
 .icon-box-hero {
-  width: 84px;
-  height: 84px;
-  border-radius: var(--radius-lg);
-  background: rgba(139, 92, 246, 0.15);
-  border: 1px solid rgba(139, 92, 246, 0.35);
+  width: 136px;
+  height: 136px;
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(139, 92, 246, 0.22) 0%, rgba(26, 34, 70, 0.7) 100%);
+  border: 1.5px solid rgba(139, 92, 246, 0.45);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.85rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+  padding: 1.25rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 12px 36px rgba(139, 92, 246, 0.35), 0 0 24px rgba(56, 189, 248, 0.2);
 }
 
 .icon-img-hero {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 6px 16px rgba(139, 92, 246, 0.5));
+  filter: drop-shadow(0 10px 24px rgba(139, 92, 246, 0.6));
 }
 
 @media (max-width: 640px) {
   .icon-box-lg {
-    width: 54px;
-    height: 54px;
-    padding: 0.5rem;
+    width: 76px;
+    height: 76px;
+    padding: 0.65rem;
+    border-radius: 14px;
   }
   .icon-box-hero {
-    width: 68px;
-    height: 68px;
-    padding: 0.65rem;
+    width: 96px;
+    height: 96px;
+    padding: 0.85rem;
+    border-radius: 18px;
+    margin-bottom: 1.25rem;
   }
 }
 
@@ -215,26 +259,26 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
+  padding: 0.38rem 0.95rem;
   font-size: 0.8125rem;
   font-weight: 600;
   border-radius: var(--radius-full);
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.35);
   color: #c4b5fd;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .badge-gold {
-  background: rgba(245, 158, 11, 0.12);
-  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.35);
   color: #fde68a;
 }
 
 .badge-green {
-  background: rgba(34, 197, 94, 0.12);
-  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.35);
   color: #86efac;
 }
 
@@ -244,7 +288,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.6rem;
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 600;
@@ -258,12 +302,12 @@ a:hover {
 .btn-primary {
   background: var(--grad-cosmic);
   color: #ffffff;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.5);
   color: #ffffff;
 }
 
@@ -274,7 +318,7 @@ a:hover {
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
   border-color: var(--border-subtle);
   color: #ffffff;
 }
@@ -299,21 +343,21 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1.65rem;
-  background: rgba(16, 22, 47, 0.85);
-  border: 1px solid rgba(139, 92, 246, 0.4);
+  padding: 0.75rem 1.75rem;
+  background: rgba(16, 22, 47, 0.9);
+  border: 1px solid rgba(139, 92, 246, 0.45);
   color: #ffffff;
   border-radius: var(--radius-full);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
   transition: all var(--transition-normal);
   text-decoration: none;
 }
 
 .btn-play:hover {
-  background: rgba(26, 34, 70, 0.95);
+  background: rgba(26, 34, 70, 0.98);
   border-color: var(--accent-gold);
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 8px 28px rgba(245, 158, 11, 0.3);
   color: #ffffff;
 }
 
@@ -362,7 +406,7 @@ a:hover {
 /* Galaxy Banner Backdrop */
 .galaxy-backdrop {
   position: relative;
-  background-image: linear-gradient(180deg, rgba(9, 12, 25, 0.85) 0%, rgba(9, 12, 25, 0.95) 100%), url('/images/galaxy_background.jpg');
+  background-image: linear-gradient(180deg, rgba(9, 12, 25, 0.82) 0%, rgba(9, 12, 25, 0.95) 100%), url('/images/galaxy_background.jpg');
   background-size: cover;
   background-position: center;
 }

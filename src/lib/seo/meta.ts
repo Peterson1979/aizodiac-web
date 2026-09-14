@@ -35,7 +35,7 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: siteConfig.name,
     url: baseUrl,
-    logo: `${baseUrl}/favicon.svg`,
+    logo: `${baseUrl}/images/aizodiac_logo.png`,
     description: siteConfig.description,
   };
 }
@@ -92,7 +92,7 @@ export function generateArticleSchema(options: {
       name: siteConfig.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.getBaseUrl()}/favicon.svg`,
+        url: `${siteConfig.getBaseUrl()}/images/aizodiac_logo.png`,
       },
     },
   };
