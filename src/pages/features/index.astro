@@ -8,21 +8,21 @@ const pageUrl = buildCanonicalUrl('features');
 ---
 
 <BaseLayout
-  title="AI Astrology App Features & Insights — AI Zodiac"
-  description="Explore the features of the AI Zodiac app: Personalized Horoscopes, Birth Chart Synthesis, Love Compatibility, AI Astrologer, Numerology, and Ascendants on Android."
+  title="AI Astrology App Features — AI Zodiac"
+  description="Explore the features of the AI Zodiac app: Personalized Horoscopes, Ascendant Calculator, Zodiac Traits, Love Compatibility, AI Astrologer, Numerology, Chinese Zodiac, and Astro Calendar."
   canonicalUrl={pageUrl}
 >
   <div class="features-hub-page container">
     <!-- Header -->
     <header class="hub-header">
       <div class="badge-wrap">
-        <span class="badge badge-gold">Astrological Intelligence</span>
+        <span class="badge badge-gold">✦ Astrological Intelligence</span>
       </div>
       <h1 class="page-title">
         AI Zodiac <span class="gradient-text">Features</span>
       </h1>
       <p class="page-subtitle">
-        Explore our comprehensive suite of personalized astrology features designed to provide nuanced clarity for your daily life, relationships, and self-discovery.
+        Discover personalized astrology insights with AI Zodiac, an AI-powered horoscope and zodiac app designed to help you explore your sign, relationships, personality, and astrological timing.
       </p>
     </header>
 
@@ -31,7 +31,9 @@ const pageUrl = buildCanonicalUrl('features');
       {FEATURE_PAGES.map((feature, idx) => (
         <article class="glass-card feature-hub-card">
           <div class="card-top">
-            <span class="feature-icon">{feature.icon}</span>
+            <div class="icon-box-lg">
+              <img src={feature.icon} alt={feature.title} class="icon-img-lg" width="40" height="40" />
+            </div>
             <span class="feature-idx">0{idx + 1}</span>
           </div>
 
@@ -62,7 +64,7 @@ const pageUrl = buildCanonicalUrl('features');
         <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="cta-heading">Get Started with the AI Zodiac App</h2>
         <p class="cta-text">
-          Download AI Zodiac for Android to experience real-time planetary transits, interactive birth chart wheels, dual-chart synastry matrices, and contextual conversational AI guidance.
+          Download AI Zodiac for Android to explore daily, weekly, and monthly horoscope forecasts, calculate your ascendant, check love compatibility, and ask the AI astrologer your questions.
         </p>
         <div class="cta-btn-wrap">
           <a

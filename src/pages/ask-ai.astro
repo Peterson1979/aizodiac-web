@@ -10,7 +10,7 @@ const askAiJsonLd = {
   '@type': 'WebPage',
   name: 'Ask the AI Astrologer — AI Zodiac',
   url: pageUrl,
-  description: 'Learn how conversational AI astrological intelligence works inside the AI Zodiac app: grounded in natal birth data and real-time planetary ephemeris.',
+  description: 'Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information in the AI Zodiac Android app.',
   publisher: {
     '@type': 'Organization',
     name: siteConfig.name,
@@ -20,49 +20,52 @@ const askAiJsonLd = {
 
 const SAMPLE_QUESTIONS = [
   {
-    category: 'Career & Life Crossroads',
+    category: 'Career & Timing',
     icon: '🧭',
-    question: '“Saturn is currently transiting my 10th house. What does this mean for my professional restructuring over the next six months?”',
-    context: 'Analyzes your natal 10th house ruler, current Saturn degree, and aspects to your natal Sun for strategic career pacing.',
+    question: '“What does my current astrological cycle mean for my career and personal growth over the coming months?”',
+    context: 'Explores your zodiac sign, planetary influences, and life timing for career pacing and opportunities.',
   },
   {
-    category: 'Relationship Dynamics & Synastry',
+    category: 'Love & Relationships',
     icon: '💖',
-    question: '“My partner’s Moon in Scorpio squares my Leo Moon. How can we navigate differing emotional processing styles?”',
-    context: 'Examines elemental fixed-modality tension, attachment mechanisms, and actionable dialogue suggestions.',
+    question: '“How do my astrological traits affect communication and connection with my partner?”',
+    context: 'Explores your zodiac strengths, emotional tendencies, and actionable harmony tips.',
   },
   {
-    category: 'Transit Timing & Daily Energy',
+    category: 'Personal Timing',
     icon: '🌙',
-    question: '“How does this week’s Full Moon in Taurus activate my natal chart, and what should I focus on releasing?”',
-    context: 'Locates the exact house where the lunation falls in your chart and evaluates active planetary aspects.',
+    question: '“What should I focus on during this month’s cosmic cycle and lunar phase?”',
+    context: 'Highlights timing, self-reflection themes, and practical personal guidance.',
   },
   {
-    category: 'Subconscious Patterns & Self-Discovery',
+    category: 'Self-Discovery & Strengths',
     icon: '🔮',
-    question: '“I have Mars in the 12th house in Cancer. How can I work with this energy constructively?”',
-    context: 'Synthesizes subconscious emotional drives, covert assertiveness, and somatic mindfulness practices.',
+    question: '“What are my greatest personality strengths and areas for personal growth according to my sign?”',
+    context: 'Provides deep, personalized insights into your natural talents and character traits.',
   },
 ];
 ---
 
 <BaseLayout
-  title="AI Astrologer App — Interactive Astrological Advisory | AI Zodiac"
-  description="Discover how the AI Astrologer delivers personalized astrological guidance in the AI Zodiac mobile app: grounded in your natal chart and real-time planetary transits."
+  title="Ask the AI Astrologer — AI Zodiac App"
+  description="Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information in the AI Zodiac Android app."
   canonicalUrl={pageUrl}
   jsonLd={askAiJsonLd}
 >
   <div class="ask-ai-page container">
     <!-- Hero Header -->
     <header class="ask-hero">
+      <div class="icon-box-hero" style="margin: 0 auto 1.5rem;">
+        <img src="/images/ic_question.png" alt="Ask AI Astrologer" class="icon-img-hero" width="56" height="56" />
+      </div>
       <div class="badge-wrap">
-        <span class="badge badge-gold">✦ Conversational Astrological Intelligence</span>
+        <span class="badge badge-gold">✦ Astrological Guidance</span>
       </div>
       <h1 class="ask-title">
         Ask the <span class="gradient-text">AI Astrologer</span>
       </h1>
       <p class="ask-subtitle">
-        Experience contextual, articulate astrological guidance grounded in the mathematical coordinates of your natal birth chart and real-time planetary transits.
+        Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information.
       </p>
 
       <div class="ask-hero-actions">
@@ -81,39 +84,46 @@ const SAMPLE_QUESTIONS = [
             <span class="btn-play-main">Google Play</span>
           </div>
         </a>
-        <a href="/articles/how-ai-creates-personalized-astrology-insights" class="btn btn-secondary">
-          Explore Your Zodiac Insights
+        <a href="/features" class="btn btn-secondary">
+          Explore All Features
         </a>
       </div>
     </header>
 
-    <!-- Why Birth Data Transforms AI Section -->
-    <section class="transformation-section">
-      <div class="glass-card transform-card">
-        <div class="transform-header">
-          <span class="badge">The AI Zodiac Difference</span>
-          <h2 class="transform-title">Why Birth Chart Data Transforms AI Reasoning</h2>
+    <!-- Consumer-Focused How It Works Section -->
+    <section class="how-it-works-section">
+      <div class="glass-card how-card">
+        <div class="how-header">
+          <span class="badge badge-gold">✦ Personalized Astrology Experience</span>
+          <h2 class="how-title">How Ask AI Works in AI Zodiac</h2>
+          <p class="how-intro">
+            Get personalized astrological answers tailored to your exact zodiac profile and personal birth details anytime inside the Android app.
+          </p>
         </div>
 
-        <div class="comparison-grid">
-          <div class="comp-col generic-col">
-            <h3 class="comp-heading">❌ Generic AI Chatbots</h3>
-            <ul class="comp-list">
-              <li>Relies only on broad Sun sign stereotypes</li>
-              <li>Cannot see your Rising sign or 12 astrological houses</li>
-              <li>Ignores active planetary degrees and real-time transits</li>
-              <li>Generates vague, contradictory, or boilerplate responses</li>
-            </ul>
+        <div class="how-grid">
+          <div class="glass-card step-card">
+            <div class="step-badge">01</div>
+            <h3 class="step-title">Ask Any Question</h3>
+            <p class="step-desc">
+              Ask about your daily outlook, love compatibility, career timing, strengths, or personal life in clear, natural language.
+            </p>
           </div>
 
-          <div class="comp-col aizodiac-col">
-            <h3 class="comp-heading">✨ AI Zodiac Mobile Advisor</h3>
-            <ul class="comp-list">
-              <li>Full natal memory: 10 planets, houses, and geometric aspects</li>
-              <li>Real-time astronomical ephemeris for ongoing planetary movements</li>
-              <li>Multi-layered synthesis resolving opposing chart influences</li>
-              <li>Non-deterministic, mindfulness-focused guidance respecting human agency</li>
-            </ul>
+          <div class="glass-card step-card">
+            <div class="step-badge">02</div>
+            <h3 class="step-title">Personalized to Your Profile</h3>
+            <p class="step-desc">
+              AI Zodiac uses your specific zodiac sign, birth details, and personal astrological information to deliver meaningful, tailored guidance.
+            </p>
+          </div>
+
+          <div class="glass-card step-card">
+            <div class="step-badge">03</div>
+            <h3 class="step-title">Continue in the Mobile App</h3>
+            <p class="step-desc">
+              Experience the full interactive conversational AI astrologer privately in the AI Zodiac Android app whenever you need clarity.
+            </p>
           </div>
         </div>
       </div>
@@ -122,10 +132,10 @@ const SAMPLE_QUESTIONS = [
     <!-- Example Questions Section -->
     <section class="questions-section">
       <div class="section-header">
-        <span class="badge badge-gold">Inquiry Possibilities</span>
-        <h2 class="section-title">What You Can Ask AI Zodiac</h2>
+        <span class="badge badge-gold">✦ Example Questions</span>
+        <h2 class="section-title">What You Can Ask the AI Astrologer</h2>
         <p class="section-desc">
-          From timing major professional transitions to understanding communication rhythms with your partner, here are examples of contextual inquiries:
+          From understanding personal timing to relationship dynamics, here are examples of questions you can explore:
         </p>
       </div>
 
@@ -138,19 +148,13 @@ const SAMPLE_QUESTIONS = [
             </div>
             <p class="q-prompt">{item.question}</p>
             <div class="q-context">
-              <span class="context-label">Astrological Synthesis:</span>
+              <span class="context-label">Astrological Focus:</span>
               <p class="context-text">{item.context}</p>
             </div>
           </div>
         ))}
       </div>
     </section>
-
-    <!-- Future Web AI Placeholder Slot -->
-    <!-- Prepared container for future limited web-based AI demo integration without route modification -->
-    <div id="web-ai-interactive-slot" class="web-ai-container" data-ready="false" style="display: none;">
-      <!-- Future interactive web demonstration interface mounts here -->
-    </div>
 
     <!-- App Conversion Section -->
     <section class="ask-app-conversion">
@@ -159,9 +163,9 @@ const SAMPLE_QUESTIONS = [
           <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="56" height="56" class="app-card-logo-img" />
         </div>
         <span class="badge badge-gold">AI Zodiac Android App</span>
-        <h2 class="app-card-title">Ask Your Personal Questions in the App</h2>
+        <h2 class="app-card-title">Ask Your Questions in the AI Zodiac App</h2>
         <p class="app-card-desc">
-          Download the AI Zodiac Android app to connect your exact birth coordinates with the conversational AI astrologer for private, ongoing guidance.
+          Download the AI Zodiac Android app to ask your personal questions and receive personalized AI-powered guidance based on your profile and zodiac information.
         </p>
         <div class="app-card-actions">
           <a
@@ -181,7 +185,7 @@ const SAMPLE_QUESTIONS = [
           </a>
         </div>
         <span class="app-card-note">
-          Free download on Google Play • Grounded in your unique birth chart
+          Free download on Google Play • Personalized horoscope and astrology insights
         </span>
       </div>
     </section>
@@ -190,7 +194,7 @@ const SAMPLE_QUESTIONS = [
 
 <style>
   .ask-ai-page {
-    max-width: 860px;
+    max-width: 880px;
     padding: 4rem 1.5rem 6rem;
   }
 
@@ -227,66 +231,70 @@ const SAMPLE_QUESTIONS = [
     flex-wrap: wrap;
   }
 
-  /* Transformation Card */
-  .transformation-section {
+  /* How It Works Section */
+  .how-it-works-section {
     margin-bottom: 5rem;
   }
 
-  .transform-card {
+  .how-card {
     padding: 3rem 2.5rem;
     background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.85) 100%);
     border: 1px solid var(--border-active);
   }
 
-  .transform-header {
+  .how-header {
     text-align: center;
     margin-bottom: 2.5rem;
   }
 
-  .transform-title {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 700;
+  .how-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 800;
     margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
 
-  .comparison-grid {
+  .how-intro {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  .how-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
   }
 
-  .comp-col {
-    padding: 1.75rem;
-    border-radius: var(--radius-md);
-  }
-
-  .generic-col {
-    background: rgba(239, 68, 68, 0.05);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-  }
-
-  .aizodiac-col {
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.35);
-  }
-
-  .comp-heading {
-    font-size: 1.125rem;
-    font-weight: 700;
-    margin-bottom: 1.25rem;
-  }
-
-  .comp-list {
-    list-style: none;
+  .step-card {
+    padding: 1.75rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-subtle);
   }
 
-  .comp-list li {
+  .step-badge {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .step-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .step-desc {
     font-size: 0.875rem;
     color: var(--text-secondary);
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   /* Questions Grid */
@@ -315,7 +323,7 @@ const SAMPLE_QUESTIONS = [
 
   .questions-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
   }
 
@@ -418,14 +426,6 @@ const SAMPLE_QUESTIONS = [
     padding: 0.85rem 2rem;
   }
 
-  .btn-arrow {
-    transition: transform var(--transition-fast);
-  }
-
-  .app-cta-btn:hover .btn-arrow {
-    transform: translateX(4px);
-  }
-
   .app-card-note {
     font-size: 0.8125rem;
     color: var(--text-muted);
@@ -433,8 +433,8 @@ const SAMPLE_QUESTIONS = [
   }
 
   @media (max-width: 720px) {
-    .comparison-grid {
-      grid-template-columns: 1fr;
+    .how-card {
+      padding: 2.25rem 1.5rem;
     }
     .questions-grid {
       grid-template-columns: 1fr;

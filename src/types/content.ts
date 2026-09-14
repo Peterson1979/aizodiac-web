@@ -49,37 +49,37 @@ export const CONTENT_CLUSTERS: readonly ClusterMeta[] = [
     id: 'personality',
     name: 'Personality Insights',
     description: 'Explore the psychological patterns, elemental archetypes, and intrinsic traits of zodiac signs.',
-    icon: '✨',
+    icon: '/images/ic_personal.png',
   },
   {
     id: 'relationships',
     name: 'Relationship Dynamics',
     description: 'Understand love compatibility, emotional communication, and relationship harmonics through synastry.',
-    icon: '💫',
+    icon: '/images/ic_love.png',
   },
   {
     id: 'astrology-guides',
     name: 'Astrology Guides',
     description: 'Master the fundamentals of natal charts, planetary houses, transits, and celestial mechanics.',
-    icon: '🪐',
+    icon: '/images/ic_horoscope.png',
   },
   {
     id: 'ai-astrology',
     name: 'AI & Modern Astrology',
     description: 'Discover how advanced artificial intelligence synthesizes complex planetary data for tailored clarity.',
-    icon: '🔮',
+    icon: '/images/ic_horoscope.png',
   },
   {
     id: 'zodiac',
     name: 'Zodiac Archetypes',
     description: 'Deep dives into each of the twelve zodiac signs, rulers, elements, and seasonal expressions.',
-    icon: '♈',
+    icon: '/images/ic_traits.png',
   },
   {
     id: 'insights',
     name: 'Cosmic Insights',
     description: 'Reflections on transits, retrogrades, lunations, and modern astrological perspectives.',
-    icon: '🌙',
+    icon: '/images/ic_horoscope.png',
   },
 ] as const;
 
@@ -283,19 +283,14 @@ export const WESTERN_ZODIAC_SIGNS: readonly ZodiacSignMeta[] = [
 // -----------------------------------------------------------------------------
 
 export type AppFeatureId =
-  | 'personalized_astrology'
-  | 'birth_chart'
-  | 'daily_horoscope'
-  | 'weekly_horoscope'
-  | 'monthly_horoscope'
-  | 'annual_horoscope'
-  | 'ask_the_ai'
+  | 'personalized_horoscopes'
+  | 'ascendant_calculator'
+  | 'zodiac_traits'
   | 'love_compatibility'
-  | 'zodiac_characteristics'
+  | 'ask_the_ai'
   | 'numerology'
-  | 'ascendant_number'
-  | 'personal_astrological_calendar'
-  | 'chinese_horoscope';
+  | 'chinese_zodiac'
+  | 'personal_astro_calendar';
 
 export interface FeaturePageData {
   readonly slug: string;
@@ -318,227 +313,259 @@ export interface FeaturePageData {
 export const FEATURE_PAGES: readonly FeaturePageData[] = [
   {
     slug: 'personal-horoscope',
-    id: 'personalized_astrology',
-    title: 'Personal Horoscope',
-    tagline: 'Astrological guidance calibrated to your exact planetary transits and natal coordinates.',
-    icon: '✨',
-    userBenefit: 'Transcend broad sun-sign forecasts with daily, weekly, and monthly insights computed specifically for your unique birth chart.',
-    description: 'Traditional horoscopes address 1/12th of the global population as a uniform group. AI Zodiac synthesizes current planetary movements with your exact natal houses and aspect degrees to deliver timely, actionable mindfulness and planning guidance.',
+    id: 'personalized_horoscopes',
+    title: 'Personalized Horoscopes',
+    tagline: 'Explore daily, weekly, monthly, and yearly horoscope forecasts with personalized astrology insights based on your zodiac sign and birth details.',
+    icon: '/images/ic_personal.png',
+    userBenefit: 'Explore daily, weekly, monthly, and yearly horoscope forecasts with personalized astrology insights based on your zodiac sign and birth details.',
+    description: 'Explore daily, weekly, monthly, and yearly horoscope forecasts with personalized astrology insights based on your zodiac sign and birth details. AI Zodiac translates planetary timing into clear, actionable daily guidance for your personal life, relationships, and focus.',
     exampleUseCases: [
       {
-        title: 'Daily Rhythm & Focus',
-        description: 'Understand how today’s lunar ingress and planetary aspects influence your energy levels and mental clarity.',
+        title: 'Daily Horoscope & Focus',
+        description: 'Start your morning with personalized insights tailored to your zodiac sign and current astrological timing.',
       },
       {
-        title: 'Transit Cycle Timing',
-        description: 'Prepare in advance for upcoming personal transits such as Jupiter returns, Saturn aspects, or Venus activations.',
+        title: 'Weekly & Monthly Outlook',
+        description: 'Plan ahead with broader cosmic guidance covering personal growth, career focus, and emotional rhythm.',
       },
       {
-        title: 'Retrograde Navigation',
-        description: 'Receive thoughtful, constructive advice on how to use Mercury or Mars retrogrades for reflection rather than panic.',
+        title: 'Yearly Forecasts',
+        description: 'Explore annual trends, major opportunities, and key themes for your sign across the entire year.',
       },
     ],
     appValueHighlights: [
-      'Multi-planetary transit calculation updated in real time',
-      'Daily, weekly, and monthly forecasting layers',
+      'Daily, weekly, monthly, and yearly forecast layers',
+      'Personalized insights calibrated to your sign and birth details',
       'Actionable reflection prompts for conscious daily planning',
-      'Contextual integration with your complete natal chart',
+      'Clear, accessible guidance designed for self-discovery',
     ],
     relatedCluster: 'personality',
-    seoTitle: 'Personal Horoscope & Daily Planetary Transits | AI Zodiac App',
-    seoDescription: 'Discover personalized daily, weekly, and monthly horoscopes calibrated to your exact birth chart and planetary transits in the AI Zodiac app.',
+    seoTitle: 'Personalized Horoscopes & Daily Forecasts | AI Zodiac App',
+    seoDescription: 'Explore daily, weekly, monthly, and yearly horoscope forecasts with personalized astrology insights based on your zodiac sign in the AI Zodiac app.',
   },
   {
-    slug: 'birth-chart',
-    id: 'birth_chart',
-    title: 'Birth Chart (Natal Chart)',
-    tagline: 'Your complete celestial blueprint decoded through modern astronomical calculation.',
-    icon: '🌌',
-    userBenefit: 'Explore your Sun, Moon, Rising, 10 planetary placements, 12 astrological houses, and geometric aspects.',
-    description: 'A natal chart is the astronomical snapshot of the sky at your exact minute and location of birth. AI Zodiac maps out your full chart wheel, providing deep psychological interpretations for each placement and aspect without mystical jargon.',
+    slug: 'ascendant',
+    id: 'ascendant_calculator',
+    title: 'Ascendant & Rising Sign Calculator',
+    tagline: 'Enter your birth date, birth time, and location to calculate your ascendant (rising sign) and discover another important part of your astrological profile.',
+    icon: '/images/ic_ascendant.png',
+    userBenefit: 'Enter your birth date, birth time, and location to calculate your ascendant (rising sign) and discover another important part of your astrological profile.',
+    description: 'Enter your birth date, birth time, and location to calculate your ascendant (rising sign) and discover another important part of your astrological profile. Your rising sign represents how you meet the world, your first impressions, and provides key context for your complete zodiac personality.',
     exampleUseCases: [
       {
-        title: 'The Big Three Synthesis',
-        description: 'Uncover how your conscious purpose (Sun), emotional core (Moon), and outer lens (Rising) work together.',
+        title: 'Discover Your Rising Sign',
+        description: 'Calculate the exact zodiac sign that was rising on the eastern horizon at the moment you were born.',
       },
       {
-        title: 'House Placements & Life Arenas',
-        description: 'Discover how planets in your 10th (career), 7th (partnership), and 4th (home) houses shape your priorities.',
+        title: 'Understand Your Persona',
+        description: 'Explore how your rising sign influences your natural instincts, personal energy, and outward style.',
       },
       {
-        title: 'Geometric Aspects',
-        description: 'Understand the collaborative trines and creative tension of squares and oppositions between your planets.',
+        title: 'Complete Astrological Profile',
+        description: 'Combine your Sun sign, Moon sign, and Ascendant for a well-rounded understanding of your character.',
       },
     ],
     appValueHighlights: [
-      'Interactive visual chart wheel with tap-to-inspect placements',
-      'Accurate Placidus & Whole Sign house system calculations',
-      'Aspect grids detailing exact degrees and harmonic orbs',
-      'In-depth psychological synthesis for each placement',
+      'Accurate ascendant calculation based on birth time and location',
+      'In-depth rising sign personality characteristics and traits',
+      'Integration with your Sun sign and complete profile',
+      'Easy-to-understand breakdown without complicated jargon',
     ],
     relatedCluster: 'astrology-guides',
-    seoTitle: 'Birth Chart Interpretation & Natal Chart Calculator | AI Zodiac App',
-    seoDescription: 'Calculate and decode your complete natal birth chart with Sun, Moon, Rising, houses, and planetary aspects in the AI Zodiac app.',
+    seoTitle: 'Ascendant & Rising Sign Calculator | AI Zodiac App',
+    seoDescription: 'Calculate your ascendant (rising sign) with your birth date, time, and location to discover key insights into your astrological profile in AI Zodiac.',
+  },
+  {
+    slug: 'zodiac-traits',
+    id: 'zodiac_traits',
+    title: 'Zodiac Signs & Personality',
+    tagline: 'Learn more about all 12 zodiac signs, including personality traits, strengths, weaknesses, compatibility, and astrological characteristics.',
+    icon: '/images/ic_traits.png',
+    userBenefit: 'Learn more about all 12 zodiac signs, including personality traits, strengths, weaknesses, compatibility, and astrological characteristics.',
+    description: 'Learn more about all 12 zodiac signs, including personality traits, strengths, weaknesses, compatibility, and astrological characteristics. Explore elemental energies (Fire, Earth, Air, Water) and modalities to better understand yourself, your friends, and your loved ones.',
+    exampleUseCases: [
+      {
+        title: 'Explore All 12 Signs',
+        description: 'Deep dive into the core traits, symbols, ruling planets, and dates for every zodiac sign.',
+      },
+      {
+        title: 'Strengths & Growth Areas',
+        description: 'Discover the unique gifts, natural motivations, and personal focus areas associated with your sign.',
+      },
+      {
+        title: 'Elemental Energies',
+        description: 'Understand how Fire, Earth, Air, and Water elements shape different personality dynamics and temperaments.',
+      },
+    ],
+    appValueHighlights: [
+      'Comprehensive profiles for all 12 zodiac signs',
+      'Clear breakdowns of strengths, weaknesses, and key traits',
+      'Elemental (Fire, Earth, Air, Water) and modality guides',
+      'Actionable self-reflection tools for everyday life',
+    ],
+    relatedCluster: 'personality',
+    seoTitle: 'Zodiac Signs & Personality Traits | AI Zodiac App',
+    seoDescription: 'Learn about all 12 zodiac signs, personality traits, strengths, weaknesses, and astrological characteristics in the AI Zodiac app.',
+  },
+  {
+    slug: 'love-compatibility',
+    id: 'love_compatibility',
+    title: 'Love Compatibility',
+    tagline: 'Explore zodiac compatibility and relationship insights based on astrology and your personal birth information.',
+    icon: '/images/ic_love.png',
+    userBenefit: 'Explore zodiac compatibility and relationship insights based on astrology and your personal birth information.',
+    description: 'Explore zodiac compatibility and relationship insights based on astrology and your personal birth information. Discover how different signs interact in romance, friendship, and communication, with practical guidance for building harmonious connections.',
+    exampleUseCases: [
+      {
+        title: 'Zodiac Sign Matching',
+        description: 'Compare any two zodiac signs to explore mutual attraction, emotional resonance, and communication styles.',
+      },
+      {
+        title: 'Relationship Harmony',
+        description: 'Discover the natural strengths and complementary qualities that bring two people together.',
+      },
+      {
+        title: 'Navigating Differences',
+        description: 'Receive thoughtful, constructive tips on how to bridge differing perspectives and communicate with empathy.',
+      },
+    ],
+    appValueHighlights: [
+      'Detailed compatibility breakdowns for all 144 sign combinations',
+      'Insights into romance, communication, and emotional connection',
+      'Personalized compatibility matching using birth details',
+      'Constructive advice for conscious relationship growth',
+    ],
+    relatedCluster: 'relationships',
+    seoTitle: 'Zodiac Compatibility & Love Insights | AI Zodiac App',
+    seoDescription: 'Explore zodiac compatibility and relationship insights based on astrology and your personal birth information in the AI Zodiac app.',
   },
   {
     slug: 'ask-ai',
     id: 'ask_the_ai',
     title: 'Ask the AI Astrologer',
-    tagline: 'Conversational astrological intelligence grounded in your personal natal parameters.',
-    icon: '💬',
-    userBenefit: 'Ask specific, contextual questions about your career, timing, and relationships, receiving clear astrological reasoning.',
-    description: 'Unlike generic chatbots that guess or pull random horoscope text, AI Zodiac’s AI advisor has full awareness of your natal chart coordinates and current planetary ephemeris, delivering articulate, non-fatalistic answers tailored to your life stage.',
+    tagline: 'Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information.',
+    icon: '/images/ic_question.png',
+    userBenefit: 'Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information.',
+    description: 'Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information. Whether you are curious about current timing, personal strengths, or relationship dynamics, get thoughtful answers tailored specifically to you in the Android app.',
     exampleUseCases: [
       {
-        title: 'Career & Timing Crossroads',
-        description: '“What does my 10th house Saturn transit signify for my professional development over the next six months?”',
+        title: 'Personal & Timing Questions',
+        description: 'Ask how current astrological periods influence your career focus, decision-making, or personal goals.',
       },
       {
-        title: 'Relationship Communication',
-        description: '“How can I navigate emotional differences with my partner given our Moon sign placements?”',
+        title: 'Relationship Guidance',
+        description: 'Ask contextual questions about communication patterns and emotional connection with loved ones.',
       },
       {
-        title: 'Self-Reflection & Habit Cycles',
-        description: '“What planetary strengths in my chart can I draw on to build greater creative discipline?”',
+        title: 'Self-Discovery & Growth',
+        description: 'Gain deeper clarity on your personality strengths, hidden talents, and personal development.',
       },
     ],
     appValueHighlights: [
-      'Full natal chart context retained across conversations',
-      'Real-time ephemeris lookup for ongoing transits',
-      'Thoughtful, non-fatalistic advice focused on personal agency',
-      'Private, secure conversation environment',
+      'Interactive conversational guidance calibrated to your zodiac profile',
+      'Thoughtful answers tailored to your personal questions and life stage',
+      'Private, secure environment inside the AI Zodiac mobile app',
+      'Continuous personalized context for thoughtful self-reflection',
     ],
     relatedCluster: 'ai-astrology',
-    seoTitle: 'AI Astrologer App — Interactive Astrological Advisory | AI Zodiac',
-    seoDescription: 'Engage with AI Zodiac’s conversational AI astrologer for contextual clarity on your natal chart, transits, and life questions.',
-  },
-  {
-    slug: 'love-compatibility',
-    id: 'love_compatibility',
-    title: 'Love & Relationship Compatibility',
-    tagline: 'Multi-layered synastry analysis evaluating emotional bonds, communication, and mutual growth.',
-    icon: '💖',
-    userBenefit: 'Go beyond Sun signs to understand how your Moon, Venus, Mars, and Mercury interact with a partner’s placements.',
-    description: 'Genuine relational astrology looks at the harmonic resonance between two complete charts. AI Zodiac highlights where emotional intuition flows naturally and provides constructive communication strategies where elemental differences arise.',
-    exampleUseCases: [
-      {
-        title: 'Emotional Attachment (Moon Synastry)',
-        description: 'Learn how your subconscious emotional needs align with your partner’s style of comfort and safety.',
-      },
-      {
-        title: 'Love Languages & Values (Venus)',
-        description: 'Discover how each person expresses affection, aesthetic preferences, and partnership ideals.',
-      },
-      {
-        title: 'Conflict & Chemistry (Mars & Mercury)',
-        description: 'Understand passion dynamics and practical dialogue patterns during moments of friction.',
-      },
-    ],
-    appValueHighlights: [
-      'Dual-chart synastry matrix comparing all planetary pairs',
-      'Relationship harmony breakdown across emotional, mental, and physical axes',
-      'Constructive communication guidance for challenging aspects',
-      'Composite chart synthesis for long-term partnerships',
-    ],
-    relatedCluster: 'relationships',
-    seoTitle: 'Zodiac Compatibility & Love Synastry Chart Analysis | AI Zodiac App',
-    seoDescription: 'Explore multi-dimensional relationship compatibility and synastry analysis between complete birth charts in the AI Zodiac app.',
+    seoTitle: 'Ask the AI Astrologer — Personalized Advisory | AI Zodiac App',
+    seoDescription: 'Ask your astrology questions and receive personalized AI-powered guidance based on your profile and zodiac information in the AI Zodiac app.',
   },
   {
     slug: 'numerology',
     id: 'numerology',
-    title: 'Numerology Alignments',
-    tagline: 'Harmonic numerical vibrations decoded alongside your planetary chart.',
-    icon: '🔢',
-    userBenefit: 'Calculate and decode your Life Path, Expression, and Soul Urge numbers in harmony with your celestial blueprint.',
-    description: 'Pythagorean numerology provides an insightful numerical counterpoint to astrological natal charts. AI Zodiac decodes your core numbers from your birth date and full birth name, showing how mathematical frequencies mirror your celestial strengths.',
+    title: 'Numerology',
+    tagline: 'Discover personalized numerology insights and explore the meanings associated with your numbers.',
+    icon: '/images/ic_fnumbers.png',
+    userBenefit: 'Discover personalized numerology insights and explore the meanings associated with your numbers.',
+    description: 'Discover personalized numerology insights and explore the meanings associated with your numbers. Calculate your core Life Path, Expression, and Soul numbers from your birth date and name to uncover complementary personal insights alongside your zodiac profile.',
     exampleUseCases: [
       {
         title: 'Life Path Number',
-        description: 'Identify your fundamental life trajectory, core lessons, and inherent vibrational strengths.',
+        description: 'Calculate your core Life Path number to discover your overarching life journey and natural strengths.',
       },
       {
-        title: 'Soul Urge (Heart’s Desire)',
-        description: 'Uncover the innermost motivations and spiritual desires driving your subconscious choices.',
+        title: 'Expression & Soul Numbers',
+        description: 'Explore the deeper vibrational meanings behind your full birth name and innermost motivations.',
       },
       {
-        title: 'Personal Year Cycles',
-        description: 'Understand which 9-year vibrational phase you are currently experiencing to pace major decisions.',
+        title: 'Cycle & Timing Trends',
+        description: 'Understand which personal numerological cycle you are experiencing to guide your current focus.',
       },
     ],
     appValueHighlights: [
       'Automated Life Path, Expression, and Soul Urge calculations',
-      'Integration with your zodiac Sun and Ascendant archetypes',
-      'Personal Year and Personal Month cycle forecasting',
-      'Detailed numerical vibration breakdowns',
+      'Harmonious integration with your zodiac profile and signs',
+      'Clear, accessible explanations of numerical meanings',
+      'Actionable insights for personal growth and timing',
     ],
     relatedCluster: 'personality',
-    seoTitle: 'Numerology & Life Path Number Calculator | AI Zodiac App',
-    seoDescription: 'Decode your Life Path, Expression, and Soul Urge numbers alongside your astrological natal chart in the AI Zodiac app.',
+    seoTitle: 'Numerology & Life Path Insights | AI Zodiac App',
+    seoDescription: 'Discover personalized numerology insights and explore the meanings associated with your life numbers in the AI Zodiac app.',
   },
   {
-    slug: 'ascendant',
-    id: 'ascendant_number',
-    title: 'Ascendant & Rising Sign Insights',
-    tagline: 'Discover your rising sign harmonics and how you meet the world.',
-    icon: '🌅',
-    userBenefit: 'Learn how your Rising Sign (Ascendant) sets your 12 house cusps and establishes your outward life navigation style.',
-    description: 'The Ascendant represents the exact zodiac degree rising on the eastern horizon at the moment of your birth. It determines the entire structure of your 12 houses and describes your physical vitality, spontaneous reactions, and first impression.',
+    slug: 'chinese-zodiac',
+    id: 'chinese_zodiac',
+    title: 'Chinese Zodiac',
+    tagline: 'Discover your Chinese zodiac animal and element and explore personalized Chinese horoscope insights.',
+    icon: '/images/ic_chinese.png',
+    userBenefit: 'Discover your Chinese zodiac animal and element and explore personalized Chinese horoscope insights.',
+    description: 'Discover your Chinese zodiac animal and element and explore personalized Chinese horoscope insights. Rooted in traditional Eastern lunar wisdom, explore how the 12 animal archetypes and 5 natural elements (Wood, Fire, Earth, Metal, Water) provide a rich, holistic perspective.',
     exampleUseCases: [
       {
-        title: 'The Persona & First Impressions',
-        description: 'Understand how others naturally perceive your presence and how you initiate new beginnings.',
+        title: 'Lunar Animal Sign',
+        description: 'Find your authentic Chinese zodiac animal based on your exact lunar birth year.',
       },
       {
-        title: 'Chart Ruler Identification',
-        description: 'Discover the ruling planet of your Ascendant and how its sign and house placement guide your life journey.',
+        title: 'The Five Elements',
+        description: 'Learn whether your year corresponds to Wood, Fire, Earth, Metal, or Water, and what that reveals.',
       },
       {
-        title: 'House Cusp Orientation',
-        description: 'See how your Rising sign positions the areas of career, relationship, and family across your chart.',
-      },
-    ],
-    appValueHighlights: [
-      'High-precision Ascendant degree calculation based on birth time & coordinates',
-      'Chart ruler identification with transit tracking',
-      'Rising sign visual aesthetics and behavioral traits',
-      'First house dynamics and life navigation guidance',
-    ],
-    relatedCluster: 'astrology-guides',
-    seoTitle: 'Rising Sign Calculator & Ascendant Guide | AI Zodiac App',
-    seoDescription: 'Calculate and understand your Rising Sign (Ascendant), chart ruler, and first house dynamics in the AI Zodiac app.',
-  },
-  {
-    slug: 'chinese-horoscope',
-    id: 'chinese_horoscope',
-    title: 'Chinese Horoscope & Eastern Wisdom',
-    tagline: 'Eastern lunar zodiac archetypes and five-element energetic cycles.',
-    icon: '🐉',
-    userBenefit: 'Combine 12 animal archetypes with the 5 Elements (Wood, Fire, Earth, Metal, Water) for holistic lunar calendar wisdom.',
-    description: 'Rooted in thousands of years of observational cosmology, the Eastern zodiac pairs twelve animal archetypes with the cyclical movement of Yin/Yang and the Five Elements. AI Zodiac bridges Eastern and Western traditions for complete holistic perspective.',
-    exampleUseCases: [
-      {
-        title: 'Animal Sign & Elemental Year',
-        description: 'Discover your true Lunar birth animal and whether your year was Wood, Fire, Earth, Metal, or Water.',
-      },
-      {
-        title: 'Inner & Secret Animals',
-        description: 'Learn how your birth month and birth hour determine your Inner and Secret animal archetypes.',
-      },
-      {
-        title: 'Annual Lunar Forecasts',
+        title: 'Annual Lunar Guidance',
         description: 'Explore how the reigning animal sign of the current lunar year interacts with your personal energy.',
       },
     ],
     appValueHighlights: [
-      'Precise lunar calendar conversion for exact birth dates',
-      'Full Four Pillars of Destiny (BaZi) baseline overview',
-      'Five-element balance analysis',
-      'East-meets-West integrated personality synthesis',
+      'Accurate lunar calendar conversion for exact birth dates',
+      'Profiles for all 12 animal signs and 5 elemental cycles',
+      'Personalized Chinese horoscope insights for the lunar year',
+      'East-meets-West integrated personality perspective',
     ],
     relatedCluster: 'personality',
-    seoTitle: 'Chinese Horoscope & Lunar Zodiac Calculator | AI Zodiac App',
-    seoDescription: 'Discover your Chinese zodiac animal archetype, five-element balance, and lunar year forecasts in the AI Zodiac app.',
+    seoTitle: 'Chinese Zodiac & Lunar Horoscope Insights | AI Zodiac App',
+    seoDescription: 'Discover your Chinese zodiac animal, five elements, and personalized lunar horoscope insights in the AI Zodiac app.',
+  },
+  {
+    slug: 'personal-calendar',
+    id: 'personal_astro_calendar',
+    title: 'Personal Astro Calendar',
+    tagline: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar.',
+    icon: '/images/ic_horoscope.png',
+    userBenefit: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar.',
+    description: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar. Stay informed about upcoming key transit phases, lunar cycles, and peak focus windows to pace your activities and personal decisions with clarity.',
+    exampleUseCases: [
+      {
+        title: 'Cosmic Timing Windows',
+        description: 'Identify supportive astrological periods for initiating projects, creative pursuits, or relaxation.',
+      },
+      {
+        title: 'Moon Phases & Lunations',
+        description: 'Follow New Moon and Full Moon cycles and their unique significance for your personal sign.',
+      },
+      {
+        title: 'Planetary Highlights',
+        description: 'Receive thoughtful guidance on how to navigate key astrological cycles throughout the month.',
+      },
+    ],
+    appValueHighlights: [
+      'Interactive personal astrological calendar tailored to your sign',
+      'Tracking for important astrological periods and lunar phases',
+      'Practical guidance for timing personal decisions and focus',
+      'Seamless companion to your daily and weekly horoscopes',
+    ],
+    relatedCluster: 'personality',
+    seoTitle: 'Personal Astro Calendar & Cosmic Timing | AI Zodiac App',
+    seoDescription: 'Explore important astrological periods and personalized cosmic timing with your personal astrology calendar in the AI Zodiac app.',
   },
 ] as const;
 
@@ -560,7 +587,7 @@ export const TOOLS_LIST: readonly ToolMeta[] = [
     slug: 'zodiac-sign',
     title: 'Zodiac Sign Finder',
     tagline: 'Calculate your exact Sun sign, element, and modality from your birth date.',
-    icon: '♈',
+    icon: '/images/ic_traits.png',
     description: 'A lightweight, instant calculator that determines your Western zodiac sign, elemental group, and core personality traits.',
     features: [
       'Instant birth date lookup',
@@ -573,25 +600,25 @@ export const TOOLS_LIST: readonly ToolMeta[] = [
     slug: 'compatibility',
     title: 'Compatibility Preview',
     tagline: 'Explore the elemental chemistry and communication dynamics between two signs.',
-    icon: '💖',
+    icon: '/images/ic_love.png',
     description: 'Select any two zodiac signs to view an elemental compatibility overview, relationship strengths, and conscious dialogue tips.',
     features: [
       '144 sign-pair combinations',
       'Elemental dynamics (Fire, Earth, Air, Water)',
       'Communication & friction insights',
-      'Synastry preview guide',
+      'Relationship harmony guide',
     ],
   },
   {
     slug: 'birth-chart',
     title: 'Birth Chart Preview',
-    tagline: 'Explore the structural dimensions of your natal chart blueprint.',
-    icon: '🌌',
-    description: 'Input your birth details to preview the three core tiers of a natal chart, inspect house categories, and see what a full chart reveals.',
+    tagline: 'Explore the key dimensions of your astrological profile and houses.',
+    icon: '/images/ic_ascendant.png',
+    description: 'Input your birth details to preview the core components of your astrological profile and see what full chart insights reveal.',
     features: [
-      'Sun sign and luminary baseline',
+      'Sun sign and core personality baseline',
       'Educational breakdown of the 12 astrological houses',
-      'Planetary aspect overview',
+      'Planetary influences overview',
       'Interactive chart preview categories',
     ],
   },
@@ -632,31 +659,31 @@ export interface CtaMeta {
 export const CTA_CONFIGS: Record<CtaType, CtaMeta> = {
   personalized_insights: {
     type: 'personalized_insights',
-    headline: 'Get personalized astrological insights calibrated to your birth chart.',
+    headline: 'Get personalized astrological insights calibrated to your zodiac sign and birth details.',
     buttonText: 'Get AI Zodiac App',
     buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   },
   birth_chart: {
     type: 'birth_chart',
-    headline: 'Unlock your complete interactive birth chart wheel and planetary placements.',
+    headline: 'Calculate your ascendant, explore your sign, and discover personalized horoscope insights.',
     buttonText: 'Get AI Zodiac App',
     buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   },
   ask_ai: {
     type: 'ask_ai',
-    headline: 'Ask the AI astrologer contextual questions about your unique placements and transits.',
+    headline: 'Ask the AI astrologer personalized questions about your profile and zodiac information.',
     buttonText: 'Get AI Zodiac App',
     buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   },
   compatibility: {
     type: 'compatibility',
-    headline: 'Explore deep multi-planetary synastry between two birth charts.',
+    headline: 'Explore love compatibility and relationship dynamics based on astrology and birth details.',
     buttonText: 'Get AI Zodiac App',
     buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   },
   explore_zodiac: {
     type: 'explore_zodiac',
-    headline: 'Discover your zodiac archetypes and calculate your personal astrological profile.',
+    headline: 'Discover your zodiac personality traits, ascendant, and personalized daily horoscopes.',
     buttonText: 'Get AI Zodiac App',
     buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   },

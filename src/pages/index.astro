@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { WESTERN_ZODIAC_SIGNS, CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
+import { WESTERN_ZODIAC_SIGNS, FEATURE_PAGES, CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
 import { siteConfig } from '@/config/site';
 
 const articles = await getCollection('articles', ({ data }) => !data.draft);
@@ -10,54 +10,11 @@ const featuredArticles = articles
   .slice(0, 3);
 
 const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
-
-const CORE_VALUES = [
-  {
-    title: 'Personal Horoscope',
-    slug: 'personal-horoscope',
-    badge: 'Daily • Weekly • Monthly',
-    icon: '✨',
-    description: 'Personalized forecasts calibrated to your exact planetary placements and real-time transits, rather than generic sun-sign summaries.',
-    link: '/features/personal-horoscope',
-  },
-  {
-    title: 'Birth Chart (Natal Chart)',
-    slug: 'birth-chart',
-    badge: '10 Planets • 12 Houses',
-    icon: '🌌',
-    description: 'Comprehensive natal chart synthesis decoding your Sun, Moon, Rising, planetary houses, and geometric aspects with high astronomical precision.',
-    link: '/features/birth-chart',
-  },
-  {
-    title: 'Love Compatibility',
-    slug: 'love-compatibility',
-    badge: 'Synastry Harmonics',
-    icon: '💖',
-    description: 'Multi-layered relationship synastry examining communication styles, emotional safety, values, and mutual growth between two birth charts.',
-    link: '/features/love-compatibility',
-  },
-  {
-    title: 'Ask AI Astrology',
-    slug: 'ask-ai',
-    badge: 'Conversational Intelligence',
-    icon: '💬',
-    description: 'Ask specific questions about your timing, career decisions, and personal patterns, receiving clear astrological interpretations grounded in your data.',
-    link: '/features/ask-ai',
-  },
-  {
-    title: 'Zodiac Insights & Archetypes',
-    slug: 'zodiac-insights',
-    badge: 'Archetypal Wisdom',
-    icon: '♈',
-    description: 'Deep exploration of elements, modalities, polarities, and ruling planets across Western, Eastern, and Numerological systems.',
-    link: '/tools/zodiac-sign',
-  },
-];
 ---
 
 <BaseLayout
   title="AI Zodiac — AI Astrology App & Personalized Horoscope"
-  description="AI Zodiac is your personal AI astrology app. Discover birth-chart based horoscopes, deep love compatibility, natal insights, and daily guidance on Android."
+  description="AI Zodiac is your personal AI astrology app. Discover personalized horoscopes, ascendant calculations, love compatibility, numerology, and conversational AI guidance on Android."
 >
   <!-- Hero Section with Galaxy Backdrop -->
   <section class="hero-section galaxy-backdrop">
@@ -75,7 +32,7 @@ const CORE_VALUES = [
       </h1>
 
       <p class="hero-subtitle">
-        AI Zodiac synthesizes the mathematical coordinates of your birth chart with modern AI reasoning. Discover nuanced daily guidance, natal blueprints, and relationship compatibility crafted for thoughtful self-reflection.
+        Discover personalized astrology insights with AI Zodiac, an AI-powered horoscope and zodiac app designed to help you explore your sign, relationships, personality, and astrological timing.
       </p>
 
       <!-- Primary App Download & Exploration Actions -->
@@ -135,28 +92,30 @@ const CORE_VALUES = [
     </div>
   </section>
 
-  <!-- Core Value Propositions Section -->
+  <!-- Core App Features Section -->
   <section id="features" class="core-values-section">
     <div class="container">
       <div class="section-header">
-        <span class="badge badge-gold">Core App Experience</span>
-        <h2 class="section-title">Nuanced Clarity for Your Personal Journey</h2>
+        <span class="badge badge-gold">AI Zodiac Android App</span>
+        <h2 class="section-title">Personalized Astrology Insights</h2>
         <p class="section-desc">
-          Unlike generic horoscopes that treat one-twelfth of humanity identically, AI Zodiac synthesizes your complete astrological chart into coherent, reflective guidance.
+          Get daily, weekly, monthly, and yearly horoscope forecasts, explore your zodiac sign, calculate your ascendant, check love compatibility, discover numerology and Chinese zodiac insights, and ask the AI astrologer your own questions.
         </p>
       </div>
 
       <div class="core-values-grid">
-        {CORE_VALUES.map((feature, idx) => (
+        {FEATURE_PAGES.map((feature, idx) => (
           <article class={`glass-card core-value-card ${idx === 0 || idx === 1 ? 'featured-card' : ''}`}>
             <div class="card-header-row">
-              <span class="core-icon">{feature.icon}</span>
-              <span class="badge">{feature.badge}</span>
+              <div class="icon-box-lg">
+                <img src={feature.icon} alt={`${feature.title} Icon`} width="52" height="52" class="icon-img-lg" loading="lazy" />
+              </div>
+              <span class="badge badge-feature-idx">0{idx + 1}</span>
             </div>
             <h3 class="core-title">{feature.title}</h3>
-            <p class="core-desc">{feature.description}</p>
+            <p class="core-desc">{feature.userBenefit}</p>
             <div class="card-bottom">
-              <a href={feature.link} class="core-link" aria-label={`Learn more about ${feature.title}`}>
+              <a href={`/features/${feature.slug}`} class="core-link" aria-label={`Learn more about ${feature.title}`}>
                 <span>Explore Feature Details</span>
                 <span>→</span>
               </a>
@@ -172,10 +131,10 @@ const CORE_VALUES = [
     <div class="container">
       <div class="tools-teaser-card glass-card">
         <div class="tools-teaser-content">
-          <span class="badge badge-gold">✦ Free Web Utilities</span>
+          <span class="badge badge-gold">✦ Free Web Calculators</span>
           <h2 class="teaser-title">Start Exploring with Instant Astrological Tools</h2>
           <p class="teaser-desc">
-            Try our lightweight calculators to find your zodiac sign, preview elemental compatibility between two signs, or inspect the structural pillars of a natal chart.
+            Try our lightweight calculators to find your zodiac sign, preview elemental compatibility between two signs, or explore your astrological profile.
           </p>
           <div class="teaser-actions">
             <a href="/tools/zodiac-sign" class="btn btn-secondary">Zodiac Finder</a>
@@ -194,7 +153,7 @@ const CORE_VALUES = [
         <span class="badge">Astrology Guides & Authority</span>
         <h2 class="section-title">Grounded Astrological Knowledge</h2>
         <p class="section-desc">
-          Educational perspectives on natal astrology, planetary archetypes, and the thoughtful application of AI technology.
+          Educational perspectives on natal astrology, zodiac personality patterns, relationship dynamics, and mindful self-discovery.
         </p>
       </div>
 
@@ -206,7 +165,10 @@ const CORE_VALUES = [
             <article class="glass-card article-card">
               <div class="article-card-header">
                 <span class="cluster-tag">
-                  {clusterInfo?.icon || '✦'} {clusterInfo?.name || article.data.cluster}
+                  {clusterInfo?.icon && (
+                    <img src={clusterInfo.icon} alt="" width="20" height="20" class="cluster-tag-img" />
+                  )}
+                  <span>{clusterInfo?.name || article.data.cluster}</span>
                 </span>
                 <span class="reading-time">{article.data.readingTime}</span>
               </div>
@@ -252,7 +214,7 @@ const CORE_VALUES = [
           Get Started with the <span class="gradient-text">AI Zodiac App</span>
         </h2>
         <p class="download-desc">
-          Download AI Zodiac for Android to unlock your full birth chart wheel, real-time planetary transit guidance, multi-planet love compatibility, and conversational astrological advisory.
+          Download AI Zodiac for Android to explore personalized daily horoscopes, calculate your ascendant, discover love compatibility, and receive personalized AI guidance.
         </p>
 
         <div class="download-actions">
@@ -274,7 +236,7 @@ const CORE_VALUES = [
         </div>
 
         <p class="download-note">
-          Free download on Google Play • Calibrated to your exact birth date, time, and coordinates
+          Free download on Google Play • Personalized to your unique zodiac profile and birth details
         </p>
       </div>
     </div>
@@ -292,7 +254,7 @@ const CORE_VALUES = [
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.12) 0%, rgba(9, 12, 25, 0.9) 70%);
+    background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.14) 0%, rgba(9, 12, 25, 0.92) 70%);
     pointer-events: none;
   }
 
@@ -333,8 +295,8 @@ const CORE_VALUES = [
   }
 
   .hero-subtitle {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    max-width: 760px;
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+    max-width: 780px;
     margin-bottom: 2.5rem;
     color: var(--text-secondary);
     line-height: 1.7;
@@ -449,7 +411,7 @@ const CORE_VALUES = [
   /* Section Headers */
   .section-header {
     text-align: center;
-    max-width: 720px;
+    max-width: 760px;
     margin: 0 auto 3.5rem;
   }
 
@@ -473,7 +435,7 @@ const CORE_VALUES = [
 
   .core-values-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
   }
 
@@ -492,11 +454,15 @@ const CORE_VALUES = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 
-  .core-icon {
-    font-size: 1.75rem;
+  .badge-feature-idx {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    border-color: rgba(245, 158, 11, 0.3);
   }
 
   .core-title {
@@ -602,7 +568,13 @@ const CORE_VALUES = [
     color: var(--accent-gold);
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.45rem;
+  }
+
+  .cluster-tag-img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
   }
 
   .reading-time {
@@ -725,5 +697,23 @@ const CORE_VALUES = [
   .download-note {
     font-size: 0.8125rem;
     color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 0 2.5rem;
+    }
+    .core-values-grid {
+      grid-template-columns: 1fr;
+    }
+    .core-value-card {
+      padding: 1.75rem 1.5rem;
+    }
+    .tools-teaser-card {
+      padding: 2.5rem 1.5rem;
+    }
+    .download-card {
+      padding: 3rem 1.5rem;
+    }
   }
 </style>

@@ -26,7 +26,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
         Astrological <span class="gradient-text">Insights & Guides</span>
       </h1>
       <p class="page-subtitle">
-        Thoughtful perspectives on natal astrology, relationship harmonics, and the synthesis of artificial intelligence with celestial mechanics.
+        Thoughtful perspectives on zodiac signs, relationships, personality patterns, and personalized astrology insights.
       </p>
     </header>
 
@@ -34,7 +34,9 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
     <section class="clusters-grid" aria-label="Topic Clusters">
       {CONTENT_CLUSTERS.slice(0, 4).map((cluster) => (
         <div class="glass-card cluster-card">
-          <div class="cluster-icon">{cluster.icon}</div>
+          <div class="icon-box-lg" style="margin-bottom: 1rem;">
+            <img src={cluster.icon} alt={cluster.name} class="icon-img-lg" width="40" height="40" />
+          </div>
           <h2 class="cluster-title">{cluster.name}</h2>
           <p class="cluster-desc">{cluster.description}</p>
         </div>
@@ -56,7 +58,10 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
             <article class="glass-card article-card">
               <div class="article-card-header">
                 <span class="cluster-tag">
-                  {clusterInfo?.icon || '✦'} {clusterInfo?.name || article.data.cluster}
+                  {clusterInfo && (
+                    <img src={clusterInfo.icon} alt="" class="cluster-tag-img" width="16" height="16" />
+                  )}
+                  {clusterInfo?.name || article.data.cluster}
                 </span>
                 <span class="reading-time">{article.data.readingTime}</span>
               </div>
@@ -92,7 +97,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
         <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="cta-heading">Get Personalized Astrological Guidance</h2>
         <p class="cta-text">
-          Translate foundational knowledge into daily clarity. Download the AI Zodiac app to calculate your complete natal chart and receive daily insights calibrated to your exact birth coordinates.
+          Translate foundational knowledge into daily clarity. Download the AI Zodiac app to explore daily forecasts, calculate your ascendant, explore compatibility, and ask the AI astrologer your questions.
         </p>
         <div class="cta-btn-wrap">
           <a

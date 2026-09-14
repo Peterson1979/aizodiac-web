@@ -57,7 +57,10 @@ const articleJsonLd = generateArticleSchema({
     <header class="article-header">
       <div class="article-meta-tags">
         <span class="badge badge-gold">
-          {clusterInfo?.icon || '✦'} {clusterInfo?.name || article.data.cluster}
+          {clusterInfo && (
+            <img src={clusterInfo.icon} alt="" class="cluster-badge-img" width="16" height="16" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem;" />
+          )}
+          {clusterInfo?.name || article.data.cluster}
         </span>
         <span class="reading-time">{article.data.readingTime}</span>
       </div>
@@ -95,7 +98,7 @@ const articleJsonLd = generateArticleSchema({
         <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="cta-title">{ctaInfo.headline}</h2>
         <p class="cta-desc">
-          Continue your personalized experience in the AI Zodiac app. Calculate your complete birth chart, track real-time transits, and explore multi-planet synastry.
+          Continue your personalized experience in the AI Zodiac app. Explore daily forecasts, calculate your ascendant, explore compatibility, and ask the AI astrologer your questions.
         </p>
         <div class="cta-actions">
           <a

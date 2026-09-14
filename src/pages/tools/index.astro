@@ -22,7 +22,7 @@ const pageUrl = buildCanonicalUrl('tools');
         Astrological <span class="gradient-text">Tools & Calculators</span>
       </h1>
       <p class="page-subtitle">
-        Free, lightweight exploratory tools to discover your zodiac archetype, test elemental compatibility, and preview the structural depth of your natal chart.
+        Free, lightweight exploratory tools to discover your zodiac sign, test elemental compatibility, and preview your astrological profile.
       </p>
     </header>
 
@@ -30,7 +30,9 @@ const pageUrl = buildCanonicalUrl('tools');
     <div class="tools-grid">
       {TOOLS_LIST.map((tool) => (
         <article class="glass-card tool-card">
-          <div class="tool-icon-box">{tool.icon}</div>
+          <div class="icon-box-lg" style="margin-bottom: 1.5rem;">
+            <img src={tool.icon} alt={tool.title} class="icon-img-lg" width="40" height="40" />
+          </div>
           <h2 class="tool-title">{tool.title}</h2>
           <p class="tool-tagline">{tool.tagline}</p>
           <p class="tool-desc">{tool.description}</p>
@@ -62,7 +64,7 @@ const pageUrl = buildCanonicalUrl('tools');
         <span class="badge badge-gold">AI Zodiac for Android</span>
         <h2 class="callout-title">Unlock Full Astrological Insights in the App</h2>
         <p class="callout-desc">
-          While our free web tools provide quick baseline previews, the AI Zodiac Android app calculates your complete planetary chart wheel, daily personalized transits, and conversational AI advisory.
+          While our free web tools provide quick baseline previews, the AI Zodiac Android app offers personalized daily forecasts, ascendant calculations, love compatibility, and conversational AI guidance.
         </p>
         <div class="callout-actions">
           <a
