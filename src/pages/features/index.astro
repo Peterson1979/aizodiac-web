@@ -1,0 +1,227 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { FEATURE_PAGES } from '@/types/content';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+
+const pageUrl = buildCanonicalUrl('features');
+---
+
+<BaseLayout
+  title="App Capabilities & Features — AI Zodiac"
+  description="Explore the intelligence features of AI Zodiac: Personal Horoscopes, Birth Chart Synthesis, Love Compatibility, Ask the AI, Numerology, Ascendants, and Chinese Astrology."
+  canonicalUrl={pageUrl}
+>
+  <div class="features-hub-page container">
+    <!-- Header -->
+    <header class="hub-header">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">Astrological Intelligence</span>
+      </div>
+      <h1 class="page-title">
+        AI Zodiac <span class="gradient-text">Capabilities</span>
+      </h1>
+      <p class="page-subtitle">
+        Explore our comprehensive suite of computational astrology tools designed to provide nuanced, personalized clarity for your daily life, relationships, and long-term trajectory.
+      </p>
+    </header>
+
+    <!-- Features Grid -->
+    <div class="features-list-grid">
+      {FEATURE_PAGES.map((feature, idx) => (
+        <article class="glass-card feature-hub-card">
+          <div class="card-top">
+            <span class="feature-icon">{feature.icon}</span>
+            <span class="feature-idx">0{idx + 1}</span>
+          </div>
+
+          <h2 class="feature-title">
+            <a href={`/features/${feature.slug}`} class="feature-link">
+              {feature.title}
+            </a>
+          </h2>
+
+          <p class="feature-tagline">{feature.tagline}</p>
+          <p class="feature-desc">{feature.userBenefit}</p>
+
+          <div class="card-footer">
+            <a href={`/features/${feature.slug}`} class="learn-more-btn" aria-label={`Explore ${feature.title}`}>
+              Explore Feature <span>→</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- App CTA Banner -->
+    <section class="hub-cta-section">
+      <div class="glass-card cta-banner">
+        <div class="cta-badge">
+          <span class="badge">Mobile Experience</span>
+        </div>
+        <h2 class="cta-heading">Experience the Complete AI Zodiac Ecosystem</h2>
+        <p class="cta-text">
+          Download AI Zodiac to unlock real-time planetary transits, interactive birth chart wheels, dual-chart synastry matrices, and the conversational AI astrologer.
+        </p>
+        <div class="cta-btn-wrap">
+          <a href="/#features" class="btn btn-primary">
+            Continue in AI Zodiac App
+          </a>
+          <a href="/articles" class="btn btn-secondary">
+            Read Astrology Guides
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .features-hub-page {
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .hub-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 4rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* Grid */
+  .features-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 5rem;
+  }
+
+  .feature-hub-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2.25rem 2rem;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+  }
+
+  .feature-idx {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+
+  .feature-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+  }
+
+  .feature-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .feature-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .feature-tagline {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .feature-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    flex: 1;
+  }
+
+  .card-footer {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .learn-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .learn-more-btn:hover {
+    color: #7dd3fc;
+    transform: translateX(4px);
+  }
+
+  /* CTA Banner */
+  .hub-cta-section {
+    margin-top: 2rem;
+  }
+
+  .cta-banner {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.85) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .cta-badge {
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-heading {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2.25rem;
+    line-height: 1.7;
+  }
+
+  .cta-btn-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+</style>

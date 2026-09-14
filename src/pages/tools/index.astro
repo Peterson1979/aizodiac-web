@@ -1,0 +1,226 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { TOOLS_LIST } from '@/types/content';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+
+const pageUrl = buildCanonicalUrl('tools');
+---
+
+<BaseLayout
+  title="Free Astrological Tools & Calculators — AI Zodiac"
+  description="Explore free, instant astrological calculators: find your zodiac sign, check elemental compatibility, and preview your birth chart dimensions."
+  canonicalUrl={pageUrl}
+>
+  <div class="tools-hub-page container">
+    <!-- Header -->
+    <header class="hub-header">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">Interactive Astrology</span>
+      </div>
+      <h1 class="page-title">
+        Astrological <span class="gradient-text">Tools & Calculators</span>
+      </h1>
+      <p class="page-subtitle">
+        Free, lightweight exploratory tools to discover your zodiac archetype, test elemental compatibility, and preview the structural depth of your natal chart.
+      </p>
+    </header>
+
+    <!-- Tools Grid -->
+    <div class="tools-grid">
+      {TOOLS_LIST.map((tool) => (
+        <article class="glass-card tool-card">
+          <div class="tool-icon-box">{tool.icon}</div>
+          <h2 class="tool-title">{tool.title}</h2>
+          <p class="tool-tagline">{tool.tagline}</p>
+          <p class="tool-desc">{tool.description}</p>
+
+          <ul class="tool-feature-list">
+            {tool.features.map((feat) => (
+              <li>
+                <span class="bullet">✦</span>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="tool-btn-wrap">
+            <a href={`/tools/${tool.slug}`} class="btn btn-primary tool-cta-btn">
+              Launch {tool.title} →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- App Integration Callout -->
+    <section class="tools-app-callout">
+      <div class="glass-card callout-card">
+        <div class="callout-glyph">✦ 🌌 ✦</div>
+        <h2 class="callout-title">Need Full Precision & Real-Time Planetary Calculations?</h2>
+        <p class="callout-desc">
+          While our web tools offer lightweight previews, the native AI Zodiac mobile application runs full-precision ephemeris calculations, interactive chart wheels, and conversational AI advisory.
+        </p>
+        <div class="callout-actions">
+          <a href="/#features" class="btn btn-primary">
+            Explore Mobile Capabilities
+          </a>
+          <a href="/articles" class="btn btn-secondary">
+            Read Astrology Guides
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .tools-hub-page {
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .hub-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 4rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* Tools Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 2rem;
+  }
+
+  .tool-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tool-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-tagline {
+    font-size: 0.9375rem;
+    color: var(--accent-gold);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .tool-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .tool-feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 2rem;
+    flex: 1;
+  }
+
+  .tool-feature-list li {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .bullet {
+    color: var(--accent-cyan);
+    font-size: 0.65rem;
+    margin-top: 3px;
+  }
+
+  .tool-btn-wrap {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .tool-cta-btn {
+    width: 100%;
+  }
+
+  /* Callout */
+  .tools-app-callout {
+    margin-top: 2rem;
+  }
+
+  .callout-card {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.9) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .callout-glyph {
+    font-size: 1.25rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+  }
+
+  .callout-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .callout-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2.25rem;
+    line-height: 1.7;
+  }
+
+  .callout-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+</style>

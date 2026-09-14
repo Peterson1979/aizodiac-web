@@ -1,0 +1,618 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { WESTERN_ZODIAC_SIGNS } from '@/types/content';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+
+const pageUrl = buildCanonicalUrl('tools/compatibility');
+
+const toolJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'AI Zodiac Compatibility Preview',
+  url: pageUrl,
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'All',
+  description: 'Evaluate the elemental chemistry, communication harmony, and relational dynamics between any two zodiac signs.',
+  offers: {
+    '@type': 'Offer',
+    price: '0.00',
+    priceCurrency: 'USD',
+  },
+};
+---
+
+<BaseLayout
+  title="Zodiac Compatibility Preview & Calculator — AI Zodiac"
+  description="Explore the elemental compatibility, relationship strengths, and communication dynamics between any two zodiac signs."
+  canonicalUrl={pageUrl}
+  jsonLd={toolJsonLd}
+>
+  <div class="tool-page container">
+    <!-- Breadcrumb -->
+    <nav class="tool-breadcrumb" aria-label="Breadcrumb">
+      <a href="/tools" class="breadcrumb-link">
+        <span>←</span> All Tools
+      </a>
+      <span class="divider">/</span>
+      <span class="current">Compatibility Preview</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="tool-header">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">✦ Free Relationship Preview</span>
+      </div>
+      <h1 class="tool-title">
+        Zodiac <span class="gradient-text">Compatibility Preview</span>
+      </h1>
+      <p class="tool-subtitle">
+        Select two zodiac signs to explore their elemental interaction, communicative rhythm, natural harmonies, and areas for conscious growth.
+      </p>
+    </header>
+
+    <!-- Interactive Calculator Card -->
+    <div class="glass-card calculator-card">
+      <form id="compat-form" class="compat-form">
+        <div class="form-group">
+          <label for="sign-1" class="form-label">First Zodiac Sign</label>
+          <select id="sign-1" class="form-select" required>
+            <option value="">Select First Sign</option>
+            {WESTERN_ZODIAC_SIGNS.map((s) => (
+              <option value={s.id}>{s.symbol} {s.name} ({s.element})</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sign-2" class="form-label">Second Zodiac Sign</label>
+          <select id="sign-2" class="form-select" required>
+            <option value="">Select Second Sign</option>
+            {WESTERN_ZODIAC_SIGNS.map((s) => (
+              <option value={s.id}>{s.symbol} {s.name} ({s.element})</option>
+            ))}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary compat-submit-btn">
+          Compare Signs <span>→</span>
+        </button>
+      </form>
+
+      <!-- Result Container -->
+      <div id="compat-result" class="compat-result-box" style="display: none;">
+        <div class="pair-banner">
+          <div class="pair-sign">
+            <span id="p1-symbol" class="pair-symbol">♈</span>
+            <span id="p1-name" class="pair-name">Aries</span>
+            <span id="p1-element" class="pair-el">Fire</span>
+          </div>
+
+          <div class="pair-plus">+</div>
+
+          <div class="pair-sign">
+            <span id="p2-symbol" class="pair-symbol">♌</span>
+            <span id="p2-name" class="pair-name">Leo</span>
+            <span id="p2-element" class="pair-el">Fire</span>
+          </div>
+        </div>
+
+        <div class="harmony-badge-wrap">
+          <span id="harmony-badge" class="badge badge-gold">Dynamic & Harmonious Alignment</span>
+        </div>
+
+        <div class="summary-section">
+          <h3 class="summary-heading">Elemental Chemistry Overview</h3>
+          <p id="pair-desc" class="pair-description"></p>
+        </div>
+
+        <div class="dynamics-grid">
+          <div class="glass-card dyn-card">
+            <h4 class="dyn-title">✨ Natural Strengths</h4>
+            <ul id="strengths-list" class="dyn-list"></ul>
+          </div>
+
+          <div class="glass-card dyn-card">
+            <h4 class="dyn-title">💫 Conscious Growth Areas</h4>
+            <ul id="growth-list" class="dyn-list"></ul>
+          </div>
+        </div>
+
+        <!-- Conversion Box -->
+        <div class="compat-app-box">
+          <h3 class="app-box-heading">Want deep multi-planet Synastry analysis?</h3>
+          <p class="app-box-text">
+            True relationship harmony depends on Moon sign emotional safety, Venus love languages, and Mars conflict styles. Explore complete dual-chart synastry in the AI Zodiac app.
+          </p>
+          <a href="/features/love-compatibility" class="btn btn-primary result-app-btn">
+            Explore Love Compatibility Feature <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Context Section -->
+    <section class="educational-section">
+      <h2 class="edu-title">How Elemental Dynamics Shape Relationships</h2>
+      <p class="edu-desc">
+        In relational astrology, the four natural elements interact according to classical thermodynamic and psychological principles:
+      </p>
+
+      <div class="element-pairs-grid">
+        <div class="glass-card elem-pair-card">
+          <h3 class="elem-pair-title">Same Element (Fire+Fire, Earth+Earth, Air+Air, Water+Water)</h3>
+          <p class="elem-pair-text">Immediate emotional kinship and shared instincts. The relationship feels naturally familiar, though partners must guard against magnifying each other's blind spots.</p>
+        </div>
+
+        <div class="glass-card elem-pair-card">
+          <h3 class="elem-pair-title">Complementary Elements (Fire + Air, Earth + Water)</h3>
+          <p class="elem-pair-text">High mutual synergy. Air fuels Fire’s vision with ideas; Water enriches Earth’s practicality with emotional depth and creative imagination.</p>
+        </div>
+
+        <div class="glass-card elem-pair-card">
+          <h3 class="elem-pair-title">Contrasting Elements (Fire + Water, Earth + Air)</h3>
+          <p class="elem-pair-text">Rich developmental potential. These pairings generate dynamic growth by challenging each partner to develop unfamiliar psychological perspectives.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ signsData: WESTERN_ZODIAC_SIGNS }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('compat-form');
+    const resultBox = document.getElementById('compat-result');
+
+    const p1Symbol = document.getElementById('p1-symbol');
+    const p1Name = document.getElementById('p1-name');
+    const p1Element = document.getElementById('p1-element');
+
+    const p2Symbol = document.getElementById('p2-symbol');
+    const p2Name = document.getElementById('p2-name');
+    const p2Element = document.getElementById('p2-element');
+
+    const harmonyBadge = document.getElementById('harmony-badge');
+    const pairDesc = document.getElementById('pair-desc');
+    const strengthsList = document.getElementById('strengths-list');
+    const growthList = document.getElementById('growth-list');
+
+    function evaluateCompatibility(sign1, sign2) {
+      const e1 = sign1.element;
+      const e2 = sign2.element;
+
+      if (e1 === e2) {
+        return {
+          harmony: 'Natural Kinship & Shared Instincts',
+          desc: `${sign1.name} and ${sign2.name} share the same ${e1} element, creating an intuitive baseline of mutual understanding, shared pace, and aligned emotional priorities.`,
+          strengths: [
+            'Immediate instinctive rapport and unforced rhythm',
+            'Shared core motivations and world perspective',
+            'Effortless empathy during mutual pursuits',
+          ],
+          growth: [
+            'Avoid reinforcing identical blind spots or reactive habits',
+            'Cultivate outside grounding to balance elemental excess',
+          ],
+        };
+      }
+
+      if ((e1 === 'fire' && e2 === 'air') || (e1 === 'air' && e2 === 'fire')) {
+        return {
+          harmony: 'Inspiring, Dynamic & Highly Creative',
+          desc: `Air provides the conceptual space and curiosity that fuels Fire’s enthusiasm, while Fire provides the warmth and passion that energizes Air’s intellect.`,
+          strengths: [
+            'Lively, stimulating conversations and intellectual chemistry',
+            'Mutual encouragement for bold personal freedom',
+            'Spontaneous adventures and continuous shared curiosity',
+          ],
+          growth: [
+            'Ensure practical responsibilities receive structured attention',
+            'Practice grounding discussions into concrete follow-through',
+          ],
+        };
+      }
+
+      if ((e1 === 'earth' && e2 === 'water') || (e1 === 'water' && e2 === 'earth')) {
+        return {
+          harmony: 'Deeply Nurturing, Grounded & Enduring',
+          desc: `Earth provides protective structure, loyalty, and practical grounding for Water’s emotional depth, while Water softens Earth with empathy, tenderness, and intuitive trust.`,
+          strengths: [
+            'Deep emotional security and steadfast loyalty',
+            'Complementary balance of practical mastery and intuitive feeling',
+            'Shared appreciation for peaceful, comfortable home sanctuaries',
+          ],
+          growth: [
+            'Avoid getting stuck in fixed comfort zones or unspoken grievances',
+            'Encourage spontaneous communication when feelings arise',
+          ],
+        };
+      }
+
+      if ((e1 === 'fire' && e2 === 'water') || (e1 === 'water' && e2 === 'fire')) {
+        return {
+          harmony: 'Passionate, Transformative & Catalytic',
+          desc: `Fire brings enthusiasm and courage into Water’s life, while Water invites Fire into deeper vulnerability and soulful connection.`,
+          strengths: [
+            'Intense magnetic chemistry and mutual fascination',
+            'Powerful potential for personal and emotional evolution',
+            'Inspiring blend of courage and emotional sensitivity',
+          ],
+          growth: [
+            'Respect differing processing speeds (Fire is rapid, Water is reflective)',
+            'Communicate without emotional reactivity during disagreements',
+          ],
+        };
+      }
+
+      if ((e1 === 'earth' && e2 === 'fire') || (e1 === 'fire' && e2 === 'earth')) {
+        return {
+          harmony: 'Productive Vision Meets Pragmatic Building',
+          desc: `Fire inspires Earth to dream bigger and take courageous risks, while Earth provides the container, perseverance, and structure necessary to turn Fire’s visions into reality.`,
+          strengths: [
+            'Outstanding capability for tangible, collaborative achievements',
+            'Earth stabilizes Fire’s restlessness; Fire energizes Earth’s routine',
+            'Mutual respect for dedication, loyalty, and visible competence',
+          ],
+          growth: [
+            'Bridge the gap between Fire’s urgency and Earth’s deliberate patience',
+            'Acknowledge both spontaneous enthusiasm and careful planning',
+          ],
+        };
+      }
+
+      // Air + Water
+      return {
+        harmony: 'Intuitive Mind Meets Conceptual Depth',
+        desc: `Air approaches life through rational clarity, dialogue, and ideas, while Water processes through emotional resonance, empathy, and subtle feelings.`,
+        strengths: [
+          'Air helps Water gain objective perspective during emotional storms',
+          'Water teaches Air the profound richness of unspoken emotional intimacy',
+          'Rich, multi-layered conversations bridging intellect and heart',
+        ],
+        growth: [
+          'Air should validate feelings before offering purely analytical fixes',
+          'Water should communicate needs directly rather than relying on guesswork',
+        ],
+      };
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const s1Id = document.getElementById('sign-1').value;
+      const s2Id = document.getElementById('sign-2').value;
+
+      if (!s1Id || !s2Id) return;
+
+      const sign1 = signsData.find((s) => s.id === s1Id);
+      const sign2 = signsData.find((s) => s.id === s2Id);
+
+      if (sign1 && sign2) {
+        p1Symbol.textContent = sign1.symbol;
+        p1Name.textContent = sign1.name;
+        p1Element.textContent = `${sign1.element.charAt(0).toUpperCase() + sign1.element.slice(1)} Element`;
+
+        p2Symbol.textContent = sign2.symbol;
+        p2Name.textContent = sign2.name;
+        p2Element.textContent = `${sign2.element.charAt(0).toUpperCase() + sign2.element.slice(1)} Element`;
+
+        const data = evaluateCompatibility(sign1, sign2);
+
+        harmonyBadge.textContent = data.harmony;
+        pairDesc.textContent = data.desc;
+
+        strengthsList.innerHTML = '';
+        data.strengths.forEach((st) => {
+          const li = document.createElement('li');
+          li.textContent = st;
+          strengthsList.appendChild(li);
+        });
+
+        growthList.innerHTML = '';
+        data.growth.forEach((gr) => {
+          const li = document.createElement('li');
+          li.textContent = gr;
+          growthList.appendChild(li);
+        });
+
+        resultBox.style.display = 'block';
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+</script>
+
+<style>
+  .tool-page {
+    max-width: 840px;
+    padding: 3.5rem 1.5rem 6rem;
+  }
+
+  .tool-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+  }
+
+  .breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .divider {
+    color: var(--border-subtle);
+  }
+
+  .current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  .tool-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .tool-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .tool-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  /* Form */
+  .calculator-card {
+    padding: 2.5rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.45) 0%, rgba(16, 22, 47, 0.85) 100%);
+    border: 1px solid var(--border-active);
+    margin-bottom: 4.5rem;
+  }
+
+  .compat-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1.25rem;
+    align-items: flex-end;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .form-select {
+    padding: 0.75rem 1rem;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .form-select:focus {
+    border-color: var(--accent-purple);
+  }
+
+  .compat-submit-btn {
+    height: 46px;
+    padding: 0 1.5rem;
+  }
+
+  /* Result */
+  .compat-result-box {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border-subtle);
+    animation: fadeIn 0.4s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pair-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pair-sign {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .pair-symbol {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    line-height: 1;
+  }
+
+  .pair-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .pair-el {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .pair-plus {
+    font-size: 2rem;
+    color: var(--accent-purple);
+    font-weight: 700;
+  }
+
+  .harmony-badge-wrap {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .summary-section {
+    margin-bottom: 2rem;
+  }
+
+  .summary-heading {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+  }
+
+  .pair-description {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .dynamics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .dyn-card {
+    padding: 1.5rem;
+  }
+
+  .dyn-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .dyn-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .dyn-list li {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .dyn-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold);
+  }
+
+  .compat-app-box {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    text-align: center;
+  }
+
+  .app-box-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .app-box-text {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Educational */
+  .educational-section {
+    margin-top: 2rem;
+  }
+
+  .edu-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .edu-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .element-pairs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .elem-pair-card {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .elem-pair-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .elem-pair-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 680px) {
+    .compat-form {
+      grid-template-columns: 1fr;
+    }
+    .dynamics-grid {
+      grid-template-columns: 1fr;
+    }
+    .pair-banner {
+      gap: 1.5rem;
+    }
+  }
+</style>

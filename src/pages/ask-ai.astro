@@ -1,0 +1,415 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
+
+const pageUrl = buildCanonicalUrl('ask-ai');
+
+const askAiJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Ask the AI Astrologer — AI Zodiac',
+  url: pageUrl,
+  description: 'Learn how conversational AI astrological intelligence works inside the AI Zodiac app: grounded in natal birth data and real-time planetary ephemeris.',
+  publisher: {
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.getBaseUrl(),
+  },
+};
+
+const SAMPLE_QUESTIONS = [
+  {
+    category: 'Career & Life Crossroads',
+    icon: '🧭',
+    question: '“Saturn is currently transiting my 10th house. What does this mean for my professional restructuring over the next six months?”',
+    context: 'Analyzes your natal 10th house ruler, current Saturn degree, and aspects to your natal Sun for strategic career pacing.',
+  },
+  {
+    category: 'Relationship Dynamics & Synastry',
+    icon: '💖',
+    question: '“My partner’s Moon in Scorpio squares my Leo Moon. How can we navigate differing emotional processing styles?”',
+    context: 'Examines elemental fixed-modality tension, attachment mechanisms, and actionable dialogue suggestions.',
+  },
+  {
+    category: 'Transit Timing & Daily Energy',
+    icon: '🌙',
+    question: '“How does this week’s Full Moon in Taurus activate my natal chart, and what should I focus on releasing?”',
+    context: 'Locates the exact house where the lunation falls in your chart and evaluates active planetary aspects.',
+  },
+  {
+    category: 'Subconscious Patterns & Self-Discovery',
+    icon: '🔮',
+    question: '“I have Mars in the 12th house in Cancer. How can I work with this energy constructively?”',
+    context: 'Synthesizes subconscious emotional drives, covert assertiveness, and somatic mindfulness practices.',
+  },
+];
+---
+
+<BaseLayout
+  title="Ask the AI Astrologer — Conversational Intelligence | AI Zodiac"
+  description="Discover how Ask the AI delivers personalized astrological guidance in the AI Zodiac mobile app: grounded in your natal chart and real-time ephemeris."
+  canonicalUrl={pageUrl}
+  jsonLd={askAiJsonLd}
+>
+  <div class="ask-ai-page container">
+    <!-- Hero Header -->
+    <header class="ask-hero">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">✦ Conversational Astrological Intelligence</span>
+      </div>
+      <h1 class="ask-title">
+        Ask the <span class="gradient-text">AI Astrologer</span>
+      </h1>
+      <p class="ask-subtitle">
+        Experience contextual, articulate astrological guidance grounded in the mathematical coordinates of your natal birth chart and real-time planetary transits.
+      </p>
+
+      <div class="ask-hero-actions">
+        <a href="/#features" class="btn btn-primary">
+          Experience in AI Zodiac App <span>→</span>
+        </a>
+        <a href="/articles/how-ai-creates-personalized-astrology-insights" class="btn btn-secondary">
+          How AI Astrology Works
+        </a>
+      </div>
+    </header>
+
+    <!-- Why Birth Data Transforms AI Section -->
+    <section class="transformation-section">
+      <div class="glass-card transform-card">
+        <div class="transform-header">
+          <span class="badge">The Technical Difference</span>
+          <h2 class="transform-title">Why Birth Chart Data Transforms AI Reasoning</h2>
+        </div>
+
+        <div class="comparison-grid">
+          <div class="comp-col generic-col">
+            <h3 class="comp-heading">❌ Generic AI Chatbots</h3>
+            <ul class="comp-list">
+              <li>Relies only on broad Sun sign stereotypes</li>
+              <li>Cannot see your Rising sign or 12 astrological houses</li>
+              <li>Ignores active planetary degrees and real-time transits</li>
+              <li>Generates vague, contradictory, or boilerplate responses</li>
+            </ul>
+          </div>
+
+          <div class="comp-col aizodiac-col">
+            <h3 class="comp-heading">✨ AI Zodiac Mobile Advisor</h3>
+            <ul class="comp-list">
+              <li>Full natal memory: 10 planets, houses, and geometric aspects</li>
+              <li>Real-time astronomical ephemeris for ongoing planetary movements</li>
+              <li>Multi-layered synthesis resolving opposing chart influences</li>
+              <li>Non-deterministic, mindfulness-focused guidance respecting human agency</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Example Questions Section -->
+    <section class="questions-section">
+      <div class="section-header">
+        <span class="badge badge-gold">Inquiry Possibilities</span>
+        <h2 class="section-title">What You Can Ask AI Zodiac</h2>
+        <p class="section-desc">
+          From timing major professional transitions to understanding communication rhythms with your partner, here are examples of contextual inquiries:
+        </p>
+      </div>
+
+      <div class="questions-grid">
+        {SAMPLE_QUESTIONS.map((item) => (
+          <div class="glass-card question-card">
+            <div class="q-header">
+              <span class="q-icon">{item.icon}</span>
+              <span class="q-category">{item.category}</span>
+            </div>
+            <p class="q-prompt">{item.question}</p>
+            <div class="q-context">
+              <span class="context-label">Astrological Synthesis:</span>
+              <p class="context-text">{item.context}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Future Web AI Placeholder Slot -->
+    <!-- Prepared container for future limited web-based AI demo integration without route modification -->
+    <div id="web-ai-interactive-slot" class="web-ai-container" data-ready="false" style="display: none;">
+      <!-- Future interactive web demonstration interface mounts here -->
+    </div>
+
+    <!-- App Conversion Section -->
+    <section class="ask-app-conversion">
+      <div class="glass-card app-card">
+        <div class="app-card-glyph">✦ 💬 ✦</div>
+        <h2 class="app-card-title">Ask Your Personal Questions in the App</h2>
+        <p class="app-card-desc">
+          Download the AI Zodiac Android app to connect your exact birth coordinates with the conversational AI astrologer for private, ongoing guidance.
+        </p>
+        <div class="app-card-actions">
+          <a href="/#features" class="btn btn-primary app-cta-btn">
+            <span>Continue in AI Zodiac App</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+        <span class="app-card-note">
+          Free download on Google Play • Grounded in classical astrological mechanics
+        </span>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .ask-ai-page {
+    max-width: 860px;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  /* Hero */
+  .ask-hero {
+    text-align: center;
+    margin-bottom: 4.5rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .ask-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ask-subtitle {
+    font-size: 1.1875rem;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .ask-hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  /* Transformation Card */
+  .transformation-section {
+    margin-bottom: 5rem;
+  }
+
+  .transform-card {
+    padding: 3rem 2.5rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.85) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .transform-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .transform-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin-top: 0.75rem;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .comp-col {
+    padding: 1.75rem;
+    border-radius: var(--radius-md);
+  }
+
+  .generic-col {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .aizodiac-col {
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+  }
+
+  .comp-heading {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+  }
+
+  .comp-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .comp-list li {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* Questions Grid */
+  .questions-section {
+    margin-bottom: 5rem;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 3rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .questions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .question-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .q-icon {
+    font-size: 1.25rem;
+  }
+
+  .q-category {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    letter-spacing: 0.05em;
+  }
+
+  .q-prompt {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+  }
+
+  .q-context {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: auto;
+  }
+
+  .context-label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .context-text {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* App Conversion */
+  .ask-app-conversion {
+    margin-top: 2rem;
+  }
+
+  .app-card {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.45) 0%, rgba(16, 22, 47, 0.9) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .app-card-glyph {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+  }
+
+  .app-card-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    margin-bottom: 0.85rem;
+  }
+
+  .app-card-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 580px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  .app-card-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .app-cta-btn {
+    padding: 0.85rem 2rem;
+  }
+
+  .btn-arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .app-cta-btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .app-card-note {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    display: block;
+  }
+
+  @media (max-width: 720px) {
+    .comparison-grid {
+      grid-template-columns: 1fr;
+    }
+    .questions-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
