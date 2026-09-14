@@ -2,13 +2,14 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { FEATURE_PAGES } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
 
 const pageUrl = buildCanonicalUrl('features');
 ---
 
 <BaseLayout
-  title="App Capabilities & Features — AI Zodiac"
-  description="Explore the intelligence features of AI Zodiac: Personal Horoscopes, Birth Chart Synthesis, Love Compatibility, Ask the AI, Numerology, Ascendants, and Chinese Astrology."
+  title="AI Astrology App Features & Insights — AI Zodiac"
+  description="Explore the features of the AI Zodiac app: Personalized Horoscopes, Birth Chart Synthesis, Love Compatibility, AI Astrologer, Numerology, and Ascendants on Android."
   canonicalUrl={pageUrl}
 >
   <div class="features-hub-page container">
@@ -18,10 +19,10 @@ const pageUrl = buildCanonicalUrl('features');
         <span class="badge badge-gold">Astrological Intelligence</span>
       </div>
       <h1 class="page-title">
-        AI Zodiac <span class="gradient-text">Capabilities</span>
+        AI Zodiac <span class="gradient-text">Features</span>
       </h1>
       <p class="page-subtitle">
-        Explore our comprehensive suite of computational astrology tools designed to provide nuanced, personalized clarity for your daily life, relationships, and long-term trajectory.
+        Explore our comprehensive suite of personalized astrology features designed to provide nuanced clarity for your daily life, relationships, and self-discovery.
       </p>
     </header>
 
@@ -55,19 +56,29 @@ const pageUrl = buildCanonicalUrl('features');
     <!-- App CTA Banner -->
     <section class="hub-cta-section">
       <div class="glass-card cta-banner">
-        <div class="cta-badge">
-          <span class="badge">Mobile Experience</span>
+        <div class="cta-brand">
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App Icon" width="48" height="48" class="cta-logo-img" />
         </div>
-        <h2 class="cta-heading">Experience the Complete AI Zodiac Ecosystem</h2>
+        <span class="badge badge-gold">AI Zodiac Android App</span>
+        <h2 class="cta-heading">Get Started with the AI Zodiac App</h2>
         <p class="cta-text">
-          Download AI Zodiac to unlock real-time planetary transits, interactive birth chart wheels, dual-chart synastry matrices, and the conversational AI astrologer.
+          Download AI Zodiac for Android to experience real-time planetary transits, interactive birth chart wheels, dual-chart synastry matrices, and contextual conversational AI guidance.
         </p>
         <div class="cta-btn-wrap">
-          <a href="/#features" class="btn btn-primary">
-            Continue in AI Zodiac App
-          </a>
-          <a href="/articles" class="btn btn-secondary">
-            Read Astrology Guides
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-play"
+            aria-label="Get AI Zodiac App on Google Play"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+            </svg>
+            <div class="btn-play-text">
+              <span class="btn-play-sub">GET IT ON</span>
+              <span class="btn-play-main">Google Play</span>
+            </div>
           </a>
         </div>
       </div>
@@ -200,8 +211,13 @@ const pageUrl = buildCanonicalUrl('features');
     border: 1px solid var(--border-active);
   }
 
-  .cta-badge {
+  .cta-brand {
     margin-bottom: 1.25rem;
+  }
+
+  .cta-logo-img {
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
   }
 
   .cta-heading {

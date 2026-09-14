@@ -10,7 +10,7 @@ relatedAppFeatures:
   - "ask_the_ai"
 ctaType: "compatibility"
 readingTime: "6 min read"
-seoTitle: "Understanding Relationship Patterns Through Astrology | AI Zodiac"
+seoTitle: "Understanding Relationship Patterns & Synastry | AI Zodiac App"
 seoDescription: "Learn how synastry, Venus, Mars, and Moon placements provide deep insight into relationship patterns, emotional communication, and compatibility."
 publishedDate: "2026-09-14"
 draft: false

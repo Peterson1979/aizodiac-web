@@ -10,12 +10,29 @@ const currentYear = new Date().getFullYear();
       <!-- Brand & Mission -->
       <div class="footer-brand-col">
         <div class="footer-brand">
-          <img src="/favicon.svg" alt="AI Zodiac Logo" width="32" height="32" />
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="36" height="36" />
           <span class="brand-name">{siteConfig.name}</span>
         </div>
         <p class="footer-tagline">
-          Personalized astrological intelligence combining precision celestial mechanics with modern AI models for self-reflection and relationship understanding.
+          Personalized AI astrology insights based on your birth data. Experience daily horoscopes, natal chart synthesis, relationship compatibility, and conversational astrology in the AI Zodiac Android app.
         </p>
+        <div class="footer-app-cta">
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-play footer-play-btn"
+            aria-label="Get AI Zodiac App on Google Play"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+            </svg>
+            <div class="btn-play-text">
+              <span class="btn-play-sub">GET IT ON</span>
+              <span class="btn-play-main">Google Play</span>
+            </div>
+          </a>
+        </div>
       </div>
 
       <!-- App Features -->
@@ -34,7 +51,7 @@ const currentYear = new Date().getFullYear();
 
       <!-- Interactive Tools -->
       <div class="footer-col">
-        <h3 class="footer-heading">Tools</h3>
+        <h3 class="footer-heading">Free Tools</h3>
         <ul class="footer-list">
           <li><a href="/tools" class="footer-link">All Free Calculators</a></li>
           <li><a href="/tools/zodiac-sign" class="footer-link">Zodiac Sign Finder</a></li>
@@ -44,7 +61,7 @@ const currentYear = new Date().getFullYear();
         </ul>
       </div>
 
-      <!-- Guides & Ecosystem -->
+      <!-- Guides & Site -->
       <div class="footer-col">
         <h3 class="footer-heading">Guides & Site</h3>
         <ul class="footer-list">
@@ -61,7 +78,7 @@ const currentYear = new Date().getFullYear();
         &copy; {currentYear} {siteConfig.name}. Designed for thoughtful self-discovery.
       </p>
       <div class="footer-note">
-        <span class="badge badge-gold">Empowering Astrological Clarity</span>
+        <span class="badge badge-gold">Personalized Astrological Insights</span>
       </div>
     </div>
   </div>
@@ -100,8 +117,17 @@ const currentYear = new Date().getFullYear();
   .footer-tagline {
     font-size: 0.9375rem;
     color: var(--text-secondary);
-    max-width: 340px;
+    max-width: 360px;
     line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-app-cta {
+    display: inline-block;
+  }
+
+  .footer-play-btn {
+    padding: 0.55rem 1.25rem;
   }
 
   .footer-heading {

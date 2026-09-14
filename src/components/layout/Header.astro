@@ -4,21 +4,30 @@ import { siteConfig } from '@/config/site';
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="/" class="brand-link">
-      <img src="/favicon.svg" alt="AI Zodiac Logo" width="36" height="36" class="brand-icon" />
+    <a href="/" class="brand-link" aria-label="AI Zodiac Home">
+      <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="38" height="38" class="brand-icon" />
       <span class="brand-name">{siteConfig.name}</span>
     </a>
 
     <nav class="nav-links" aria-label="Main Navigation">
       <a href="/features" class="nav-item">Features</a>
-      <a href="/tools" class="nav-item">Tools</a>
+      <a href="/tools" class="nav-item">Free Tools</a>
       <a href="/ask-ai" class="nav-item">Ask AI</a>
       <a href="/articles" class="nav-item">Guides</a>
     </nav>
 
     <div class="header-actions">
-      <a href="/features" class="btn btn-primary header-btn">
-        Explore Features
+      <a
+        href={siteConfig.googlePlayUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary header-btn"
+        aria-label="Get AI Zodiac App on Google Play"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+        </svg>
+        <span>Get AI Zodiac App</span>
       </a>
     </div>
   </div>

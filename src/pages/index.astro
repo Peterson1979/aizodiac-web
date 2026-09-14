@@ -2,149 +2,199 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { WESTERN_ZODIAC_SIGNS, CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
+import { siteConfig } from '@/config/site';
 
 const articles = await getCollection('articles', ({ data }) => !data.draft);
 const featuredArticles = articles
   .sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime())
-  .slice(0, 4);
+  .slice(0, 3);
 
 const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
 
-const HIGHLIGHTED_FEATURES = [
+const CORE_VALUES = [
   {
     title: 'Personal Horoscope',
-    description: 'Personalized forecasts calibrated to your exact planetary placements rather than generic sun-sign summaries.',
+    slug: 'personal-horoscope',
+    badge: 'Daily • Weekly • Monthly',
     icon: '✨',
-    badge: 'Core Intelligence',
+    description: 'Personalized forecasts calibrated to your exact planetary placements and real-time transits, rather than generic sun-sign summaries.',
+    link: '/features/personal-horoscope',
   },
   {
-    title: 'Birth Chart Integration',
-    description: 'Full natal chart synthesis decoding your Sun, Moon, Rising, planetary houses, and geometric aspects.',
+    title: 'Birth Chart (Natal Chart)',
+    slug: 'birth-chart',
+    badge: '10 Planets • 12 Houses',
     icon: '🌌',
-    badge: 'Natal Blueprint',
+    description: 'Comprehensive natal chart synthesis decoding your Sun, Moon, Rising, planetary houses, and geometric aspects with high astronomical precision.',
+    link: '/features/birth-chart',
   },
   {
     title: 'Love Compatibility',
-    description: 'Synastry and composite relationship harmonics examining communication styles, values, and emotional bonds.',
+    slug: 'love-compatibility',
+    badge: 'Synastry Harmonics',
     icon: '💖',
-    badge: 'Synastry Analysis',
+    description: 'Multi-layered relationship synastry examining communication styles, emotional safety, values, and mutual growth between two birth charts.',
+    link: '/features/love-compatibility',
   },
   {
-    title: 'Daily, Weekly & Monthly Insights',
-    description: 'Structured cosmic guidance for productivity, lunations, retrogrades, and seasonal transitions.',
-    icon: '🗓️',
-    badge: 'Cosmic Cycles',
-  },
-  {
-    title: 'Ask the AI Astrologer',
-    description: 'Conversational astrological advisor for contextual clarity on your specific questions, transits, and timing.',
+    title: 'Ask AI Astrology',
+    slug: 'ask-ai',
+    badge: 'Conversational Intelligence',
     icon: '💬',
-    badge: 'Interactive AI',
+    description: 'Ask specific questions about your timing, career decisions, and personal patterns, receiving clear astrological interpretations grounded in your data.',
+    link: '/features/ask-ai',
   },
   {
-    title: 'Numerology Alignments',
-    description: 'Decoding Life Path, Expression, and Soul Urge numbers in harmony with your astrological chart.',
-    icon: '🔢',
-    badge: 'Numerical Harmonics',
-  },
-  {
-    title: 'Ascendant & Rising Insights',
-    description: 'Deep exploration of your rising sign, first-house harmonics, and outward life navigation lens.',
-    icon: '🌅',
-    badge: 'Rising Sign',
-  },
-  {
-    title: 'Chinese Horoscope',
-    description: 'Eastern lunar zodiac archetypes integrated with five-element cycles (Wood, Fire, Earth, Metal, Water).',
-    icon: '🐉',
-    badge: 'Eastern Wisdom',
+    title: 'Zodiac Insights & Archetypes',
+    slug: 'zodiac-insights',
+    badge: 'Archetypal Wisdom',
+    icon: '♈',
+    description: 'Deep exploration of elements, modalities, polarities, and ruling planets across Western, Eastern, and Numerological systems.',
+    link: '/tools/zodiac-sign',
   },
 ];
 ---
 
 <BaseLayout
-  title="AI Zodiac — Personalized Astrological Intelligence"
-  description="AI Zodiac synthesizes precise astronomical birth data with advanced AI reasoning for personalized horoscopes, natal charts, relationship compatibility, and thoughtful guidance."
+  title="AI Zodiac — AI Astrology App & Personalized Horoscope"
+  description="AI Zodiac is your personal AI astrology app. Discover birth-chart based horoscopes, deep love compatibility, natal insights, and daily guidance on Android."
 >
-  <!-- Hero Section -->
-  <section class="hero-section">
+  <!-- Hero Section with Galaxy Backdrop -->
+  <section class="hero-section galaxy-backdrop">
+    <div class="hero-overlay"></div>
     <div class="container hero-container">
       <div class="hero-badge-wrap">
         <span class="badge badge-gold">
           <span class="pulse-dot"></span>
-          Intelligent Astrological Synthesis
+          Personalized Astrological Intelligence
         </span>
       </div>
 
       <h1 class="hero-title">
-        Personalized Astrology Powered by <span class="gradient-text">Advanced AI</span>
+        Personalized AI Astrology Insights Based on Your <span class="gradient-text">Birth Data</span>
       </h1>
 
       <p class="hero-subtitle">
-        AI Zodiac bridges the mathematical precision of natal astronomy with modern artificial intelligence. Discover personalized insights, full birth chart synthesis, and relationship dynamics without generic boilerplate horoscopes.
+        AI Zodiac synthesizes the mathematical coordinates of your birth chart with modern AI reasoning. Discover nuanced daily guidance, natal blueprints, and relationship compatibility crafted for thoughtful self-reflection.
       </p>
 
+      <!-- Primary App Download & Exploration Actions -->
       <div class="hero-actions">
-        <a href="#features" class="btn btn-primary">
-          Explore App Capabilities
+        <a
+          href={siteConfig.googlePlayUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-play hero-play-btn"
+          aria-label="Get AI Zodiac App on Google Play"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+            <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+          </svg>
+          <div class="btn-play-text">
+            <span class="btn-play-sub">GET IT ON</span>
+            <span class="btn-play-main">Google Play</span>
+          </div>
         </a>
-        <a href="/articles" class="btn btn-secondary">
-          Read Astrology Guides
+
+        <a href="#zodiac" class="btn btn-secondary hero-secondary-btn">
+          <span>Explore Your Zodiac Insights</span>
+          <span>→</span>
         </a>
       </div>
 
-      <!-- Zodiac Signs Strip -->
+      <!-- Zodiac Signs Interactive Strip -->
       <div id="zodiac" class="signs-strip-wrap">
-        <span class="strip-label">Select Your Zodiac Archetype</span>
-        <div class="signs-strip" aria-label="Zodiac Signs">
+        <div class="strip-header">
+          <span class="strip-label">Explore the 12 Zodiac Archetypes</span>
+          <a href="/tools/zodiac-sign" class="strip-finder-link">Calculate Your Sign →</a>
+        </div>
+
+        <div class="signs-grid" aria-label="Zodiac Signs">
           {WESTERN_ZODIAC_SIGNS.map((sign) => (
-            <div class="sign-pill" title={`${sign.name} (${sign.dateRange}) • Element: ${sign.element}`}>
-              <span class="sign-symbol">{sign.symbol}</span>
-              <div class="sign-info">
+            <a
+              href={`/tools/zodiac-sign?sign=${sign.id}`}
+              class="sign-card"
+              title={`${sign.name} (${sign.dateRange}) • Element: ${sign.element}`}
+            >
+              <img
+                src={sign.iconUrl}
+                alt={`${sign.name} Zodiac Icon`}
+                width="40"
+                height="40"
+                class="sign-icon-img"
+                loading="lazy"
+              />
+              <div class="sign-meta">
                 <span class="sign-name">{sign.name}</span>
                 <span class="sign-date">{sign.dateRange}</span>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Feature Overview Section -->
-  <section id="features" class="features-section">
+  <!-- Core Value Propositions Section -->
+  <section id="features" class="core-values-section">
     <div class="container">
       <div class="section-header">
-        <span class="badge">App Capabilities</span>
-        <h2 class="section-title">Designed for Nuanced Self-Reflection</h2>
+        <span class="badge badge-gold">Core App Experience</span>
+        <h2 class="section-title">Nuanced Clarity for Your Personal Journey</h2>
         <p class="section-desc">
-          Explore a comprehensive suite of astrological intelligence tools crafted to provide actionable personal clarity.
+          Unlike generic horoscopes that treat one-twelfth of humanity identically, AI Zodiac synthesizes your complete astrological chart into coherent, reflective guidance.
         </p>
       </div>
 
-      <div class="features-grid">
-        {HIGHLIGHTED_FEATURES.map((feature) => (
-          <article class="glass-card feature-card">
-            <div class="feature-header">
-              <span class="feature-icon">{feature.icon}</span>
-              <span class="feature-badge">{feature.badge}</span>
+      <div class="core-values-grid">
+        {CORE_VALUES.map((feature, idx) => (
+          <article class={`glass-card core-value-card ${idx === 0 || idx === 1 ? 'featured-card' : ''}`}>
+            <div class="card-header-row">
+              <span class="core-icon">{feature.icon}</span>
+              <span class="badge">{feature.badge}</span>
             </div>
-            <h3 class="feature-title">{feature.title}</h3>
-            <p class="feature-desc">{feature.description}</p>
+            <h3 class="core-title">{feature.title}</h3>
+            <p class="core-desc">{feature.description}</p>
+            <div class="card-bottom">
+              <a href={feature.link} class="core-link" aria-label={`Learn more about ${feature.title}`}>
+                <span>Explore Feature Details</span>
+                <span>→</span>
+              </a>
+            </div>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Content Discovery Section (Editorial Hub) -->
+  <!-- Free Tools Discovery Section -->
+  <section class="free-tools-section">
+    <div class="container">
+      <div class="tools-teaser-card glass-card">
+        <div class="tools-teaser-content">
+          <span class="badge badge-gold">✦ Free Web Utilities</span>
+          <h2 class="teaser-title">Start Exploring with Instant Astrological Tools</h2>
+          <p class="teaser-desc">
+            Try our lightweight calculators to find your zodiac sign, preview elemental compatibility between two signs, or inspect the structural pillars of a natal chart.
+          </p>
+          <div class="teaser-actions">
+            <a href="/tools/zodiac-sign" class="btn btn-secondary">Zodiac Finder</a>
+            <a href="/tools/compatibility" class="btn btn-secondary">Compatibility</a>
+            <a href="/tools/birth-chart" class="btn btn-secondary">Chart Preview</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Insights & Guides -->
   <section id="insights" class="insights-section">
     <div class="container">
       <div class="section-header">
-        <span class="badge badge-gold">Editorial Hub</span>
-        <h2 class="section-title">Astrology Insights & Guides</h2>
+        <span class="badge">Astrology Guides & Authority</span>
+        <h2 class="section-title">Grounded Astrological Knowledge</h2>
         <p class="section-desc">
-          Thoughtful, grounded explanations of natal charts, psychological archetypes, and the evolution of digital astrology.
+          Educational perspectives on natal astrology, planetary archetypes, and the thoughtful application of AI technology.
         </p>
       </div>
 
@@ -184,33 +234,48 @@ const HIGHLIGHTED_FEATURES = [
 
       <div class="view-all-wrap">
         <a href="/articles" class="btn btn-secondary">
-          Explore All Guides & Insights →
+          Explore All Astrology Guides →
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Thoughtful Conversion / Reflection Section -->
-  <section class="conversion-section">
+  <!-- Primary Conversion Banner Section -->
+  <section id="download" class="download-section galaxy-backdrop">
     <div class="container">
-      <div class="glass-card conversion-card">
-        <div class="conversion-badge">
-          <span class="badge badge-gold">Personalized Astrological Intelligence</span>
+      <div class="glass-card download-card">
+        <div class="download-brand">
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App Icon" width="64" height="64" class="app-icon-img" />
         </div>
-        <h2 class="conversion-title">
-          Ready to Explore Your <span class="gradient-text">Cosmic Blueprint</span>?
+        <span class="badge badge-gold">AI Zodiac for Android</span>
+        <h2 class="download-title">
+          Get Started with the <span class="gradient-text">AI Zodiac App</span>
         </h2>
-        <p class="conversion-desc">
-          Whether you are investigating your natal birth chart, evaluating relationship dynamics, or asking the AI advisor specific questions, AI Zodiac delivers personalized, context-aware clarity.
+        <p class="download-desc">
+          Download AI Zodiac for Android to unlock your full birth chart wheel, real-time planetary transit guidance, multi-planet love compatibility, and conversational astrological advisory.
         </p>
-        <div class="conversion-actions">
-          <a href="#features" class="btn btn-primary">
-            Discover Your Insights
-          </a>
-          <a href="/articles/what-is-a-birth-chart" class="btn btn-secondary">
-            Learn About Birth Charts
+
+        <div class="download-actions">
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-play download-cta"
+            aria-label="Get AI Zodiac App on Google Play"
+          >
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+            </svg>
+            <div class="btn-play-text">
+              <span class="btn-play-sub">GET IT ON</span>
+              <span class="btn-play-main">Google Play</span>
+            </div>
           </a>
         </div>
+
+        <p class="download-note">
+          Free download on Google Play • Calibrated to your exact birth date, time, and coordinates
+        </p>
       </div>
     </div>
   </section>
@@ -219,15 +284,25 @@ const HIGHLIGHTED_FEATURES = [
 <style>
   /* Hero Section */
   .hero-section {
-    padding: 5.5rem 0 3.5rem;
-    text-align: center;
+    padding: 4.5rem 0 3.5rem;
     position: relative;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.12) 0%, rgba(9, 12, 25, 0.9) 70%);
+    pointer-events: none;
   }
 
   .hero-container {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
   }
 
   .hero-badge-wrap {
@@ -249,9 +324,9 @@ const HIGHLIGHTED_FEATURES = [
   }
 
   .hero-title {
-    font-size: clamp(2.25rem, 4.8vw, 3.85rem);
+    font-size: clamp(2.25rem, 5vw, 3.85rem);
     font-weight: 800;
-    max-width: 880px;
+    max-width: 920px;
     margin-bottom: 1.5rem;
     letter-spacing: -0.03em;
     line-height: 1.15;
@@ -259,7 +334,7 @@ const HIGHLIGHTED_FEATURES = [
 
   .hero-subtitle {
     font-size: clamp(1rem, 2vw, 1.2rem);
-    max-width: 740px;
+    max-width: 760px;
     margin-bottom: 2.5rem;
     color: var(--text-secondary);
     line-height: 1.7;
@@ -267,64 +342,94 @@ const HIGHLIGHTED_FEATURES = [
 
   .hero-actions {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     margin-bottom: 3.5rem;
   }
 
-  /* Signs Strip */
+  .hero-play-btn {
+    padding: 0.85rem 2rem;
+  }
+
+  .hero-secondary-btn {
+    padding: 0.85rem 1.75rem;
+  }
+
+  /* Signs Strip Grid */
   .signs-strip-wrap {
     width: 100%;
-    max-width: 1060px;
+    max-width: 1100px;
     margin-top: 1rem;
+    background: rgba(16, 22, 47, 0.55);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    backdrop-filter: blur(16px);
+  }
+
+  .strip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   .strip-label {
-    display: block;
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-
-  .signs-strip {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-    gap: 0.65rem;
-    padding: 1.25rem;
-    background: rgba(16, 22, 47, 0.45);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-lg);
-    backdrop-filter: blur(12px);
-  }
-
-  .sign-pill {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.65rem 0.85rem;
-    border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-glass);
-    transition: all var(--transition-fast);
-    cursor: default;
-  }
-
-  .sign-pill:hover {
-    background: rgba(139, 92, 246, 0.15);
-    border-color: rgba(139, 92, 246, 0.35);
-    transform: translateY(-2px);
-  }
-
-  .sign-symbol {
-    font-size: 1.25rem;
     color: var(--accent-gold);
   }
 
-  .sign-info {
+  .strip-finder-link {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .strip-finder-link:hover {
+    color: #7dd3fc;
+  }
+
+  .signs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .sign-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .sign-card:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .sign-icon-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .sign-meta {
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -332,7 +437,7 @@ const HIGHLIGHTED_FEATURES = [
 
   .sign-name {
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary);
   }
 
@@ -341,10 +446,10 @@ const HIGHLIGHTED_FEATURES = [
     color: var(--text-muted);
   }
 
-  /* Section Header */
+  /* Section Headers */
   .section-header {
     text-align: center;
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto 3.5rem;
   }
 
@@ -361,64 +466,117 @@ const HIGHLIGHTED_FEATURES = [
     line-height: 1.65;
   }
 
-  /* Features Grid */
-  .features-section {
-    padding: 5rem 0;
+  /* Core Values Grid */
+  .core-values-section {
+    padding: 5.5rem 0 3.5rem;
   }
 
-  .features-grid {
+  .core-values-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;
   }
 
-  .feature-card {
+  .core-value-card {
     display: flex;
     flex-direction: column;
-    padding: 2rem 1.75rem;
+    padding: 2.25rem 2rem;
   }
 
-  .feature-header {
+  .featured-card {
+    border-color: rgba(139, 92, 246, 0.35);
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.6) 0%, rgba(16, 22, 47, 0.85) 100%);
+  }
+
+  .card-header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.25rem;
   }
 
-  .feature-icon {
-    font-size: 1.5rem;
+  .core-icon {
+    font-size: 1.75rem;
   }
 
-  .feature-badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--accent-gold);
-    background: rgba(245, 158, 11, 0.1);
-    padding: 0.25rem 0.6rem;
-    border-radius: var(--radius-sm);
-  }
-
-  .feature-title {
-    font-size: 1.25rem;
+  .core-title {
+    font-size: 1.35rem;
+    font-weight: 700;
     margin-bottom: 0.75rem;
     color: var(--text-primary);
   }
 
-  .feature-desc {
+  .core-desc {
     font-size: 0.9375rem;
     color: var(--text-secondary);
-    line-height: 1.6;
-    margin-top: auto;
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+    flex: 1;
   }
 
-  /* Insights / Articles Grid */
+  .card-bottom {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .core-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .core-link:hover {
+    color: #7dd3fc;
+    transform: translateX(4px);
+  }
+
+  /* Tools Teaser Card */
+  .free-tools-section {
+    padding: 2.5rem 0;
+  }
+
+  .tools-teaser-card {
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.45) 0%, rgba(16, 22, 47, 0.85) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .teaser-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .teaser-desc {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    max-width: 660px;
+    margin: 0 auto 2.25rem;
+    line-height: 1.7;
+  }
+
+  .teaser-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Articles Section */
   .insights-section {
     padding: 5rem 0 6rem;
   }
 
   .articles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 3rem;
   }
@@ -514,43 +672,58 @@ const HIGHLIGHTED_FEATURES = [
     text-align: center;
   }
 
-  /* Conversion Section */
-  .conversion-section {
-    padding: 2rem 0 6rem;
+  /* Download / Conversion Section */
+  .download-section {
+    padding: 4rem 0 6rem;
   }
 
-  .conversion-card {
+  .download-card {
     text-align: center;
-    padding: 4rem 2rem;
-    background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.85) 100%);
+    padding: 4.5rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.75) 0%, rgba(16, 22, 47, 0.95) 100%);
     border: 1px solid var(--border-active);
+    box-shadow: var(--shadow-glow);
   }
 
-  .conversion-badge {
-    margin-bottom: 1.25rem;
+  .download-brand {
+    margin-bottom: 1.5rem;
   }
 
-  .conversion-title {
-    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  .app-icon-img {
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.35);
+  }
+
+  .download-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 800;
+    margin-top: 1rem;
     margin-bottom: 1.25rem;
-    max-width: 720px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
   }
 
-  .conversion-desc {
+  .download-desc {
     font-size: 1.0625rem;
     color: var(--text-secondary);
-    max-width: 640px;
+    max-width: 680px;
     margin: 0 auto 2.5rem;
     line-height: 1.7;
   }
 
-  .conversion-actions {
+  .download-actions {
     display: flex;
     justify-content: center;
-    gap: 1.25rem;
-    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .download-cta {
+    padding: 0.85rem 2.25rem;
+  }
+
+  .download-note {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
   }
 </style>

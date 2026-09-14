@@ -10,7 +10,7 @@ relatedAppFeatures:
   - "personalized_astrology"
 ctaType: "explore_zodiac"
 readingTime: "5 min read"
-seoTitle: "Understanding Zodiac Personality Patterns | AI Zodiac"
+seoTitle: "Understanding Zodiac Personality Patterns & Archetypes | AI Zodiac App"
 seoDescription: "Discover how elemental modalities, planetary rulers, and psychological archetypes create nuanced personality patterns in modern astrology."
 publishedDate: "2026-09-14"
 draft: false

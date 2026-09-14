@@ -2,12 +2,13 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { TOOLS_LIST } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
 
 const pageUrl = buildCanonicalUrl('tools');
 ---
 
 <BaseLayout
-  title="Free Astrological Tools & Calculators — AI Zodiac"
+  title="Free Astrological Tools & Zodiac Calculators — AI Zodiac"
   description="Explore free, instant astrological calculators: find your zodiac sign, check elemental compatibility, and preview your birth chart dimensions."
   canonicalUrl={pageUrl}
 >
@@ -55,17 +56,29 @@ const pageUrl = buildCanonicalUrl('tools');
     <!-- App Integration Callout -->
     <section class="tools-app-callout">
       <div class="glass-card callout-card">
-        <div class="callout-glyph">✦ 🌌 ✦</div>
-        <h2 class="callout-title">Need Full Precision & Real-Time Planetary Calculations?</h2>
+        <div class="callout-brand">
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App" width="48" height="48" class="callout-logo-img" />
+        </div>
+        <span class="badge badge-gold">AI Zodiac for Android</span>
+        <h2 class="callout-title">Unlock Full Astrological Insights in the App</h2>
         <p class="callout-desc">
-          While our web tools offer lightweight previews, the native AI Zodiac mobile application runs full-precision ephemeris calculations, interactive chart wheels, and conversational AI advisory.
+          While our free web tools provide quick baseline previews, the AI Zodiac Android app calculates your complete planetary chart wheel, daily personalized transits, and conversational AI advisory.
         </p>
         <div class="callout-actions">
-          <a href="/#features" class="btn btn-primary">
-            Explore Mobile Capabilities
-          </a>
-          <a href="/articles" class="btn btn-secondary">
-            Read Astrology Guides
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-play callout-play-btn"
+            aria-label="Get AI Zodiac App on Google Play"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+            </svg>
+            <div class="btn-play-text">
+              <span class="btn-play-sub">GET IT ON</span>
+              <span class="btn-play-main">Google Play</span>
+            </div>
           </a>
         </div>
       </div>
@@ -193,11 +206,13 @@ const pageUrl = buildCanonicalUrl('tools');
     border: 1px solid var(--border-active);
   }
 
-  .callout-glyph {
-    font-size: 1.25rem;
-    color: var(--accent-gold);
-    letter-spacing: 0.3em;
-    margin-bottom: 1rem;
+  .callout-brand {
+    margin-bottom: 1.25rem;
+  }
+
+  .callout-logo-img {
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
   }
 
   .callout-title {

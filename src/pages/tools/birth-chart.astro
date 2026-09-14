@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { WESTERN_ZODIAC_SIGNS } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
 
 const pageUrl = buildCanonicalUrl('tools/birth-chart');
 
@@ -37,7 +38,7 @@ const CHART_CATEGORIES = [
 ---
 
 <BaseLayout
-  title="Birth Chart Preview & Natal Blueprint — AI Zodiac"
+  title="Birth Chart Interpretation & Natal Blueprint Preview — AI Zodiac"
   description="Explore the structural dimensions of your natal birth chart. Understand planetary placements, the Big Three, and 12 astrological houses."
   canonicalUrl={pageUrl}
   jsonLd={toolJsonLd}
@@ -95,7 +96,7 @@ const CHART_CATEGORIES = [
       <!-- Preview Output Container -->
       <div id="chart-result" class="chart-result-box" style="display: none;">
         <div class="chart-banner">
-          <span class="chart-glyph">🌌</span>
+          <img id="chart-sign-icon" src="/images/ic_aries.png" alt="Core Sun Sign Icon" width="56" height="56" class="chart-sign-icon" />
           <div class="chart-title-wrap">
             <h2 id="chart-sun-heading" class="chart-sun-name">Your Core Sun Sign: Aries</h2>
             <span id="chart-date-display" class="chart-date-text">March 21</span>
@@ -138,12 +139,18 @@ const CHART_CATEGORIES = [
 
         <!-- App Conversion Callout -->
         <div class="chart-app-box">
-          <h3 class="app-box-heading">Calculate Your Complete Interactive Chart Wheel</h3>
+          <h3 class="app-box-heading">Get Your Complete Interactive Birth Chart</h3>
           <p class="app-box-text">
-            The full AI Zodiac mobile application performs high-precision ephemeris calculations for your exact birth minute and coordinates, rendering an interactive visual chart wheel with tap-to-inspect aspect explanations.
+            The full AI Zodiac mobile application calculates your exact Ascendant degree, planetary houses, and aspects, rendering an interactive visual chart wheel with tap-to-inspect interpretations.
           </p>
-          <a href="/features/birth-chart" class="btn btn-primary result-app-btn">
-            Explore Birth Chart Feature <span>→</span>
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary result-app-btn"
+          >
+            <span>Get AI Zodiac App</span>
+            <span>→</span>
           </a>
         </div>
       </div>
@@ -152,7 +159,7 @@ const CHART_CATEGORIES = [
     <!-- 12 Astrological Houses Preview -->
     <section class="houses-section">
       <div class="section-header">
-        <span class="badge badge-gold">Natal Architecture</span>
+        <span class="badge badge-gold">Natal Chart Blueprint</span>
         <h2 class="section-title">The 12 Astrological Houses</h2>
         <p class="section-desc">
           In a full birth chart, your exact birth time and location divide the sky into 12 life arenas, showing where each planetary energy expresses itself:
@@ -178,6 +185,7 @@ const CHART_CATEGORIES = [
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('chart-form');
     const resultBox = document.getElementById('chart-result');
+    const chartSignIcon = document.getElementById('chart-sign-icon');
     const sunHeading = document.getElementById('chart-sun-heading');
     const dateDisplay = document.getElementById('chart-date-display');
 
@@ -209,6 +217,10 @@ const CHART_CATEGORIES = [
       const sign = signsData.find((s) => s.id === signId);
 
       if (sign) {
+        if (chartSignIcon) {
+          chartSignIcon.src = sign.iconUrl || `/images/ic_${sign.id}.png`;
+          chartSignIcon.alt = `${sign.name} Icon`;
+        }
         sunHeading.textContent = `Your Core Sun Archetype: ${sign.symbol} ${sign.name}`;
         dateDisplay.textContent = `Birth Date: ${dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
 
@@ -351,12 +363,16 @@ const CHART_CATEGORIES = [
   .chart-banner {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
     margin-bottom: 2rem;
   }
 
-  .chart-glyph {
-    font-size: 2.75rem;
+  .chart-sign-icon {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.3));
+    flex-shrink: 0;
   }
 
   .chart-sun-name {
@@ -427,10 +443,10 @@ const CHART_CATEGORIES = [
   }
 
   .chart-app-box {
-    padding: 2rem;
+    padding: 2.25rem 2rem;
     border-radius: var(--radius-md);
-    background: rgba(139, 92, 246, 0.08);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.6) 0%, rgba(16, 22, 47, 0.9) 100%);
+    border: 1px solid var(--border-active);
     text-align: center;
   }
 

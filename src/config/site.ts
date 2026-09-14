@@ -12,6 +12,7 @@ export interface SiteConfig {
   readonly defaultAuthor: string;
   readonly defaultLocale: string;
   readonly defaultOgImage: string;
+  readonly googlePlayUrl: string;
   readonly getBaseUrl: () => string;
   readonly analytics: {
     readonly cloudflareWebAnalyticsToken?: string;
@@ -20,12 +21,13 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: 'AI Zodiac',
-  defaultTitle: 'AI Zodiac — Next-Generation Astrological Intelligence',
+  defaultTitle: 'AI Zodiac — AI Astrology App & Personalized Horoscope',
   titleTemplate: '%s | AI Zodiac',
-  description: 'AI Zodiac combines advanced artificial intelligence with timeless astrological wisdom for personalized horoscopes, birth charts, compatibility, and transit insights.',
-  defaultAuthor: 'AI Zodiac Team',
+  description: 'AI Zodiac is your personal AI astrology app. Discover birth-chart based horoscopes, deep love compatibility, natal insights, and daily guidance on Android.',
+  defaultAuthor: 'AI Zodiac Editorial',
   defaultLocale: 'en_US',
   defaultOgImage: '/og-default.png',
+  googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   getBaseUrl: (): string => {
     const rawUrl = import.meta.env.SITE_URL || 'https://aizodiac.workers.dev';
     return rawUrl.replace(/\/+$/, '');

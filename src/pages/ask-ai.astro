@@ -47,8 +47,8 @@ const SAMPLE_QUESTIONS = [
 ---
 
 <BaseLayout
-  title="Ask the AI Astrologer — Conversational Intelligence | AI Zodiac"
-  description="Discover how Ask the AI delivers personalized astrological guidance in the AI Zodiac mobile app: grounded in your natal chart and real-time ephemeris."
+  title="AI Astrologer App — Interactive Astrological Advisory | AI Zodiac"
+  description="Discover how the AI Astrologer delivers personalized astrological guidance in the AI Zodiac mobile app: grounded in your natal chart and real-time planetary transits."
   canonicalUrl={pageUrl}
   jsonLd={askAiJsonLd}
 >
@@ -66,11 +66,23 @@ const SAMPLE_QUESTIONS = [
       </p>
 
       <div class="ask-hero-actions">
-        <a href="/#features" class="btn btn-primary">
-          Experience in AI Zodiac App <span>→</span>
+        <a
+          href={siteConfig.googlePlayUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-play"
+          aria-label="Get AI Zodiac App on Google Play"
+        >
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+            <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+          </svg>
+          <div class="btn-play-text">
+            <span class="btn-play-sub">GET IT ON</span>
+            <span class="btn-play-main">Google Play</span>
+          </div>
         </a>
         <a href="/articles/how-ai-creates-personalized-astrology-insights" class="btn btn-secondary">
-          How AI Astrology Works
+          Explore Your Zodiac Insights
         </a>
       </div>
     </header>
@@ -79,7 +91,7 @@ const SAMPLE_QUESTIONS = [
     <section class="transformation-section">
       <div class="glass-card transform-card">
         <div class="transform-header">
-          <span class="badge">The Technical Difference</span>
+          <span class="badge">The AI Zodiac Difference</span>
           <h2 class="transform-title">Why Birth Chart Data Transforms AI Reasoning</h2>
         </div>
 
@@ -143,19 +155,33 @@ const SAMPLE_QUESTIONS = [
     <!-- App Conversion Section -->
     <section class="ask-app-conversion">
       <div class="glass-card app-card">
-        <div class="app-card-glyph">✦ 💬 ✦</div>
+        <div class="app-card-brand">
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="56" height="56" class="app-card-logo-img" />
+        </div>
+        <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="app-card-title">Ask Your Personal Questions in the App</h2>
         <p class="app-card-desc">
           Download the AI Zodiac Android app to connect your exact birth coordinates with the conversational AI astrologer for private, ongoing guidance.
         </p>
         <div class="app-card-actions">
-          <a href="/#features" class="btn btn-primary app-cta-btn">
-            <span>Continue in AI Zodiac App</span>
-            <span class="btn-arrow">→</span>
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-play app-cta-btn"
+            aria-label="Get AI Zodiac App on Google Play"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+            </svg>
+            <div class="btn-play-text">
+              <span class="btn-play-sub">GET IT ON</span>
+              <span class="btn-play-main">Google Play</span>
+            </div>
           </a>
         </div>
         <span class="app-card-note">
-          Free download on Google Play • Grounded in classical astrological mechanics
+          Free download on Google Play • Grounded in your unique birth chart
         </span>
       </div>
     </section>
@@ -359,11 +385,13 @@ const SAMPLE_QUESTIONS = [
     border: 1px solid var(--border-active);
   }
 
-  .app-card-glyph {
-    font-size: 1.5rem;
-    color: var(--accent-gold);
-    letter-spacing: 0.3em;
-    margin-bottom: 1rem;
+  .app-card-brand {
+    margin-bottom: 1.25rem;
+  }
+
+  .app-card-logo-img {
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
   }
 
   .app-card-title {

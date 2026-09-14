@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { WESTERN_ZODIAC_SIGNS } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
 
 const pageUrl = buildCanonicalUrl('tools/compatibility');
 
@@ -22,8 +23,8 @@ const toolJsonLd = {
 ---
 
 <BaseLayout
-  title="Zodiac Compatibility Preview & Calculator — AI Zodiac"
-  description="Explore the elemental compatibility, relationship strengths, and communication dynamics between any two zodiac signs."
+  title="Zodiac Compatibility Calculator & Relationship Insights — AI Zodiac"
+  description="Explore elemental compatibility, relationship dynamics, and communication insights between any two zodiac signs with AI Zodiac."
   canonicalUrl={pageUrl}
   jsonLd={toolJsonLd}
 >
@@ -82,7 +83,7 @@ const toolJsonLd = {
       <div id="compat-result" class="compat-result-box" style="display: none;">
         <div class="pair-banner">
           <div class="pair-sign">
-            <span id="p1-symbol" class="pair-symbol">♈</span>
+            <img id="p1-icon-img" src="/images/ic_aries.png" alt="First Sign Icon" width="56" height="56" class="pair-icon-img" />
             <span id="p1-name" class="pair-name">Aries</span>
             <span id="p1-element" class="pair-el">Fire</span>
           </div>
@@ -90,7 +91,7 @@ const toolJsonLd = {
           <div class="pair-plus">+</div>
 
           <div class="pair-sign">
-            <span id="p2-symbol" class="pair-symbol">♌</span>
+            <img id="p2-icon-img" src="/images/ic_leo.png" alt="Second Sign Icon" width="56" height="56" class="pair-icon-img" />
             <span id="p2-name" class="pair-name">Leo</span>
             <span id="p2-element" class="pair-el">Fire</span>
           </div>
@@ -119,12 +120,18 @@ const toolJsonLd = {
 
         <!-- Conversion Box -->
         <div class="compat-app-box">
-          <h3 class="app-box-heading">Want deep multi-planet Synastry analysis?</h3>
+          <h3 class="app-box-heading">Get Full Relationship Synastry & Compatibility</h3>
           <p class="app-box-text">
-            True relationship harmony depends on Moon sign emotional safety, Venus love languages, and Mars conflict styles. Explore complete dual-chart synastry in the AI Zodiac app.
+            Authentic relational synastry compares Moon signs for emotional safety, Venus placements for romance styles, and Mars for conflict resolution. Explore complete dual-chart synastry in the AI Zodiac Android app.
           </p>
-          <a href="/features/love-compatibility" class="btn btn-primary result-app-btn">
-            Explore Love Compatibility Feature <span>→</span>
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary result-app-btn"
+          >
+            <span>Get AI Zodiac App</span>
+            <span>→</span>
           </a>
         </div>
       </div>
@@ -162,11 +169,11 @@ const toolJsonLd = {
     const form = document.getElementById('compat-form');
     const resultBox = document.getElementById('compat-result');
 
-    const p1Symbol = document.getElementById('p1-symbol');
+    const p1IconImg = document.getElementById('p1-icon-img');
     const p1Name = document.getElementById('p1-name');
     const p1Element = document.getElementById('p1-element');
 
-    const p2Symbol = document.getElementById('p2-symbol');
+    const p2IconImg = document.getElementById('p2-icon-img');
     const p2Name = document.getElementById('p2-name');
     const p2Element = document.getElementById('p2-element');
 
@@ -286,11 +293,17 @@ const toolJsonLd = {
       const sign2 = signsData.find((s) => s.id === s2Id);
 
       if (sign1 && sign2) {
-        p1Symbol.textContent = sign1.symbol;
+        if (p1IconImg) {
+          p1IconImg.src = sign1.iconUrl || `/images/ic_${sign1.id}.png`;
+          p1IconImg.alt = `${sign1.name} Icon`;
+        }
         p1Name.textContent = sign1.name;
         p1Element.textContent = `${sign1.element.charAt(0).toUpperCase() + sign1.element.slice(1)} Element`;
 
-        p2Symbol.textContent = sign2.symbol;
+        if (p2IconImg) {
+          p2IconImg.src = sign2.iconUrl || `/images/ic_${sign2.id}.png`;
+          p2IconImg.alt = `${sign2.name} Icon`;
+        }
         p2Name.textContent = sign2.name;
         p2Element.textContent = `${sign2.element.charAt(0).toUpperCase() + sign2.element.slice(1)} Element`;
 
@@ -455,13 +468,14 @@ const toolJsonLd = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.5rem;
   }
 
-  .pair-symbol {
-    font-size: 3rem;
-    color: var(--accent-gold);
-    line-height: 1;
+  .pair-icon-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.3));
   }
 
   .pair-name {
@@ -542,10 +556,10 @@ const toolJsonLd = {
   }
 
   .compat-app-box {
-    padding: 2rem;
+    padding: 2.25rem 2rem;
     border-radius: var(--radius-md);
-    background: rgba(139, 92, 246, 0.08);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.6) 0%, rgba(16, 22, 47, 0.9) 100%);
+    border: 1px solid var(--border-active);
     text-align: center;
   }
 

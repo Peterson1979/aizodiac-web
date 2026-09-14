@@ -11,7 +11,7 @@ relatedAppFeatures:
   - "personal_astrological_calendar"
 ctaType: "personalized_insights"
 readingTime: "5 min read"
-seoTitle: "How AI Creates Personalized Astrology Insights | AI Zodiac"
+seoTitle: "How AI Creates Personalized Astrology Insights | AI Zodiac App"
 seoDescription: "Discover how AI bridges precision astronomical calculation and natural language synthesis to create deeply personalized, non-generic astrological guidance."
 publishedDate: "2026-09-14"
 draft: false

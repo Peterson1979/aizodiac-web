@@ -116,23 +116,34 @@ const featureJsonLd = {
 
         <!-- Conversion CTA Area -->
         <div class="app-conversion-box">
-          <h4 class="conversion-heading">Continue Your Personalized Journey</h4>
+          <h4 class="conversion-heading">Get Started with the AI Zodiac App</h4>
           <p class="conversion-sub">
-            The full interactive computational engine, transit updates, and chart calculations are delivered natively in the mobile application.
+            Get daily transit updates, full birth chart calculations, relationship synastry, and conversational AI guidance in the AI Zodiac Android app.
           </p>
 
           <div class="conversion-actions">
-            <a href="/#features" class="btn btn-primary app-cta-btn">
-              <span>Continue in AI Zodiac App</span>
-              <span class="btn-arrow">→</span>
+            <a
+              href={siteConfig.googlePlayUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-play app-cta-btn"
+              aria-label="Get AI Zodiac App on Google Play"
+            >
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+              </svg>
+              <div class="btn-play-text">
+                <span class="btn-play-sub">GET IT ON</span>
+                <span class="btn-play-main">Google Play</span>
+              </div>
             </a>
-            <a href="/articles" class="btn btn-secondary">
-              Read Astrology Guides
+            <a href="/tools" class="btn btn-secondary">
+              Explore Your Zodiac Insights
             </a>
           </div>
 
           <span class="conversion-note">
-            Free to download on Google Play • Personalized to your exact birth data
+            Free download on Google Play • Personalized to your unique birth chart
           </span>
         </div>
       </div>

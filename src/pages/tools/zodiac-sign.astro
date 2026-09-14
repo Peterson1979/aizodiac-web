@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { WESTERN_ZODIAC_SIGNS } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
 
 const pageUrl = buildCanonicalUrl('tools/zodiac-sign');
 
@@ -22,7 +23,7 @@ const toolJsonLd = {
 ---
 
 <BaseLayout
-  title="Zodiac Sign Finder & Calculator — AI Zodiac"
+  title="Zodiac Sign Finder & Personality Calculator — AI Zodiac"
   description="Discover your exact zodiac sign, element, modality, and ruling planet from your birth date. Free, instant astrological archetype finder."
   canonicalUrl={pageUrl}
   jsonLd={toolJsonLd}
@@ -90,7 +91,7 @@ const toolJsonLd = {
       <!-- Result Container -->
       <div id="result-box" class="result-container" style="display: none;">
         <div class="result-header">
-          <span id="result-symbol" class="result-symbol">♈</span>
+          <img id="result-icon-img" src="/images/ic_aries.png" alt="Zodiac Sign Icon" width="64" height="64" class="result-sign-img" />
           <div class="result-title-wrap">
             <h2 id="result-name" class="result-name">Aries</h2>
             <span id="result-dates" class="result-dates">Mar 21 - Apr 19</span>
@@ -112,12 +113,18 @@ const toolJsonLd = {
 
         <!-- Conversion Box -->
         <div class="result-app-box">
-          <h3 class="app-box-heading">Want to discover your Moon & Rising signs?</h3>
+          <h3 class="app-box-heading">Get Your Complete Birth Chart & Daily Horoscope</h3>
           <p class="app-box-text">
-            Your Sun sign represents your conscious vitality, but your Moon sign governs emotional depth and your Rising sign defines your life lens. Explore your full chart in AI Zodiac.
+            Your Sun sign is only the conscious foundation. The AI Zodiac Android app calculates your Moon sign, Rising sign, and 10 planetary houses for complete personal guidance.
           </p>
-          <a href="/features/birth-chart" class="btn btn-primary result-app-btn">
-            Explore Full Birth Chart <span>→</span>
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary result-app-btn"
+          >
+            <span>Get AI Zodiac App</span>
+            <span>→</span>
           </a>
         </div>
       </div>
@@ -134,8 +141,11 @@ const toolJsonLd = {
         {WESTERN_ZODIAC_SIGNS.map((sign) => (
           <div class="glass-card mini-sign-card">
             <div class="mini-sign-top">
-              <span class="mini-symbol">{sign.symbol}</span>
-              <span class="mini-name">{sign.name}</span>
+              <img src={sign.iconUrl} alt={`${sign.name} Icon`} width="32" height="32" class="mini-sign-icon" loading="lazy" />
+              <div class="mini-sign-titles">
+                <span class="mini-name">{sign.name}</span>
+                <span class="mini-symbol">{sign.symbol}</span>
+              </div>
             </div>
             <span class="mini-date">{sign.dateRange}</span>
             <span class="mini-meta">{sign.element} • {sign.modality}</span>
@@ -151,7 +161,7 @@ const toolJsonLd = {
     const form = document.getElementById('zodiac-form');
     const resultBox = document.getElementById('result-box');
 
-    const resultSymbol = document.getElementById('result-symbol');
+    const resultIconImg = document.getElementById('result-icon-img');
     const resultName = document.getElementById('result-name');
     const resultDates = document.getElementById('result-dates');
     const resultElement = document.getElementById('result-element');
@@ -159,6 +169,31 @@ const toolJsonLd = {
     const resultPlanet = document.getElementById('result-planet');
     const resultDesc = document.getElementById('result-desc');
     const resultTraits = document.getElementById('result-traits');
+
+    function displaySign(sign) {
+      if (!sign) return;
+      if (resultIconImg) {
+        resultIconImg.src = sign.iconUrl || `/images/ic_${sign.id}.png`;
+        resultIconImg.alt = `${sign.name} Icon`;
+      }
+      resultName.textContent = sign.name;
+      resultDates.textContent = sign.dateRange;
+      resultElement.textContent = `${sign.element.charAt(0).toUpperCase() + sign.element.slice(1)} Element`;
+      resultModality.textContent = `${sign.modality.charAt(0).toUpperCase() + sign.modality.slice(1)} Modality`;
+      resultPlanet.textContent = `Ruler: ${sign.rulingPlanet}`;
+      resultDesc.textContent = sign.description;
+
+      resultTraits.innerHTML = '';
+      sign.traits.forEach((trait) => {
+        const chip = document.createElement('span');
+        chip.className = 'trait-chip';
+        chip.textContent = trait;
+        resultTraits.appendChild(chip);
+      });
+
+      resultBox.style.display = 'block';
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 
     function getZodiacSign(month, day) {
       if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'aries';
@@ -184,28 +219,18 @@ const toolJsonLd = {
 
       const signId = getZodiacSign(month, day);
       const sign = signsData.find((s) => s.id === signId);
-
-      if (sign) {
-        resultSymbol.textContent = sign.symbol;
-        resultName.textContent = sign.name;
-        resultDates.textContent = sign.dateRange;
-        resultElement.textContent = `${sign.element.charAt(0).toUpperCase() + sign.element.slice(1)} Element`;
-        resultModality.textContent = `${sign.modality.charAt(0).toUpperCase() + sign.modality.slice(1)} Modality`;
-        resultPlanet.textContent = `Ruler: ${sign.rulingPlanet}`;
-        resultDesc.textContent = sign.description;
-
-        resultTraits.innerHTML = '';
-        sign.traits.forEach((trait) => {
-          const chip = document.createElement('span');
-          chip.className = 'trait-chip';
-          chip.textContent = trait;
-          resultTraits.appendChild(chip);
-        });
-
-        resultBox.style.display = 'block';
-        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+      displaySign(sign);
     });
+
+    // Check for query param ?sign=
+    const params = new URLSearchParams(window.location.search);
+    const querySign = params.get('sign');
+    if (querySign) {
+      const matched = signsData.find((s) => s.id === querySign.toLowerCase());
+      if (matched) {
+        displaySign(matched);
+      }
+    }
   });
 </script>
 
@@ -337,14 +362,16 @@ const toolJsonLd = {
   .result-header {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
     margin-bottom: 1.5rem;
   }
 
-  .result-symbol {
-    font-size: 3.25rem;
-    color: var(--accent-gold);
-    line-height: 1;
+  .result-sign-img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.3));
+    flex-shrink: 0;
   }
 
   .result-name {
@@ -402,10 +429,10 @@ const toolJsonLd = {
 
   /* App Box */
   .result-app-box {
-    padding: 2rem;
+    padding: 2.25rem 2rem;
     border-radius: var(--radius-md);
-    background: rgba(139, 92, 246, 0.08);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.6) 0%, rgba(16, 22, 47, 0.9) 100%);
+    border: 1px solid var(--border-active);
     text-align: center;
   }
 
@@ -421,6 +448,10 @@ const toolJsonLd = {
     max-width: 540px;
     margin: 0 auto 1.5rem;
     line-height: 1.6;
+  }
+
+  .result-app-btn {
+    padding: 0.75rem 2rem;
   }
 
   /* Educational Section */
@@ -456,12 +487,25 @@ const toolJsonLd = {
   .mini-sign-top {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.35rem;
+    gap: 0.65rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mini-sign-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .mini-sign-titles {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
   }
 
   .mini-symbol {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: var(--accent-gold);
   }
 

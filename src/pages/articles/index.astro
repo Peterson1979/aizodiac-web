@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
+import { siteConfig } from '@/config/site';
 
 const allArticles = await getCollection('articles', ({ data }) => !data.draft);
 const sortedArticles = allArticles.sort(
@@ -12,8 +13,8 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
 ---
 
 <BaseLayout
-  title="Astrology Insights & Guides — AI Zodiac"
-  description="Explore thoughtfully crafted guides on natal birth charts, zodiac personality patterns, relationship compatibility, and AI-driven astrological intelligence."
+  title="Astrology Insights, Guides & Articles — AI Zodiac"
+  description="Explore thoughtfully crafted guides on natal birth charts, zodiac personality patterns, relationship compatibility, and AI-assisted astrology insights."
 >
   <div class="articles-page container">
     <!-- Header -->
@@ -79,6 +80,37 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
             </article>
           );
         })}
+      </div>
+    </section>
+
+    <!-- App CTA Banner -->
+    <section class="guides-app-cta-section">
+      <div class="glass-card cta-banner">
+        <div class="cta-brand">
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="48" height="48" class="cta-logo-img" />
+        </div>
+        <span class="badge badge-gold">AI Zodiac Android App</span>
+        <h2 class="cta-heading">Get Personalized Astrological Guidance</h2>
+        <p class="cta-text">
+          Translate foundational knowledge into daily clarity. Download the AI Zodiac app to calculate your complete natal chart and receive daily insights calibrated to your exact birth coordinates.
+        </p>
+        <div class="cta-btn-wrap">
+          <a
+            href={siteConfig.googlePlayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-play"
+            aria-label="Get AI Zodiac App on Google Play"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
+            </svg>
+            <div class="btn-play-text">
+              <span class="btn-play-sub">GET IT ON</span>
+              <span class="btn-play-main">Google Play</span>
+            </div>
+          </a>
+        </div>
       </div>
     </section>
   </div>
@@ -259,5 +291,47 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
   .read-more-btn:hover {
     color: #7dd3fc;
     transform: translateX(3px);
+  }
+
+  /* Guides App CTA Banner */
+  .guides-app-cta-section {
+    margin-top: 5rem;
+  }
+
+  .cta-banner {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.85) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .cta-brand {
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-logo-img {
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+  }
+
+  .cta-heading {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0 auto 2.25rem;
+    line-height: 1.7;
+  }
+
+  .cta-btn-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
   }
 </style>
