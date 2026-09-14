@@ -8,10 +8,6 @@ const siteUrl = process.env.SITE_URL || 'https://aizodiac.workers.dev';
 export default defineConfig({
   site: siteUrl,
   output: 'static',
-  redirects: {
-    '/features/birth-chart': '/tools/birth-chart',
-    '/features/chinese-horoscope': '/features/chinese-zodiac',
-  },
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
