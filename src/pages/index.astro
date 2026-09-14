@@ -1,0 +1,556 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { WESTERN_ZODIAC_SIGNS, CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
+
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+const featuredArticles = articles
+  .sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime())
+  .slice(0, 4);
+
+const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
+
+const HIGHLIGHTED_FEATURES = [
+  {
+    title: 'Personal Horoscope',
+    description: 'Personalized forecasts calibrated to your exact planetary placements rather than generic sun-sign summaries.',
+    icon: '✨',
+    badge: 'Core Intelligence',
+  },
+  {
+    title: 'Birth Chart Integration',
+    description: 'Full natal chart synthesis decoding your Sun, Moon, Rising, planetary houses, and geometric aspects.',
+    icon: '🌌',
+    badge: 'Natal Blueprint',
+  },
+  {
+    title: 'Love Compatibility',
+    description: 'Synastry and composite relationship harmonics examining communication styles, values, and emotional bonds.',
+    icon: '💖',
+    badge: 'Synastry Analysis',
+  },
+  {
+    title: 'Daily, Weekly & Monthly Insights',
+    description: 'Structured cosmic guidance for productivity, lunations, retrogrades, and seasonal transitions.',
+    icon: '🗓️',
+    badge: 'Cosmic Cycles',
+  },
+  {
+    title: 'Ask the AI Astrologer',
+    description: 'Conversational astrological advisor for contextual clarity on your specific questions, transits, and timing.',
+    icon: '💬',
+    badge: 'Interactive AI',
+  },
+  {
+    title: 'Numerology Alignments',
+    description: 'Decoding Life Path, Expression, and Soul Urge numbers in harmony with your astrological chart.',
+    icon: '🔢',
+    badge: 'Numerical Harmonics',
+  },
+  {
+    title: 'Ascendant & Rising Insights',
+    description: 'Deep exploration of your rising sign, first-house harmonics, and outward life navigation lens.',
+    icon: '🌅',
+    badge: 'Rising Sign',
+  },
+  {
+    title: 'Chinese Horoscope',
+    description: 'Eastern lunar zodiac archetypes integrated with five-element cycles (Wood, Fire, Earth, Metal, Water).',
+    icon: '🐉',
+    badge: 'Eastern Wisdom',
+  },
+];
+---
+
+<BaseLayout
+  title="AI Zodiac — Personalized Astrological Intelligence"
+  description="AI Zodiac synthesizes precise astronomical birth data with advanced AI reasoning for personalized horoscopes, natal charts, relationship compatibility, and thoughtful guidance."
+>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-badge-wrap">
+        <span class="badge badge-gold">
+          <span class="pulse-dot"></span>
+          Intelligent Astrological Synthesis
+        </span>
+      </div>
+
+      <h1 class="hero-title">
+        Personalized Astrology Powered by <span class="gradient-text">Advanced AI</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        AI Zodiac bridges the mathematical precision of natal astronomy with modern artificial intelligence. Discover personalized insights, full birth chart synthesis, and relationship dynamics without generic boilerplate horoscopes.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#features" class="btn btn-primary">
+          Explore App Capabilities
+        </a>
+        <a href="/articles" class="btn btn-secondary">
+          Read Astrology Guides
+        </a>
+      </div>
+
+      <!-- Zodiac Signs Strip -->
+      <div id="zodiac" class="signs-strip-wrap">
+        <span class="strip-label">Select Your Zodiac Archetype</span>
+        <div class="signs-strip" aria-label="Zodiac Signs">
+          {WESTERN_ZODIAC_SIGNS.map((sign) => (
+            <div class="sign-pill" title={`${sign.name} (${sign.dateRange}) • Element: ${sign.element}`}>
+              <span class="sign-symbol">{sign.symbol}</span>
+              <div class="sign-info">
+                <span class="sign-name">{sign.name}</span>
+                <span class="sign-date">{sign.dateRange}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Overview Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge">App Capabilities</span>
+        <h2 class="section-title">Designed for Nuanced Self-Reflection</h2>
+        <p class="section-desc">
+          Explore a comprehensive suite of astrological intelligence tools crafted to provide actionable personal clarity.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        {HIGHLIGHTED_FEATURES.map((feature) => (
+          <article class="glass-card feature-card">
+            <div class="feature-header">
+              <span class="feature-icon">{feature.icon}</span>
+              <span class="feature-badge">{feature.badge}</span>
+            </div>
+            <h3 class="feature-title">{feature.title}</h3>
+            <p class="feature-desc">{feature.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Discovery Section (Editorial Hub) -->
+  <section id="insights" class="insights-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-gold">Editorial Hub</span>
+        <h2 class="section-title">Astrology Insights & Guides</h2>
+        <p class="section-desc">
+          Thoughtful, grounded explanations of natal charts, psychological archetypes, and the evolution of digital astrology.
+        </p>
+      </div>
+
+      <div class="articles-grid">
+        {featuredArticles.map((article) => {
+          const clusterInfo = clusterMap.get(article.data.cluster as ContentCluster);
+          const slug = article.id.replace(/\.[^/.]+$/, "");
+          return (
+            <article class="glass-card article-card">
+              <div class="article-card-header">
+                <span class="cluster-tag">
+                  {clusterInfo?.icon || '✦'} {clusterInfo?.name || article.data.cluster}
+                </span>
+                <span class="reading-time">{article.data.readingTime}</span>
+              </div>
+
+              <h3 class="article-title">
+                <a href={`/articles/${slug}`} class="article-link">
+                  {article.data.title}
+                </a>
+              </h3>
+
+              <p class="article-desc">
+                {article.data.description}
+              </p>
+
+              <div class="article-footer">
+                <span class="topic-label">{article.data.topic}</span>
+                <a href={`/articles/${slug}`} class="read-more-link" aria-label={`Read ${article.data.title}`}>
+                  Read Guide <span>→</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <div class="view-all-wrap">
+        <a href="/articles" class="btn btn-secondary">
+          Explore All Guides & Insights →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thoughtful Conversion / Reflection Section -->
+  <section class="conversion-section">
+    <div class="container">
+      <div class="glass-card conversion-card">
+        <div class="conversion-badge">
+          <span class="badge badge-gold">Personalized Astrological Intelligence</span>
+        </div>
+        <h2 class="conversion-title">
+          Ready to Explore Your <span class="gradient-text">Cosmic Blueprint</span>?
+        </h2>
+        <p class="conversion-desc">
+          Whether you are investigating your natal birth chart, evaluating relationship dynamics, or asking the AI advisor specific questions, AI Zodiac delivers personalized, context-aware clarity.
+        </p>
+        <div class="conversion-actions">
+          <a href="#features" class="btn btn-primary">
+            Discover Your Insights
+          </a>
+          <a href="/articles/what-is-a-birth-chart" class="btn btn-secondary">
+            Learn About Birth Charts
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding: 5.5rem 0 3.5rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-badge-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 0 0 10px #f59e0b;
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+  }
+
+  .hero-title {
+    font-size: clamp(2.25rem, 4.8vw, 3.85rem);
+    font-weight: 800;
+    max-width: 880px;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    max-width: 740px;
+    margin-bottom: 2.5rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3.5rem;
+  }
+
+  /* Signs Strip */
+  .signs-strip-wrap {
+    width: 100%;
+    max-width: 1060px;
+    margin-top: 1rem;
+  }
+
+  .strip-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .signs-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 0.65rem;
+    padding: 1.25rem;
+    background: rgba(16, 22, 47, 0.45);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+  }
+
+  .sign-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    transition: all var(--transition-fast);
+    cursor: default;
+  }
+
+  .sign-pill:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .sign-symbol {
+    font-size: 1.25rem;
+    color: var(--accent-gold);
+  }
+
+  .sign-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .sign-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .sign-date {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+  }
+
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-desc {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* Features Grid */
+  .features-section {
+    padding: 5rem 0;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.75rem;
+  }
+
+  .feature-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .feature-icon {
+    font-size: 1.5rem;
+  }
+
+  .feature-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    background: rgba(245, 158, 11, 0.1);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .feature-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+  }
+
+  .feature-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-top: auto;
+  }
+
+  /* Insights / Articles Grid */
+  .insights-section {
+    padding: 5rem 0 6rem;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.75rem;
+  }
+
+  .article-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .cluster-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .reading-time {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .article-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.85rem;
+  }
+
+  .article-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .article-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .article-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .topic-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+
+  .read-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .read-more-link:hover {
+    color: #7dd3fc;
+    transform: translateX(3px);
+  }
+
+  .view-all-wrap {
+    text-align: center;
+  }
+
+  /* Conversion Section */
+  .conversion-section {
+    padding: 2rem 0 6rem;
+  }
+
+  .conversion-card {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.5) 0%, rgba(16, 22, 47, 0.85) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .conversion-badge {
+    margin-bottom: 1.25rem;
+  }
+
+  .conversion-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .conversion-desc {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .conversion-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+</style>

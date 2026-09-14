@@ -1,0 +1,40 @@
+---
+import SEOHead, { type Props as SEOHeadProps } from '@/components/seo/SEOHead.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import '@/styles/global.css';
+
+export interface Props extends SEOHeadProps {
+  readonly showHeader?: boolean | undefined;
+  readonly showFooter?: boolean | undefined;
+}
+
+const {
+  showHeader = true,
+  showFooter = true,
+  ...seoProps
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEOHead {...seoProps} />
+    <slot name="head" />
+  </head>
+  <body>
+    {showHeader && <Header />}
+    <main id="main-content">
+      <slot />
+    </main>
+    {showFooter && <Footer />}
+  </body>
+</html>
+
+<style>
+  #main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

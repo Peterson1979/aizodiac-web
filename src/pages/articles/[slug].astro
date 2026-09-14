@@ -1,0 +1,312 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { CONTENT_CLUSTERS, CTA_CONFIGS, type ContentCluster, type CtaType } from '@/types/content';
+import { buildCanonicalUrl, generateArticleSchema } from '@/lib/seo/meta';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => {
+    const slug = article.id.replace(/\.[^/.]+$/, '');
+    return {
+      params: { slug },
+      props: { article, slug },
+    };
+  });
+}
+
+const { article, slug } = Astro.props;
+const { Content } = await render(article);
+
+const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
+const clusterInfo = clusterMap.get(article.data.cluster as ContentCluster);
+const ctaInfo = CTA_CONFIGS[article.data.ctaType as CtaType] || CTA_CONFIGS.personalized_insights;
+
+const pageUrl = buildCanonicalUrl(`articles/${slug}`);
+const articleJsonLd = generateArticleSchema({
+  title: article.data.title,
+  description: article.data.description,
+  url: pageUrl,
+  publishedTime: article.data.publishedDate,
+  modifiedTime: article.data.updatedDate || article.data.publishedDate,
+  authorName: siteConfig.defaultAuthor,
+});
+---
+
+<BaseLayout
+  title={article.data.seoTitle || `${article.data.title} — AI Zodiac`}
+  description={article.data.seoDescription || article.data.description}
+  canonicalUrl={pageUrl}
+  ogType="article"
+  publishedTime={article.data.publishedDate}
+  modifiedTime={article.data.updatedDate}
+  jsonLd={articleJsonLd}
+>
+  <article class="article-container container">
+    <!-- Breadcrumb & Back Link -->
+    <nav class="article-nav" aria-label="Breadcrumb">
+      <a href="/articles" class="back-link">
+        <span>←</span> Back to Guides
+      </a>
+      <span class="nav-divider">/</span>
+      <span class="nav-cluster">{clusterInfo?.name || article.data.cluster}</span>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="article-header">
+      <div class="article-meta-tags">
+        <span class="badge badge-gold">
+          {clusterInfo?.icon || '✦'} {clusterInfo?.name || article.data.cluster}
+        </span>
+        <span class="reading-time">{article.data.readingTime}</span>
+      </div>
+
+      <h1 class="article-title">{article.data.title}</h1>
+      <p class="article-lead">{article.data.description}</p>
+
+      <div class="article-byline">
+        <div class="byline-info">
+          <span class="author-name">AI Zodiac Editorial</span>
+          <span class="byline-dot">•</span>
+          <time datetime={article.data.publishedDate} class="publish-date">
+            {new Date(article.data.publishedDate).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
+        </div>
+        <span class="topic-tag">{article.data.topic}</span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="article-body prose-cosmic">
+      <Content />
+    </div>
+
+    <!-- Contextual Conversion / Discovery CTA -->
+    <section class="article-cta-section">
+      <div class="glass-card cta-card">
+        <div class="cta-glyph">✦ 🌌 ✦</div>
+        <h2 class="cta-title">{ctaInfo.headline}</h2>
+        <p class="cta-desc">
+          AI Zodiac combines precision astronomical calculation with next-generation AI models for multi-dimensional clarity.
+        </p>
+        <div class="cta-actions">
+          <a href={ctaInfo.buttonLink} class="btn btn-primary">
+            {ctaInfo.buttonText}
+          </a>
+          <a href="/articles" class="btn btn-secondary">
+            Browse More Guides
+          </a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-container {
+    max-width: 820px;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  /* Breadcrumbs */
+  .article-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .nav-divider {
+    color: var(--border-subtle);
+  }
+
+  .nav-cluster {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  /* Header */
+  .article-header {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .article-meta-tags {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .reading-time {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .article-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .article-lead {
+    font-size: 1.1875rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .article-byline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .byline-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .topic-tag {
+    font-size: 0.8125rem;
+    color: var(--accent-cyan);
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Prose Styling */
+  .prose-cosmic {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: #e2e8f0;
+  }
+
+  .prose-cosmic :global(h2) {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .prose-cosmic :global(h3) {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+    color: var(--text-highlight);
+  }
+
+  .prose-cosmic :global(p) {
+    margin-bottom: 1.5rem;
+    color: #cbd5e1;
+  }
+
+  .prose-cosmic :global(ul),
+  .prose-cosmic :global(ol) {
+    margin-bottom: 1.75rem;
+    padding-left: 1.5rem;
+    color: #cbd5e1;
+  }
+
+  .prose-cosmic :global(li) {
+    margin-bottom: 0.65rem;
+  }
+
+  .prose-cosmic :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border-subtle);
+    margin: 3rem 0;
+  }
+
+  .prose-cosmic :global(strong) {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .prose-cosmic :global(blockquote) {
+    border-left: 3px solid var(--accent-purple);
+    padding-left: 1.25rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+
+  /* CTA Section */
+  .article-cta-section {
+    margin-top: 5rem;
+  }
+
+  .cta-card {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(180deg, rgba(26, 34, 70, 0.6) 0%, rgba(16, 22, 47, 0.9) 100%);
+    border: 1px solid var(--border-active);
+  }
+
+  .cta-glyph {
+    font-size: 1.25rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto 2rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

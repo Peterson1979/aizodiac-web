@@ -1,0 +1,92 @@
+---
+import { siteConfig } from '@/config/site';
+import { buildCanonicalUrl, generateWebSiteSchema, generateOrganizationSchema, type SEOProps } from '@/lib/seo/meta';
+
+export interface Props extends SEOProps {
+  readonly jsonLd?: Record<string, unknown> | Array<Record<string, unknown>> | undefined;
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  canonicalUrl,
+  ogImage = siteConfig.defaultOgImage,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  author = siteConfig.defaultAuthor,
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+// Determine title formatting
+const formattedTitle = title
+  ? (title.includes(siteConfig.name) ? title : siteConfig.titleTemplate.replace('%s', title))
+  : siteConfig.defaultTitle;
+
+// Determine canonical URL
+const currentPath = Astro.url.pathname;
+const resolvedCanonical = canonicalUrl || buildCanonicalUrl(currentPath);
+
+// Absolute image URL
+const absoluteOgImage = ogImage.startsWith('http') ? ogImage : buildCanonicalUrl(ogImage);
+
+// Structured data schemas
+const defaultSchemas = [generateWebSiteSchema(), generateOrganizationSchema()];
+const schemasToRender = jsonLd
+  ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd])
+  : defaultSchemas;
+
+const cfAnalyticsToken = siteConfig.analytics.cloudflareWebAnalyticsToken;
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Primary Page Metadata -->
+<title>{formattedTitle}</title>
+<meta name="title" content={formattedTitle} />
+<meta name="description" content={description} />
+<meta name="author" content={author} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{!noindex && <meta name="robots" content="index, follow" />}
+
+<!-- Canonical Link -->
+<link rel="canonical" href={resolvedCanonical} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={resolvedCanonical} />
+<meta property="og:title" content={formattedTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={absoluteOgImage} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:locale" content={siteConfig.defaultLocale} />
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+{author && <meta property="article:author" content={author} />}
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={resolvedCanonical} />
+<meta name="twitter:title" content={formattedTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={absoluteOgImage} />
+
+<!-- Structured Data (JSON-LD) -->
+{schemasToRender.map((schema) => (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}
+
+<!-- Optional Cloudflare Web Analytics Beacon (Privacy-focused, zero-cookie) -->
+{cfAnalyticsToken && (
+  <script
+    is:inline
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={`{"token": "${cfAnalyticsToken}"}`}
+  ></script>
+)}

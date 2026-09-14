@@ -1,0 +1,263 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const sortedArticles = allArticles.sort(
+  (a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
+);
+
+const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
+---
+
+<BaseLayout
+  title="Astrology Insights & Guides — AI Zodiac"
+  description="Explore thoughtfully crafted guides on natal birth charts, zodiac personality patterns, relationship compatibility, and AI-driven astrological intelligence."
+>
+  <div class="articles-page container">
+    <!-- Header -->
+    <header class="articles-header">
+      <div class="badge-wrap">
+        <span class="badge">Editorial Library</span>
+      </div>
+      <h1 class="page-title">
+        Astrological <span class="gradient-text">Insights & Guides</span>
+      </h1>
+      <p class="page-subtitle">
+        Thoughtful perspectives on natal astrology, relationship harmonics, and the synthesis of artificial intelligence with celestial mechanics.
+      </p>
+    </header>
+
+    <!-- Cluster Highlights -->
+    <section class="clusters-grid" aria-label="Topic Clusters">
+      {CONTENT_CLUSTERS.slice(0, 4).map((cluster) => (
+        <div class="glass-card cluster-card">
+          <div class="cluster-icon">{cluster.icon}</div>
+          <h2 class="cluster-title">{cluster.name}</h2>
+          <p class="cluster-desc">{cluster.description}</p>
+        </div>
+      ))}
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="articles-grid-section">
+      <div class="section-title-wrap">
+        <h2 class="section-heading">Featured Articles</h2>
+        <span class="article-count">{sortedArticles.length} guides</span>
+      </div>
+
+      <div class="articles-grid">
+        {sortedArticles.map((article) => {
+          const clusterInfo = clusterMap.get(article.data.cluster as ContentCluster);
+          const slug = article.id.replace(/\.[^/.]+$/, "");
+          return (
+            <article class="glass-card article-card">
+              <div class="article-card-header">
+                <span class="cluster-tag">
+                  {clusterInfo?.icon || '✦'} {clusterInfo?.name || article.data.cluster}
+                </span>
+                <span class="reading-time">{article.data.readingTime}</span>
+              </div>
+
+              <h3 class="article-title">
+                <a href={`/articles/${slug}`} class="article-link">
+                  {article.data.title}
+                </a>
+              </h3>
+
+              <p class="article-desc">
+                {article.data.description}
+              </p>
+
+              <div class="article-footer">
+                <span class="topic-label">{article.data.topic}</span>
+                <a href={`/articles/${slug}`} class="read-more-btn" aria-label={`Read ${article.data.title}`}>
+                  Read Guide <span>→</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .articles-page {
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .articles-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* Clusters Grid */
+  .clusters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 4rem;
+  }
+
+  .cluster-card {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cluster-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .cluster-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .cluster-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* Articles Grid */
+  .articles-grid-section {
+    margin-top: 2rem;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .section-heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+
+  .article-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.75rem;
+  }
+
+  .article-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .cluster-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .reading-time {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .article-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.85rem;
+  }
+
+  .article-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .article-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .article-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+    flex: 1;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .topic-label {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+
+  .read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .read-more-btn:hover {
+    color: #7dd3fc;
+    transform: translateX(3px);
+  }
+</style>
