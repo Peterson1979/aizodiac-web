@@ -2,9 +2,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { WESTERN_ZODIAC_SIGNS } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
-import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 
 const pageUrl = buildCanonicalUrl('tools/compatibility');
+
+const toolPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'tool',
+  utmCampaign: 'tool_compatibility',
+  utmContent: 'result_app_box',
+});
 
 const toolJsonLd = {
   '@context': 'https://schema.org',
@@ -125,7 +132,7 @@ const toolJsonLd = {
             Authentic relational synastry compares Moon signs for emotional safety, Venus placements for romance styles, and Mars for conflict resolution. Explore complete dual-chart synastry in the AI Zodiac Android app.
           </p>
           <a
-            href={siteConfig.googlePlayUrl}
+            href={toolPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-primary result-app-btn"

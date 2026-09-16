@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { FEATURE_PAGES, type FeaturePageData } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 import { siteConfig } from '@/config/site';
 
 export function getStaticPaths() {
@@ -17,6 +18,13 @@ interface Props {
 
 const { feature } = Astro.props;
 const pageUrl = buildCanonicalUrl(`features/${feature.slug}`);
+
+const featurePlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'feature_showcase',
+  utmCampaign: `feature_${feature.slug}`,
+  utmContent: 'feature_download_cta',
+});
 
 const featureJsonLd = {
   '@context': 'https://schema.org',
@@ -123,7 +131,7 @@ const featureJsonLd = {
 
           <div class="conversion-actions">
             <a
-              href={siteConfig.googlePlayUrl}
+              href={featurePlayStoreUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="btn-play app-cta-btn"

@@ -2,6 +2,7 @@
 import SEOHead, { type Props as SEOHeadProps } from '@/components/seo/SEOHead.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
+import { INBOUND_UTM_INLINE_SCRIPT } from '@/lib/conversion/inboundUtm';
 import '@/styles/global.css';
 
 export interface Props extends SEOHeadProps {
@@ -28,6 +29,7 @@ const {
       <slot />
     </main>
     {showFooter && <Footer />}
+    <script is:inline set:html={INBOUND_UTM_INLINE_SCRIPT} />
   </body>
 </html>
 

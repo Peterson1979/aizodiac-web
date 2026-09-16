@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { CONTENT_CLUSTERS, CTA_CONFIGS, type ContentCluster, type CtaType } from '@/types/content';
 import { buildCanonicalUrl, generateArticleSchema } from '@/lib/seo/meta';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 import { siteConfig } from '@/config/site';
 
 export async function getStaticPaths() {
@@ -24,13 +25,23 @@ const clusterInfo = clusterMap.get(article.data.cluster as ContentCluster);
 const ctaInfo = CTA_CONFIGS[article.data.ctaType as CtaType] || CTA_CONFIGS.personalized_insights;
 
 const pageUrl = buildCanonicalUrl(`articles/${slug}`);
+const articleOgImage = article.data.ogImage || article.data.image || siteConfig.defaultOgImage;
+
 const articleJsonLd = generateArticleSchema({
   title: article.data.title,
   description: article.data.description,
   url: pageUrl,
+  imageUrl: articleOgImage,
   publishedTime: article.data.publishedDate,
   modifiedTime: article.data.updatedDate || article.data.publishedDate,
   authorName: siteConfig.defaultAuthor,
+});
+
+const articlePlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'editorial',
+  utmCampaign: `article_${article.data.cluster}`,
+  utmContent: slug,
 });
 ---
 
@@ -39,6 +50,7 @@ const articleJsonLd = generateArticleSchema({
   description={article.data.seoDescription || article.data.description}
   canonicalUrl={pageUrl}
   ogType="article"
+  ogImage={articleOgImage}
   publishedTime={article.data.publishedDate}
   modifiedTime={article.data.updatedDate}
   jsonLd={articleJsonLd}
@@ -102,7 +114,7 @@ const articleJsonLd = generateArticleSchema({
         </p>
         <div class="cta-actions">
           <a
-            href={siteConfig.googlePlayUrl}
+            href={articlePlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-play"

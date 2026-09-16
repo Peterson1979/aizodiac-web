@@ -2,9 +2,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { TOOLS_LIST } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
-import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 
 const pageUrl = buildCanonicalUrl('tools');
+
+const toolsHubPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'tool',
+  utmCampaign: 'tools_hub',
+  utmContent: 'hub_callout_cta',
+});
 ---
 
 <BaseLayout
@@ -68,7 +75,7 @@ const pageUrl = buildCanonicalUrl('tools');
         </p>
         <div class="callout-actions">
           <a
-            href={siteConfig.googlePlayUrl}
+            href={toolsHubPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-play callout-play-btn"

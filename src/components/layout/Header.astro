@@ -1,5 +1,20 @@
 ---
 import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
+
+const headerPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'navigation',
+  utmCampaign: 'global_header',
+  utmContent: 'header_btn',
+});
+
+const mobileDrawerPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'navigation',
+  utmCampaign: 'global_header',
+  utmContent: 'mobile_drawer_btn',
+});
 ---
 
 <header class="site-header">
@@ -19,7 +34,7 @@ import { siteConfig } from '@/config/site';
 
     <div class="header-actions">
       <a
-        href={siteConfig.googlePlayUrl}
+        href={headerPlayStoreUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn-primary header-btn"
@@ -69,7 +84,7 @@ import { siteConfig } from '@/config/site';
 
       <div class="mobile-nav-cta-wrap">
         <a
-          href={siteConfig.googlePlayUrl}
+          href={mobileDrawerPlayStoreUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="btn-play mobile-play-btn"

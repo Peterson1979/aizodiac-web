@@ -35,4 +35,4 @@ jobs:
       - name: Build Astro Website
         run: npm run build
         env:
-          SITE_URL: https://aizodiac.workers.dev
+          SITE_URL: https://aizodiac-web.appaizodiac.workers.dev

@@ -39,6 +39,8 @@ const articles = defineCollection({
       'explore_zodiac',
     ]).default('personalized_insights'),
     readingTime: z.string().default('4 min read'),
+    image: z.string().optional(),
+    ogImage: z.string().optional(),
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     publishedDate: z.string(),

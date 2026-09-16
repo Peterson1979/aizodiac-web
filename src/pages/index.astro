@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { WESTERN_ZODIAC_SIGNS, FEATURE_PAGES, CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
-import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 
 const articles = await getCollection('articles', ({ data }) => !data.draft);
 const featuredArticles = articles
@@ -10,6 +10,20 @@ const featuredArticles = articles
   .slice(0, 3);
 
 const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
+
+const heroPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'landing',
+  utmCampaign: 'homepage',
+  utmContent: 'hero_primary_cta',
+});
+
+const downloadPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'landing',
+  utmCampaign: 'homepage',
+  utmContent: 'bottom_download_cta',
+});
 ---
 
 <BaseLayout
@@ -38,7 +52,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
       <!-- Primary App Download & Exploration Actions -->
       <div class="hero-actions">
         <a
-          href={siteConfig.googlePlayUrl}
+          href={heroPlayStoreUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="btn-play hero-play-btn"
@@ -219,7 +233,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
 
         <div class="download-actions">
           <a
-            href={siteConfig.googlePlayUrl}
+            href={downloadPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-play download-cta"

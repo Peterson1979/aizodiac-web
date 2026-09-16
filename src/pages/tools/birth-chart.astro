@@ -2,9 +2,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { WESTERN_ZODIAC_SIGNS } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
-import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 
 const pageUrl = buildCanonicalUrl('tools/birth-chart');
+
+const toolPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'tool',
+  utmCampaign: 'tool_birth_chart',
+  utmContent: 'result_app_box',
+});
 
 const toolJsonLd = {
   '@context': 'https://schema.org',
@@ -144,7 +151,7 @@ const CHART_CATEGORIES = [
             The full AI Zodiac mobile application calculates your exact Ascendant degree, planetary houses, and aspects, rendering an interactive visual chart wheel with tap-to-inspect interpretations.
           </p>
           <a
-            href={siteConfig.googlePlayUrl}
+            href={toolPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-primary result-app-btn"

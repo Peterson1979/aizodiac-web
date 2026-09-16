@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
-import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 
 const allArticles = await getCollection('articles', ({ data }) => !data.draft);
 const sortedArticles = allArticles.sort(
@@ -10,6 +10,13 @@ const sortedArticles = allArticles.sort(
 );
 
 const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
+
+const guidesHubPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'editorial',
+  utmCampaign: 'guides_hub',
+  utmContent: 'hub_bottom_banner',
+});
 ---
 
 <BaseLayout
@@ -88,7 +95,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
         </p>
         <div class="cta-btn-wrap">
           <a
-            href={siteConfig.googlePlayUrl}
+            href={guidesHubPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-play"

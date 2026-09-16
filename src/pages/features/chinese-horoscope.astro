@@ -1,5 +1,8 @@
 ---
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+
 const targetUrl = '/features/chinese-zodiac';
+const canonical = buildCanonicalUrl(targetUrl);
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +10,7 @@ const targetUrl = '/features/chinese-zodiac';
     <meta charset="utf-8" />
     <title>Redirecting — AI Zodiac</title>
     <meta http-equiv="refresh" content={`0; url=${targetUrl}`} />
-    <link rel="canonical" href={`https://aizodiac.workers.dev${targetUrl}`} />
+    <link rel="canonical" href={canonical} />
     <meta name="robots" content="noindex, follow" />
     <script is:inline define:vars={{ targetUrl }}>
       window.location.replace(targetUrl);

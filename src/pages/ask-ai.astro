@@ -1,9 +1,24 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 import { siteConfig } from '@/config/site';
 
 const pageUrl = buildCanonicalUrl('ask-ai');
+
+const heroPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'landing',
+  utmCampaign: 'ask_ai',
+  utmContent: 'hero_cta',
+});
+
+const bottomPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'landing',
+  utmCampaign: 'ask_ai',
+  utmContent: 'bottom_conversion_card',
+});
 
 const askAiJsonLd = {
   '@context': 'https://schema.org',
@@ -70,7 +85,7 @@ const SAMPLE_QUESTIONS = [
 
       <div class="ask-hero-actions">
         <a
-          href={siteConfig.googlePlayUrl}
+          href={heroPlayStoreUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="btn-play"
@@ -169,7 +184,7 @@ const SAMPLE_QUESTIONS = [
         </p>
         <div class="app-card-actions">
           <a
-            href={siteConfig.googlePlayUrl}
+            href={bottomPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-play app-cta-btn"

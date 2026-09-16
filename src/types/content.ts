@@ -642,6 +642,8 @@ export type TargetAudience =
   | 'general'
   | 'spiritual_seeker';
 
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
+
 export type CtaType =
   | 'personalized_insights'
   | 'birth_chart'
@@ -661,30 +663,30 @@ export const CTA_CONFIGS: Record<CtaType, CtaMeta> = {
     type: 'personalized_insights',
     headline: 'Get personalized astrological insights calibrated to your zodiac sign and birth details.',
     buttonText: 'Get AI Zodiac App',
-    buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
+    buttonLink: buildPlayStoreUrl({ utmSource: 'website', utmMedium: 'editorial_cta', utmCampaign: 'personalized_insights', utmContent: 'article_cta' }),
   },
   birth_chart: {
     type: 'birth_chart',
     headline: 'Calculate your ascendant, explore your sign, and discover personalized horoscope insights.',
     buttonText: 'Get AI Zodiac App',
-    buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
+    buttonLink: buildPlayStoreUrl({ utmSource: 'website', utmMedium: 'editorial_cta', utmCampaign: 'birth_chart', utmContent: 'article_cta' }),
   },
   ask_ai: {
     type: 'ask_ai',
     headline: 'Ask the AI astrologer personalized questions about your profile and zodiac information.',
     buttonText: 'Get AI Zodiac App',
-    buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
+    buttonLink: buildPlayStoreUrl({ utmSource: 'website', utmMedium: 'editorial_cta', utmCampaign: 'ask_ai', utmContent: 'article_cta' }),
   },
   compatibility: {
     type: 'compatibility',
     headline: 'Explore love compatibility and relationship dynamics based on astrology and birth details.',
     buttonText: 'Get AI Zodiac App',
-    buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
+    buttonLink: buildPlayStoreUrl({ utmSource: 'website', utmMedium: 'editorial_cta', utmCampaign: 'compatibility', utmContent: 'article_cta' }),
   },
   explore_zodiac: {
     type: 'explore_zodiac',
     headline: 'Discover your zodiac personality traits, ascendant, and personalized daily horoscopes.',
     buttonText: 'Get AI Zodiac App',
-    buttonLink: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
+    buttonLink: buildPlayStoreUrl({ utmSource: 'website', utmMedium: 'editorial_cta', utmCampaign: 'explore_zodiac', utmContent: 'article_cta' }),
   },
 };

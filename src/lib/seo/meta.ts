@@ -80,7 +80,7 @@ export function generateArticleSchema(options: {
       '@id': options.url,
     },
     url: options.url,
-    image: options.imageUrl,
+    image: options.imageUrl ? (options.imageUrl.startsWith('http') ? options.imageUrl : buildCanonicalUrl(options.imageUrl)) : `${siteConfig.getBaseUrl()}${siteConfig.defaultOgImage}`,
     datePublished: options.publishedTime,
     dateModified: options.modifiedTime || options.publishedTime,
     author: {

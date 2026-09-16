@@ -2,9 +2,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { FEATURE_PAGES } from '@/types/content';
 import { buildCanonicalUrl } from '@/lib/seo/meta';
-import { siteConfig } from '@/config/site';
+import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 
 const pageUrl = buildCanonicalUrl('features');
+
+const featuresHubPlayStoreUrl = buildPlayStoreUrl({
+  utmSource: 'website',
+  utmMedium: 'feature_showcase',
+  utmCampaign: 'features_hub',
+  utmContent: 'hub_bottom_banner',
+});
 ---
 
 <BaseLayout
@@ -68,7 +75,7 @@ const pageUrl = buildCanonicalUrl('features');
         </p>
         <div class="cta-btn-wrap">
           <a
-            href={siteConfig.googlePlayUrl}
+            href={featuresHubPlayStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-play"
