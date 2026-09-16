@@ -16,8 +16,8 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
   title="AI Zodiac — AI Astrology App & Personalized Horoscope"
   description="AI Zodiac is your personal AI astrology app. Discover personalized horoscopes, ascendant calculations, love compatibility, numerology, and conversational AI guidance on Android."
 >
-  <!-- Hero Section with Galaxy Backdrop -->
-  <section class="hero-section galaxy-backdrop">
+  <!-- Hero Section -->
+  <section class="hero-section">
     <div class="hero-overlay"></div>
     <div class="container hero-container">
       <div class="hero-badge-wrap">
@@ -166,7 +166,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
               <div class="article-card-header">
                 <span class="cluster-tag">
                   {clusterInfo?.icon && (
-                    <img src={clusterInfo.icon} alt="" width="20" height="20" class="cluster-tag-img" />
+                    <img src={clusterInfo.icon} alt="" width="20" height="20" class="cluster-tag-img" loading="lazy" />
                   )}
                   <span>{clusterInfo?.name || article.data.cluster}</span>
                 </span>
@@ -203,11 +203,11 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
   </section>
 
   <!-- Primary Conversion Banner Section -->
-  <section id="download" class="download-section galaxy-backdrop">
+  <section id="download" class="download-section">
     <div class="container">
       <div class="glass-card download-card">
         <div class="download-brand">
-          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App Icon" width="64" height="64" class="app-icon-img" />
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App Icon" width="64" height="64" class="app-icon-img" loading="lazy" />
         </div>
         <span class="badge badge-gold">AI Zodiac for Android</span>
         <h2 class="download-title">
@@ -254,7 +254,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.14) 0%, rgba(9, 12, 25, 0.92) 70%);
+    background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 65%);
     pointer-events: none;
   }
 

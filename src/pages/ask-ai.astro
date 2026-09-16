@@ -20,28 +20,28 @@ const askAiJsonLd = {
 
 const SAMPLE_QUESTIONS = [
   {
-    category: 'Career & Timing',
-    icon: '🧭',
-    question: '“What does my current astrological cycle mean for my career and personal growth over the coming months?”',
-    context: 'Explores your zodiac sign, planetary influences, and life timing for career pacing and opportunities.',
+    category: 'Self-Discovery',
+    icon: '🔮',
+    question: '“What does my sign say about me?”',
+    context: 'Explores your core traits, hidden strengths, and unique tendencies.',
   },
   {
     category: 'Love & Relationships',
     icon: '💖',
-    question: '“How do my astrological traits affect communication and connection with my partner?”',
-    context: 'Explores your zodiac strengths, emotional tendencies, and actionable harmony tips.',
+    question: '“Am I compatible with my partner?”',
+    context: 'Looks at your shared dynamics, communication styles, and natural chemistry.',
   },
   {
-    category: 'Personal Timing',
+    category: 'Weekly Timing',
+    icon: '🧭',
+    question: '“What should I focus on this week?”',
+    context: 'Provides practical guidance on your current timing, energy, and priorities.',
+  },
+  {
+    category: 'Habits & Growth',
     icon: '🌙',
-    question: '“What should I focus on during this month’s cosmic cycle and lunar phase?”',
-    context: 'Highlights timing, self-reflection themes, and practical personal guidance.',
-  },
-  {
-    category: 'Self-Discovery & Strengths',
-    icon: '🔮',
-    question: '“What are my greatest personality strengths and areas for personal growth according to my sign?”',
-    context: 'Provides deep, personalized insights into your natural talents and character traits.',
+    question: '“Why do I keep repeating the same relationship patterns?”',
+    context: 'Helps unpack emotional habits and how your placements influence your choices.',
   },
 ];
 ---
@@ -160,7 +160,7 @@ const SAMPLE_QUESTIONS = [
     <section class="ask-app-conversion">
       <div class="glass-card app-card">
         <div class="app-card-brand">
-          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="56" height="56" class="app-card-logo-img" />
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="56" height="56" class="app-card-logo-img" loading="lazy" />
         </div>
         <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="app-card-title">Ask Your Questions in the AI Zodiac App</h2>

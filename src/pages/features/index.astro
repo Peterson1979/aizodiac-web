@@ -32,7 +32,7 @@ const pageUrl = buildCanonicalUrl('features');
         <article class="glass-card feature-hub-card">
           <div class="card-top">
             <div class="icon-box-lg">
-              <img src={feature.icon} alt={feature.title} class="icon-img-lg" width="80" height="80" />
+              <img src={feature.icon} alt={feature.title} class="icon-img-lg" width="80" height="80" loading="lazy" />
             </div>
             <span class="feature-idx">0{idx + 1}</span>
           </div>
@@ -59,7 +59,7 @@ const pageUrl = buildCanonicalUrl('features');
     <section class="hub-cta-section">
       <div class="glass-card cta-banner">
         <div class="cta-brand">
-          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App Icon" width="48" height="48" class="cta-logo-img" />
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App Icon" width="48" height="48" class="cta-logo-img" loading="lazy" />
         </div>
         <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="cta-heading">Get Started with the AI Zodiac App</h2>

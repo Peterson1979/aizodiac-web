@@ -30,19 +30,6 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
       </p>
     </header>
 
-    <!-- Cluster Highlights -->
-    <section class="clusters-grid" aria-label="Topic Clusters">
-      {CONTENT_CLUSTERS.slice(0, 4).map((cluster) => (
-        <div class="glass-card cluster-card">
-          <div class="icon-box-lg" style="margin-bottom: 1rem;">
-            <img src={cluster.icon} alt={cluster.name} class="icon-img-lg" width="80" height="80" />
-          </div>
-          <h2 class="cluster-title">{cluster.name}</h2>
-          <p class="cluster-desc">{cluster.description}</p>
-        </div>
-      ))}
-    </section>
-
     <!-- Articles Grid -->
     <section class="articles-grid-section">
       <div class="section-title-wrap">
@@ -59,7 +46,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
               <div class="article-card-header">
                 <span class="cluster-tag">
                   {clusterInfo && (
-                    <img src={clusterInfo.icon} alt="" class="cluster-tag-img" width="16" height="16" />
+                    <img src={clusterInfo.icon} alt="" class="cluster-tag-img" width="16" height="16" loading="lazy" />
                   )}
                   {clusterInfo?.name || article.data.cluster}
                 </span>
@@ -92,7 +79,7 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
     <section class="guides-app-cta-section">
       <div class="glass-card cta-banner">
         <div class="cta-brand">
-          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="48" height="48" class="cta-logo-img" />
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac Logo" width="48" height="48" class="cta-logo-img" loading="lazy" />
         </div>
         <span class="badge badge-gold">AI Zodiac Android App</span>
         <h2 class="cta-heading">Get Personalized Astrological Guidance</h2>
@@ -149,41 +136,9 @@ const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
     line-height: 1.7;
   }
 
-  /* Clusters Grid */
-  .clusters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 4rem;
-  }
-
-  .cluster-card {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .cluster-icon {
-    font-size: 1.75rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .cluster-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
-  }
-
-  .cluster-desc {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.55;
-  }
-
   /* Articles Grid */
   .articles-grid-section {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .section-title-wrap {

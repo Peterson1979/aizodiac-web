@@ -31,7 +31,7 @@ const pageUrl = buildCanonicalUrl('tools');
       {TOOLS_LIST.map((tool) => (
         <article class="glass-card tool-card">
           <div class="icon-box-lg" style="margin-bottom: 1.5rem;">
-            <img src={tool.icon} alt={tool.title} class="icon-img-lg" width="80" height="80" />
+            <img src={tool.icon} alt={tool.title} class="icon-img-lg" width="80" height="80" loading="lazy" />
           </div>
           <h2 class="tool-title">{tool.title}</h2>
           <p class="tool-tagline">{tool.tagline}</p>
@@ -59,7 +59,7 @@ const pageUrl = buildCanonicalUrl('tools');
     <section class="tools-app-callout">
       <div class="glass-card callout-card">
         <div class="callout-brand">
-          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App" width="48" height="48" class="callout-logo-img" />
+          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App" width="48" height="48" class="callout-logo-img" loading="lazy" />
         </div>
         <span class="badge badge-gold">AI Zodiac for Android</span>
         <h2 class="callout-title">Unlock Full Astrological Insights in the App</h2>
