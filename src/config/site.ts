@@ -29,7 +29,7 @@ export const siteConfig: SiteConfig = {
   defaultOgImage: '/og-default.png',
   googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.oberon.aizodiac',
   getBaseUrl: (): string => {
-    const rawUrl = import.meta.env.SITE_URL || 'https://aizodiac-web.appaizodiac.workers.dev';
+    const rawUrl = import.meta.env.SITE_URL || 'https://aizodiac.life';
     return rawUrl.replace(/\/+$/, '');
   },
   analytics: {

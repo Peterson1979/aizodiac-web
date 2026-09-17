@@ -5,7 +5,7 @@ interface __BaseEnv_Env {
 	MEDIA_BUCKET: R2Bucket;
 	AI: Ai;
 	ASSETS: Fetcher;
-	SITE_URL: "https://aizodiac-web.appaizodiac.workers.dev";
+	SITE_URL: "https://aizodiac.life";
 	GROQ_MODEL: "openai/gpt-oss-120b";
 	R2_BUCKET_NAME: "aizodiac-assets";
 	R2_PUBLIC_BASE_URL: "https://assets.aizodiac.workers.dev";
