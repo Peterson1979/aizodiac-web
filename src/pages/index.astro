@@ -77,14 +77,18 @@ const downloadPlayStoreUrl = buildPlayStoreUrl({
       <!-- Zodiac Signs Interactive Strip -->
       <div id="zodiac" class="signs-strip-wrap">
         <div class="strip-header">
-          <span class="strip-label">Explore the 12 Zodiac Archetypes</span>
-          <a href="/tools/zodiac-sign" class="strip-finder-link">Calculate Your Sign →</a>
+          <span class="strip-label">Explore the 12 Zodiac Sign Hubs</span>
+          <div class="strip-links-group">
+            <a href="/zodiac-signs" class="strip-finder-link">All 12 Signs →</a>
+            <span class="strip-divider">•</span>
+            <a href="/tools/zodiac-sign" class="strip-finder-link">Calculate Sign →</a>
+          </div>
         </div>
 
         <div class="signs-grid" aria-label="Zodiac Signs">
           {WESTERN_ZODIAC_SIGNS.map((sign) => (
             <a
-              href={`/tools/zodiac-sign?sign=${sign.id}`}
+              href={`/zodiac-signs/${sign.id}`}
               class="sign-card"
               title={`${sign.name} (${sign.dateRange}) • Element: ${sign.element}`}
             >
@@ -362,6 +366,17 @@ const downloadPlayStoreUrl = buildPlayStoreUrl({
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent-gold);
+  }
+
+  .strip-links-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .strip-divider {
+    font-size: 0.75rem;
+    color: var(--text-muted);
   }
 
   .strip-finder-link {

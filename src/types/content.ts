@@ -131,6 +131,38 @@ export interface ZodiacSignMeta {
   readonly description: string;
 }
 
+export interface ZodiacSignHubData extends ZodiacSignMeta {
+  readonly polarity: 'Yang / Masculine / Assertive' | 'Yin / Feminine / Receptive';
+  readonly house: string;
+  readonly tarotCard: string;
+  readonly luckyNumbers: readonly number[];
+  readonly luckyDay: string;
+  readonly overviewParagraphs: readonly string[];
+  readonly strengths: readonly { readonly title: string; readonly description: string }[];
+  readonly growthAreas: readonly { readonly title: string; readonly description: string }[];
+  readonly relationshipOverview: string;
+  readonly communicationStyle: {
+    readonly summary: string;
+    readonly inDialogue: string;
+    readonly inConflict: string;
+  };
+  readonly birthChartContext: {
+    readonly summary: string;
+    readonly sunRole: string;
+    readonly moonInteraction: string;
+    readonly risingInteraction: string;
+  };
+  readonly bestCompatibility: readonly { readonly sign: WesternZodiacSign; readonly why: string }[];
+  readonly challengingCompatibility: readonly { readonly sign: WesternZodiacSign; readonly why: string }[];
+  readonly horoscopeFocus: string;
+  readonly relatedGuideSlugs: readonly string[];
+  readonly relatedToolSlugs: readonly string[];
+  readonly recommendedFeatureSlug: string;
+  readonly recommendedFeatureTitle: string;
+  readonly seoTitle: string;
+  readonly seoDescription: string;
+}
+
 export const WESTERN_ZODIAC_SIGNS: readonly ZodiacSignMeta[] = [
   {
     id: 'aries',
@@ -690,3 +722,147 @@ export const CTA_CONFIGS: Record<CtaType, CtaMeta> = {
     buttonLink: buildPlayStoreUrl({ utmSource: 'website', utmMedium: 'editorial_cta', utmCampaign: 'explore_zodiac', utmContent: 'article_cta' }),
   },
 };
+
+// -----------------------------------------------------------------------------
+// Layer B: Compatibility Taxonomy & Pair Model Foundation
+// -----------------------------------------------------------------------------
+
+export interface CompatibilityPairMeta {
+  readonly sign1: WesternZodiacSign;
+  readonly sign2: WesternZodiacSign;
+  readonly pairSlug: string;
+  readonly title: string;
+  readonly elementMatch: string;
+  readonly score: number;
+  readonly headline: string;
+  readonly dynamicSummary: string;
+  readonly communicationTips: string;
+}
+
+export interface CompatibilityPairPageData {
+  readonly slug: string;
+  readonly sign1Id: WesternZodiacSign;
+  readonly sign2Id: WesternZodiacSign;
+  readonly title: string;
+  readonly elementDynamic: string;
+  readonly modalityDynamic: string;
+  readonly overviewParagraphs: readonly string[];
+  readonly attractionFactors: readonly { readonly title: string; readonly description: string }[];
+  readonly relationshipStrengths: readonly { readonly title: string; readonly description: string }[];
+  readonly potentialChallenges: readonly { readonly title: string; readonly description: string }[];
+  readonly communicationDynamics: {
+    readonly overview: string;
+    readonly sign1Style: string;
+    readonly sign2Style: string;
+    readonly bridgeStrategy: string;
+  };
+  readonly romanticDynamics: string;
+  readonly friendshipDynamics: string;
+  readonly mutualNeeds: {
+    readonly sign1NeedsFromSign2: readonly string[];
+    readonly sign2NeedsFromSign1: readonly string[];
+  };
+  readonly deeperAstrologyContext: {
+    readonly summary: string;
+    readonly synastryFactors: readonly string[];
+  };
+  readonly relatedPairSlugs: readonly string[];
+  readonly relatedArticleSlugs: readonly string[];
+  readonly seoTitle: string;
+  readonly seoDescription: string;
+}
+
+// -----------------------------------------------------------------------------
+// Layer C: Horoscope Tiers Taxonomy Foundation
+// -----------------------------------------------------------------------------
+
+export type HoroscopeTier = 'daily' | 'weekly' | 'monthly' | 'yearly';
+
+export interface HoroscopeTierMeta {
+  readonly id: HoroscopeTier;
+  readonly name: string;
+  readonly frequency: string;
+  readonly description: string;
+  readonly icon: string;
+  readonly valueHighlights: readonly string[];
+}
+
+export const HOROSCOPE_TIERS: readonly HoroscopeTierMeta[] = [
+  {
+    id: 'daily',
+    name: 'Daily Horoscopes',
+    frequency: 'Every Morning',
+    description: 'Instant morning calibration on planetary transits, moon phases, and current opportunities.',
+    icon: '/images/ic_personal.png',
+    valueHighlights: [
+      'Morning focus and emotional clarity',
+      'Daily transit reflections calibrated to your sign',
+      'Actionable self-reflection prompts',
+    ],
+  },
+  {
+    id: 'weekly',
+    name: 'Weekly Forecasts',
+    frequency: 'Every Monday',
+    description: '7-day cosmic outlook covering professional momentum, emotional shifts, and key opportunities.',
+    icon: '/images/ic_calendar.png',
+    valueHighlights: [
+      'Weekly rhythm and strategic pacing',
+      'Key transit highlights for career and relationships',
+      'Mindful goal-setting guidance',
+    ],
+  },
+  {
+    id: 'monthly',
+    name: 'Monthly Overviews',
+    frequency: '1st of Every Month',
+    description: 'In-depth breakdown of major solar seasons, retrogrades, and seasonal transitions.',
+    icon: '/images/ic_horoscope.png',
+    valueHighlights: [
+      'Major planetary shifts and retrogrades',
+      'New Moon and Full Moon integration',
+      'Longer-term thematic alignment',
+    ],
+  },
+  {
+    id: 'yearly',
+    name: 'Yearly Forecasts',
+    frequency: 'Annual Blueprint',
+    description: 'Macro-astrology landscape detailing annual themes, eclipses, and milestone growth windows.',
+    icon: '/images/ic_extras.png',
+    valueHighlights: [
+      'Year-long planetary transit map',
+      'Major eclipse and transit cycles',
+      'Annual life-path evolution',
+    ],
+  },
+] as const;
+
+// -----------------------------------------------------------------------------
+// App Acquisition: 3-Level CTA System Taxonomy
+// -----------------------------------------------------------------------------
+
+export type CtaLevel = 1 | 2 | 3;
+
+export type AcquisitionIntent = 'awareness' | 'consideration' | 'conversion' | 'retention';
+
+export interface ContextualLinkMeta {
+  readonly title: string;
+  readonly description: string;
+  readonly href: string;
+  readonly badge?: string | undefined;
+  readonly icon?: string | undefined;
+}
+
+export interface FeatureCtaMapping {
+  readonly featureId: AppFeatureId;
+  readonly featureSlug: string;
+  readonly title: string;
+  readonly badge: string;
+  readonly headline: string;
+  readonly description: string;
+  readonly icon: string;
+  readonly valueHighlights: readonly string[];
+  readonly utmCampaign: string;
+}
+

@@ -1,0 +1,825 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { FEATURE_CTA_MAPPINGS } from '@/lib/conversion/ctaMapper';
+import { getCollection } from 'astro:content';
+
+const canonicalUrl = buildCanonicalUrl('birth-chart');
+
+// Fetch related astrology guide articles
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const relatedArticles = allArticles
+  .filter((art) => {
+    const slug = art.id.replace(/\.[^/.]+$/, '');
+    return [
+      'the-big-three-sun-moon-rising-signs',
+      'what-is-a-birth-chart',
+      'guide-to-the-12-astrological-houses',
+      'astrology-basics-how-to-read-birth-chart'
+    ].includes(slug);
+  })
+  .slice(0, 3);
+
+const birthChartJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Birth Chart & The Big Three: Complete Astrological Guide',
+  description: 'Learn what a natal birth chart is and how your Big Three (Sun, Moon, and Rising sign) create your unique astrological profile in AI Zodiac.',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+  author: {
+    '@type': 'Organization',
+    name: 'AI Zodiac',
+    url: 'https://aizodiac.life',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'AI Zodiac',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://aizodiac.life/images/aizodiac_logo.png',
+    },
+  },
+};
+---
+
+<BaseLayout
+  title="Birth Chart & The Big Three Guide: Sun, Moon & Rising Signs | AI Zodiac"
+  description="Discover what a birth chart is and how your Big Three (Sun, Moon, and Rising sign) shape your personality. Calculate your chart with AI Zodiac."
+  canonicalUrl={canonicalUrl}
+  jsonLd={birthChartJsonLd}
+>
+  <div class="birth-chart-page container">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">Birth Chart &amp; The Big Three</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="page-hero glass-card">
+      <div class="hero-badge-wrap">
+        <span class="badge badge-gold">🌌 Natal Astrology Blueprint</span>
+      </div>
+
+      <h1 class="page-title">
+        Birth Chart &amp; <span class="gradient-text">The Big Three</span>
+      </h1>
+
+      <p class="hero-lead">
+        Your Sun sign is only the beginning of your astrological story. A natal birth chart is a precise astronomical blueprint of the sky at the exact moment and location you were born, revealing your core identity, emotional world, and outward persona.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/tools/birth-chart" class="btn btn-primary">
+          <span>Try Free Birth Chart Preview</span>
+          <span>🧭</span>
+        </a>
+        <a href="/features/ascendant" class="btn btn-secondary">
+          <span>Ascendant Calculator</span>
+          <span>🌅</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Section 1: What is a Birth Chart -->
+    <section class="content-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Astrological Fundamentals</span>
+        <h2 class="section-heading">What is a Natal Birth Chart?</h2>
+      </div>
+
+      <div class="prose-cosmic expl-prose">
+        <p>
+          A natal birth chart (often called a horoscope or natal blueprint) is a 360-degree circular map of the solar system as viewed from your specific birth location on Earth at the exact minute you took your first breath.
+        </p>
+        <p>
+          Rather than placing everyone into one of twelve simplistic boxes, a complete birth chart synthesizes <strong class="highlight-text">ten major planetary bodies</strong>, <strong class="highlight-text">twelve astrological houses</strong> (representing distinct arenas of life such as career, relationships, and home), and <strong class="highlight-text">angular geometric aspects</strong> (trines, squares, sextiles, and oppositions) connecting them together.
+        </p>
+      </div>
+
+      <div class="chart-elements-grid">
+        <div class="glass-card element-box">
+          <span class="element-icon">🪐</span>
+          <h3 class="element-title">The Planets &amp; Luminaries</h3>
+          <p class="element-desc">
+            The "what" of your chart. Each planet represents a fundamental psychological drive—such as how you think (Mercury), love (Venus), or take action (Mars).
+          </p>
+        </div>
+
+        <div class="glass-card element-box">
+          <span class="element-icon">♈</span>
+          <h3 class="element-title">The 12 Zodiac Signs</h3>
+          <p class="element-desc">
+            The "how" of your chart. Signs act as elemental archetypes (Fire, Earth, Air, Water) modifying how planetary drives are expressed and experienced.
+          </p>
+        </div>
+
+        <div class="glass-card element-box">
+          <span class="element-icon">🏛️</span>
+          <h3 class="element-title">The 12 Houses</h3>
+          <p class="element-desc">
+            The "where" of your chart. Houses represent the twelve life arenas—from identity (1st House) and values (2nd House) to relationships (7th House) and career (10th House).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: The Big Three Explained -->
+    <section class="content-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ The Core Trinity</span>
+        <h2 class="section-heading">The Big Three: Sun, Moon &amp; Rising</h2>
+      </div>
+
+      <p class="section-lead-desc">
+        In modern psychological astrology, the "Big Three" form the fundamental anchor of your personality profile. Together, they represent your conscious purpose, your subconscious emotional needs, and your outward presentation.
+      </p>
+
+      <div class="big-three-grid">
+        <!-- Sun Sign -->
+        <div class="glass-card big-three-card sun-card">
+          <div class="b3-header">
+            <span class="b3-icon">☀️</span>
+            <div>
+              <span class="b3-label">Conscious Identity</span>
+              <h3 class="b3-title">The Sun Sign</h3>
+            </div>
+          </div>
+          <p class="b3-body">
+            The Sun represents your core ego vitality, conscious will, and primary creative purpose. It answers the question: <em>"Who am I learning to become?"</em> It is the central engine of your character that fuels your authentic self-expression.
+          </p>
+          <div class="b3-footer">
+            <span class="b3-highlight">Key Theme: Vitality, Core Motivation &amp; Purpose</span>
+          </div>
+        </div>
+
+        <!-- Moon Sign -->
+        <div class="glass-card big-three-card moon-card">
+          <div class="b3-header">
+            <span class="b3-icon">🌙</span>
+            <div>
+              <span class="b3-label">Emotional Sanctuary</span>
+              <h3 class="b3-title">The Moon Sign</h3>
+            </div>
+          </div>
+          <p class="b3-body">
+            The Moon represents your emotional instincts, subconscious habits, and private safety needs. It answers the question: <em>"What do I need to feel nurtured and secure?"</em> It reveals how you process feelings in intimate relationships.
+          </p>
+          <div class="b3-footer">
+            <span class="b3-highlight">Key Theme: Emotions, Comfort Needs &amp; Instincts</span>
+          </div>
+        </div>
+
+        <!-- Rising Sign -->
+        <div class="glass-card big-three-card rising-card">
+          <div class="b3-header">
+            <span class="b3-icon">🌅</span>
+            <div>
+              <span class="b3-label">Outward Lens</span>
+              <h3 class="b3-title">The Rising Sign (Ascendant)</h3>
+            </div>
+          </div>
+          <p class="b3-body">
+            The Ascendant is the zodiac sign that was ascending on the eastern horizon at the moment you were born. It represents your physical aura, first impressions, and the lens through which you meet the world. It also sets up your chart’s entire house structure.
+          </p>
+          <div class="b3-footer">
+            <span class="b3-highlight">Key Theme: Persona, First Impressions &amp; Life Approach</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Why Big Three Provide More Context Than Sun Alone -->
+    <section class="content-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🔍 Nuanced Astrology</span>
+        <h2 class="section-heading">Why the Big Three Provide More Context Than Sun Sign Alone</h2>
+      </div>
+
+      <div class="glass-card context-deep-card">
+        <p class="context-lead">
+          Many people read a generic Sun-sign horoscope and feel it only partially describes them. The reason is simple: your Sun sign represents only a single planetary placement out of many.
+        </p>
+
+        <div class="context-examples-grid">
+          <div class="example-item">
+            <h3 class="example-title">Diverse Emotional Archetypes</h3>
+            <p class="example-desc">
+              Two people born on the exact same day share the same Aries Sun, but one may have a cautious Capricorn Moon while the other has an empathetic Pisces Moon. Their emotional reactions to stress will be completely different.
+            </p>
+          </div>
+
+          <div class="example-item">
+            <h3 class="example-title">Distinct Outward Demeanors</h3>
+            <p class="example-desc">
+              An analytical Virgo Sun with a dramatic Leo Rising will present themselves with bold charisma and theatrical warmth, while a Virgo Sun with a Scorpio Rising will appear reserved, perceptive, and observant upon first impression.
+            </p>
+          </div>
+
+          <div class="example-item">
+            <h3 class="example-title">Complete Relationship Synastry</h3>
+            <p class="example-desc">
+              True relationship compatibility is rarely determined solely by Sun signs. Moon-to-Moon connections determine emotional safety, while Venus and Mars placements govern romantic chemistry and shared communication.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: How Birth Time and Location Affect a Chart -->
+    <section class="content-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">⏱️ Astronomical Precision</span>
+        <h2 class="section-heading">How Birth Time and Location Affect Your Chart</h2>
+      </div>
+
+      <div class="timing-precision-grid">
+        <div class="glass-card precision-box">
+          <div class="precision-header">
+            <span class="precision-icon">🕓</span>
+            <h3 class="precision-title">The 4-Minute Ascendant Shift</h3>
+          </div>
+          <p class="precision-desc">
+            Because Earth rotates 360 degrees every 24 hours, the Rising sign shifts approximately <strong class="highlight-text">one degree every 4 minutes</strong>, moving into an entirely new zodiac sign roughly every two hours. An accurate birth time is vital to determine your exact Ascendant degree.
+          </p>
+        </div>
+
+        <div class="glass-card precision-box">
+          <div class="precision-header">
+            <span class="precision-icon">📍</span>
+            <h3 class="precision-title">Geographic Coordinates</h3>
+          </div>
+          <p class="precision-desc">
+            Your birth city provides the exact latitude and longitude required to calculate the local horizon and zenith. This orientation determines the exact cusps for all <strong class="highlight-text">12 astrological houses</strong>.
+          </p>
+        </div>
+
+        <div class="glass-card precision-box">
+          <div class="precision-header">
+            <span class="precision-icon">🌙</span>
+            <h3 class="precision-title">The Moon’s Rapid Transit</h3>
+          </div>
+          <p class="precision-desc">
+            The Moon is the fastest-moving celestial body in astrology, traversing an entire zodiac sign in roughly 2.5 days (about 13 degrees per day). Knowing your birth time ensures your Moon sign and lunar degrees are accurately calculated.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Zodiac Sign Content to Full-Chart Interpretation -->
+    <section class="content-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🌱 Holistic Synthesis</span>
+        <h2 class="section-heading">From Zodiac Signs to Full-Chart Interpretation</h2>
+      </div>
+
+      <div class="glass-card synthesis-card">
+        <p class="synthesis-text">
+          Think of individual zodiac signs as the fundamental musical notes, while your complete birth chart is the full symphonic composition. Exploring your Sun sign on our <a href="/zodiac-signs" class="inline-link">12 Zodiac Signs Hub</a> helps you master the archetypal language of astrology.
+        </p>
+        <p class="synthesis-text">
+          When you graduate to full-chart interpretation, you learn how those 12 archetypes interact dynamically across planetary houses, transits, and personal timing windows.
+        </p>
+
+        <div class="synthesis-bridges-grid">
+          <ContextualLink
+            href="/tools/birth-chart"
+            title="Interactive Birth Chart Preview Tool"
+            description="Enter your birth date and time to preview your natal chart categories and houses."
+            badge="Free Interactive Tool"
+            icon="🧭"
+          />
+          <ContextualLink
+            href="/compatibility"
+            title="Explore Relationship Compatibility"
+            description="Discover how elemental harmonics and multi-planet synastry operate between signs."
+            badge="Compatibility Hub"
+            icon="❤️"
+          />
+          <ContextualLink
+            href="/features/ascendant"
+            title="Ascendant &amp; Rising Sign Calculator"
+            description="Calculate your exact rising sign with our specialized calculator in AI Zodiac."
+            badge="App Feature"
+            icon="🌅"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: How AI Zodiac Provides Deeper Personalized Astrology -->
+    <section class="content-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Modern Technology</span>
+        <h2 class="section-heading">How AI Zodiac Personalizes Your Astrological Experience</h2>
+      </div>
+
+      <div class="glass-card ai-personalization-card">
+        <h3 class="ai-card-title">Synthesizing Real-Time Planetary Data for Real Life</h3>
+        <p class="ai-card-lead">
+          AI Zodiac combines traditional astronomical chart calculation with advanced artificial intelligence to synthesize complex planetary data into clear, actionable daily guidance.
+        </p>
+
+        <div class="ai-features-list">
+          <div class="ai-feature-row">
+            <span class="ai-check">✓</span>
+            <div>
+              <strong class="ai-feat-name">Real-Time Transit Calibration:</strong>
+              <span class="ai-feat-desc">Calculates where planets are moving today relative to your unique natal placements.</span>
+            </div>
+          </div>
+
+          <div class="ai-feature-row">
+            <span class="ai-check">✓</span>
+            <div>
+              <strong class="ai-feat-name">Personalized Daily Horoscopes:</strong>
+              <span class="ai-feat-desc">Delivers daily, weekly, monthly, and yearly forecasts tailored specifically to your birth data.</span>
+            </div>
+          </div>
+
+          <div class="ai-feature-row">
+            <span class="ai-check">✓</span>
+            <div>
+              <strong class="ai-feat-name">Interactive AI Astrologer:</strong>
+              <span class="ai-feat-desc">Ask specific life, career, and relationship questions and receive contextual guidance grounded in your chart.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Educational Guides -->
+    {relatedArticles.length > 0 && (
+      <section class="content-section">
+        <div class="section-title-wrap">
+          <span class="badge badge-gold">📖 In-Depth Guides</span>
+          <h2 class="section-heading">Learn More About Natal Astrology</h2>
+        </div>
+
+        <div class="guides-grid">
+          {relatedArticles.map((art) => {
+            const slug = art.id.replace(/\.[^/.]+$/, '');
+            return (
+              <a href={`/articles/${slug}`} class="guide-card glass-card">
+                <span class="guide-cluster-badge">{art.data.cluster}</span>
+                <h3 class="guide-title">{art.data.title}</h3>
+                <p class="guide-desc">{art.data.description}</p>
+                <div class="guide-footer">
+                  <span>Read Guide</span>
+                  <span>→</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- App Feature CTA -->
+    <FeatureCtaCard
+      mapping={FEATURE_CTA_MAPPINGS.ascendant_calculator}
+      locationTag="birth_chart_landing_bottom"
+      secondaryHref="/tools/birth-chart"
+      secondaryText="Test Free Birth Chart Preview Tool"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .birth-chart-page {
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .breadcrumb-divider {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  /* Page Hero */
+  .page-hero {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    border-radius: var(--radius-lg);
+    background: var(--grad-surface);
+    border: 1px solid var(--border-active);
+    margin-bottom: 4rem;
+  }
+
+  .hero-badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-lead {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 820px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Content Sections */
+  .content-section {
+    margin-bottom: 4.5rem;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.75rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .section-lead-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    max-width: 860px;
+  }
+
+  .expl-prose {
+    font-size: 1.075rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .inline-link {
+    color: var(--accent-cyan);
+    text-decoration: underline;
+  }
+
+  .inline-link:hover {
+    color: var(--accent-gold);
+  }
+
+  /* Chart Elements Grid */
+  .chart-elements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .element-box {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+  }
+
+  .element-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .element-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .element-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Big Three Grid */
+  .big-three-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  .big-three-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .sun-card {
+    border-color: rgba(245, 158, 11, 0.35);
+  }
+
+  .moon-card {
+    border-color: rgba(56, 189, 248, 0.35);
+  }
+
+  .rising-card {
+    border-color: rgba(139, 92, 246, 0.35);
+  }
+
+  .b3-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .b3-icon {
+    font-size: 2.25rem;
+  }
+
+  .b3-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    display: block;
+  }
+
+  .b3-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .b3-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .b3-footer {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .b3-highlight {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+  }
+
+  /* Context Deep Card */
+  .context-deep-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .context-lead {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .context-examples-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  .example-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .example-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin: 0;
+  }
+
+  .example-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Timing Precision Grid */
+  .timing-precision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .precision-box {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+  }
+
+  .precision-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .precision-icon {
+    font-size: 1.5rem;
+  }
+
+  .precision-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .precision-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Synthesis Card */
+  .synthesis-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .synthesis-text {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  .synthesis-bridges-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* AI Personalization Card */
+  .ai-personalization-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(6, 9, 20, 0.85));
+    border-color: rgba(139, 92, 246, 0.35);
+  }
+
+  .ai-card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .ai-card-lead {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+
+  .ai-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .ai-feature-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ai-check {
+    color: #4ade80;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+
+  .ai-feat-name {
+    color: var(--text-primary);
+    margin-right: 0.35rem;
+  }
+
+  .ai-feat-desc {
+    color: var(--text-secondary);
+  }
+
+  /* Guides Grid */
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .guide-cluster-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .guide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 960px) {
+    .chart-elements-grid, .big-three-grid, .context-examples-grid, .timing-precision-grid, .synthesis-bridges-grid, .guides-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-hero {
+      padding: 2rem 1.25rem;
+    }
+    .page-title {
+      font-size: 2.15rem;
+    }
+  }
+</style>

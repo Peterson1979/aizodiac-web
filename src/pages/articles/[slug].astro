@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
-import { CONTENT_CLUSTERS, CTA_CONFIGS, type ContentCluster, type CtaType } from '@/types/content';
+import { CONTENT_CLUSTERS, type ContentCluster } from '@/types/content';
 import { buildCanonicalUrl, generateArticleSchema } from '@/lib/seo/meta';
-import { buildPlayStoreUrl } from '@/lib/conversion/playStore';
 import { siteConfig } from '@/config/site';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { getClusterFeatureMapping } from '@/lib/conversion/ctaMapper';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
@@ -22,7 +24,7 @@ const { Content } = await render(article);
 
 const clusterMap = new Map(CONTENT_CLUSTERS.map((c) => [c.id, c]));
 const clusterInfo = clusterMap.get(article.data.cluster as ContentCluster);
-const ctaInfo = CTA_CONFIGS[article.data.ctaType as CtaType] || CTA_CONFIGS.personalized_insights;
+const featureMapping = getClusterFeatureMapping(article.data.cluster as ContentCluster);
 
 const pageUrl = buildCanonicalUrl(`articles/${slug}`);
 const articleOgImage = article.data.ogImage || article.data.image || siteConfig.defaultOgImage;
@@ -35,13 +37,6 @@ const articleJsonLd = generateArticleSchema({
   publishedTime: article.data.publishedDate,
   modifiedTime: article.data.updatedDate || article.data.publishedDate,
   authorName: siteConfig.defaultAuthor,
-});
-
-const articlePlayStoreUrl = buildPlayStoreUrl({
-  utmSource: 'website',
-  utmMedium: 'editorial',
-  utmCampaign: `article_${article.data.cluster}`,
-  utmContent: slug,
 });
 ---
 
@@ -101,40 +96,38 @@ const articlePlayStoreUrl = buildPlayStoreUrl({
       <Content />
     </div>
 
-    <!-- Contextual Conversion / Discovery CTA -->
-    <section class="article-cta-section">
-      <div class="glass-card cta-card">
-        <div class="cta-brand">
-          <img src="/images/aizodiac_logo.png" alt="AI Zodiac App" width="48" height="48" class="cta-logo-img" loading="lazy" />
-        </div>
-        <span class="badge badge-gold">AI Zodiac Android App</span>
-        <h2 class="cta-title">{ctaInfo.headline}</h2>
-        <p class="cta-desc">
-          Continue your personalized experience in the AI Zodiac app. Explore daily forecasts, calculate your ascendant, explore compatibility, and ask the AI astrologer your questions.
-        </p>
-        <div class="cta-actions">
-          <a
-            href={articlePlayStoreUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-play"
-            data-location="article_cta"
-            aria-label="Get AI Zodiac App on Google Play"
-          >
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-              <path d="M3.609 1.814L13.792 12 3.61 22.186a2.032 2.032 0 0 1-.22-.988V2.802c0-.363.078-.7.219-.988zM15.207 13.414l2.673 2.673-12.87 7.377 10.197-10.05zm0-2.828L5.01 0.536l12.87 7.377-2.673 2.673zm1.414 1.414l3.18-1.82a1.86 1.86 0 0 1 0 3.232l-3.18-1.812z"/>
-            </svg>
-            <div class="btn-play-text">
-              <span class="btn-play-sub">GET IT ON</span>
-              <span class="btn-play-main">Google Play</span>
-            </div>
-          </a>
-          <a href="/tools" class="btn btn-secondary">
-            Explore Your Zodiac Insights
-          </a>
-        </div>
-      </div>
-    </section>
+    <!-- Contextual Internal Linking Grid -->
+    <div class="article-contextual-grid">
+      <ContextualLink
+        href="/zodiac-signs"
+        title="12 Zodiac Signs Hub"
+        description="Explore personality profiles, ruling planets, and elements for all 12 signs."
+        badge="Zodiac Hub"
+        icon="♈"
+      />
+      <ContextualLink
+        href="/compatibility"
+        title="Compatibility & Synastry"
+        description="Check relationship dynamics, love harmonics, and elemental chemistry."
+        badge="Love Match"
+        icon="❤️"
+      />
+      <ContextualLink
+        href="/tools"
+        title="Free Astrological Calculators"
+        description="Calculate your sun sign, compatibility preview, and natal chart baseline."
+        badge="Free Tools"
+        icon="🧭"
+      />
+    </div>
+
+    <!-- 3-Level App-Acquisition Feature CTA -->
+    <FeatureCtaCard
+      mapping={featureMapping}
+      locationTag={`article_${slug}`}
+      secondaryHref="/tools"
+      secondaryText="Explore Free Calculators"
+    />
   </article>
 </BaseLayout>
 
@@ -299,47 +292,17 @@ const articlePlayStoreUrl = buildPlayStoreUrl({
     color: var(--text-secondary);
   }
 
-  /* CTA Section */
-  .article-cta-section {
-    margin-top: 5rem;
+  /* Contextual Internal Linking Grid */
+  .article-contextual-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 4rem;
   }
 
-  .cta-card {
-    text-align: center;
-    padding: 3rem 2rem;
-    background: linear-gradient(180deg, rgba(26, 34, 70, 0.6) 0%, rgba(16, 22, 47, 0.9) 100%);
-    border: 1px solid var(--border-active);
-  }
-
-  .cta-brand {
-    margin-bottom: 1.25rem;
-  }
-
-  .cta-logo-img {
-    border-radius: var(--radius-sm);
-    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
-  }
-
-  .cta-title {
-    font-size: clamp(1.35rem, 3vw, 1.85rem);
-    font-weight: 700;
-    margin-bottom: 0.85rem;
-    max-width: 620px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .cta-desc {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
-    max-width: 540px;
-    margin: 0 auto 2rem;
-  }
-
-  .cta-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+  @media (max-width: 768px) {
+    .article-contextual-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

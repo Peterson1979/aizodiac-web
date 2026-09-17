@@ -1,0 +1,988 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ZODIAC_SIGN_HUBS_LIST, ZODIAC_SIGN_HUBS } from '@/data/zodiacSigns';
+import { COMPATIBILITY_PAIR_PAGES } from '@/data/compatibilityPairPages';
+import { getCollection } from 'astro:content';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { getSignFeatureMapping } from '@/lib/conversion/ctaMapper';
+import type { WesternZodiacSign } from '@/types/content';
+
+export async function getStaticPaths() {
+  return ZODIAC_SIGN_HUBS_LIST.map((sign) => ({
+    params: { sign: sign.id },
+    props: { sign },
+  }));
+}
+
+const { sign } = Astro.props;
+
+const canonicalUrl = buildCanonicalUrl(`zodiac-signs/${sign.id}`);
+const featureMapping = getSignFeatureMapping(sign.id as WesternZodiacSign);
+
+// Helper to check if a full compatibility pair landing page exists
+function getPairLandingSlug(s1: string, s2: string): string | undefined {
+  const p1 = `${s1}-and-${s2}`;
+  const p2 = `${s2}-and-${s1}`;
+  if (COMPATIBILITY_PAIR_PAGES[p1]) return p1;
+  if (COMPATIBILITY_PAIR_PAGES[p2]) return p2;
+  return undefined;
+}
+
+// Fetch related articles for this sign
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const relatedArticles = allArticles
+  .filter((art) => {
+    const slug = art.id.replace(/\.[^/.]+$/, '');
+    return sign.relatedGuideSlugs.includes(slug) || art.data.cluster === 'personality' || art.data.cluster === 'zodiac';
+  })
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title={sign.seoTitle}
+  description={sign.seoDescription}
+  canonicalUrl={canonicalUrl}
+  ogImage={sign.iconUrl}
+>
+  <div class="sign-hub-page container">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <a href="/zodiac-signs" class="breadcrumb-link">Zodiac Signs</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">{sign.name}</span>
+    </nav>
+
+    <!-- Sign Hero Banner -->
+    <header class="sign-hero glass-card">
+      <div class="hero-main-row">
+        <div class="sign-badge-visual">
+          <div class="sign-icon-large">
+            <img src={sign.iconUrl} alt={`${sign.name} Zodiac Icon`} width="80" height="80" class="sign-hero-img" />
+          </div>
+          <span class="sign-hero-symbol" aria-hidden="true">{sign.symbol}</span>
+        </div>
+
+        <div class="sign-hero-text">
+          <div class="sign-meta-pills">
+            <span class="badge badge-gold">{sign.element.toUpperCase()} ELEMENT</span>
+            <span class="badge badge-subtle">{sign.modality.toUpperCase()} MODALITY</span>
+            <span class="badge badge-subtle">RULER: {sign.rulingPlanet.toUpperCase()}</span>
+          </div>
+
+          <h1 class="sign-title">{sign.name} Zodiac Sign</h1>
+          <p class="sign-date-lead">{sign.dateRange}</p>
+          <p class="sign-tagline">{sign.description}</p>
+        </div>
+      </div>
+
+      <!-- Astrological Profile Quick Matrix -->
+      <div class="astrological-matrix">
+        <div class="matrix-item">
+          <span class="matrix-label">Polarity</span>
+          <span class="matrix-value">{sign.polarity}</span>
+        </div>
+        <div class="matrix-item">
+          <span class="matrix-label">Astrological House</span>
+          <span class="matrix-value">{sign.house}</span>
+        </div>
+        <div class="matrix-item">
+          <span class="matrix-label">Tarot Archetype</span>
+          <span class="matrix-value">{sign.tarotCard}</span>
+        </div>
+        <div class="matrix-item">
+          <span class="matrix-label">Lucky Day &amp; Numbers</span>
+          <span class="matrix-value">{sign.luckyDay} • {sign.luckyNumbers.join(', ')}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Personality & Psychological Archetype -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Psychological Archetype</span>
+        <h2 class="section-heading">{sign.name} Personality Traits &amp; Overview</h2>
+      </div>
+
+      <div class="prose-cosmic overview-text">
+        {sign.overviewParagraphs.map((para) => (
+          <p>{para}</p>
+        ))}
+      </div>
+
+      <!-- Strengths & Growth Areas Grid -->
+      <div class="traits-dual-grid">
+        <div class="trait-column glass-card strengths-card">
+          <div class="trait-header">
+            <span class="trait-icon-badge strength-badge">✦</span>
+            <h3 class="trait-heading">Core Strengths</h3>
+          </div>
+          <ul class="trait-list">
+            {sign.strengths.map((s) => (
+              <li class="trait-item">
+                <strong class="trait-title">{s.title}:</strong>
+                <span class="trait-desc">{s.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="trait-column glass-card growth-card">
+          <div class="trait-header">
+            <span class="trait-icon-badge growth-badge">🌱</span>
+            <h3 class="trait-heading">Key Growth Areas</h3>
+          </div>
+          <ul class="trait-list">
+            {sign.growthAreas.map((g) => (
+              <li class="trait-item">
+                <strong class="trait-title">{g.title}:</strong>
+                <span class="trait-desc">{g.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Communication & Expression Style -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">💬 Communication Style</span>
+        <h2 class="section-heading">{sign.name} Communication &amp; Interpersonal Style</h2>
+      </div>
+
+      <div class="communication-hub-card glass-card">
+        <p class="comm-hub-summary">{sign.communicationStyle.summary}</p>
+        
+        <div class="comm-hub-grid">
+          <div class="comm-sub-card">
+            <div class="comm-sub-header">
+              <span class="comm-sub-icon">🗣️</span>
+              <h3 class="comm-sub-heading">In Dialogue &amp; Social Connection</h3>
+            </div>
+            <p class="comm-sub-text">{sign.communicationStyle.inDialogue}</p>
+          </div>
+
+          <div class="comm-sub-card">
+            <div class="comm-sub-header">
+              <span class="comm-sub-icon">⚖️</span>
+              <h3 class="comm-sub-heading">Conflict Resolution &amp; Friction</h3>
+            </div>
+            <p class="comm-sub-text">{sign.communicationStyle.inConflict}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Love, Relationships & Compatibility -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">❤️ Relationship Dynamics</span>
+        <h2 class="section-heading">{sign.name} Love &amp; Compatibility</h2>
+      </div>
+
+      <p class="section-lead-desc">{sign.relationshipOverview}</p>
+
+      <div class="compatibility-grid">
+        <!-- Best Matches -->
+        <div class="compat-box glass-card">
+          <h3 class="compat-subhead">Harmonious Compatibility Matches</h3>
+          <div class="compat-items-list">
+            {sign.bestCompatibility.map((match) => {
+              const partner = ZODIAC_SIGN_HUBS[match.sign];
+              const pairLandingSlug = getPairLandingSlug(sign.id, match.sign);
+              return (
+                <div class="compat-link-card">
+                  <div class="compat-card-main">
+                    <div class="compat-sign-tag">
+                      <img src={partner.iconUrl} alt="" width="28" height="28" />
+                      <a href={`/zodiac-signs/${match.sign}`} class="compat-name">{partner.name}</a>
+                      <span class="compat-symbol">{partner.symbol}</span>
+                    </div>
+                    <p class="compat-why">{match.why}</p>
+                  </div>
+                  {pairLandingSlug && (
+                    <a href={`/compatibility/${pairLandingSlug}`} class="pair-guide-cta-link">
+                      <span>Read {sign.name} &amp; {partner.name} Compatibility Guide</span>
+                      <span>→</span>
+                    </a>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <!-- Challenging Matches -->
+        <div class="compat-box glass-card">
+          <h3 class="compat-subhead">Growth &amp; Dynamic Connections</h3>
+          <div class="compat-items-list">
+            {sign.challengingCompatibility.map((match) => {
+              const partner = ZODIAC_SIGN_HUBS[match.sign];
+              const pairLandingSlug = getPairLandingSlug(sign.id, match.sign);
+              return (
+                <div class="compat-link-card">
+                  <div class="compat-card-main">
+                    <div class="compat-sign-tag">
+                      <img src={partner.iconUrl} alt="" width="28" height="28" />
+                      <a href={`/zodiac-signs/${match.sign}`} class="compat-name">{partner.name}</a>
+                      <span class="compat-symbol">{partner.symbol}</span>
+                    </div>
+                    <p class="compat-why">{match.why}</p>
+                  </div>
+                  {pairLandingSlug && (
+                    <a href={`/compatibility/${pairLandingSlug}`} class="pair-guide-cta-link">
+                      <span>Read {sign.name} &amp; {partner.name} Compatibility Guide</span>
+                      <span>→</span>
+                    </a>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <!-- Compatibility Tool Direct CTA -->
+      <div class="compat-tool-cta">
+        <ContextualLink
+          href={`/tools/compatibility?sign1=${sign.id}`}
+          title={`Check ${sign.name} Compatibility with Any Sign`}
+          description="Use our free interactive compatibility preview to analyze elemental resonance and communication dynamics."
+          badge="Free Interactive Tool"
+          icon="🧭"
+        />
+      </div>
+    </section>
+
+    <!-- Deeper Astrology & Birth Chart Context -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🌌 Beyond the Sun Sign</span>
+        <h2 class="section-heading">{sign.name} in Your Complete Birth Chart</h2>
+      </div>
+
+      <div class="birth-chart-context-card glass-card">
+        <p class="bc-context-lead">{sign.birthChartContext.summary}</p>
+
+        <div class="bc-layers-grid">
+          <div class="bc-layer-box">
+            <span class="bc-layer-badge">☀️ The Sun (Identity)</span>
+            <h3 class="bc-layer-title">{sign.name} Core Vitality</h3>
+            <p class="bc-layer-desc">{sign.birthChartContext.sunRole}</p>
+          </div>
+
+          <div class="bc-layer-box">
+            <span class="bc-layer-badge">🌙 The Moon (Emotions)</span>
+            <h3 class="bc-layer-title">Emotional Processing</h3>
+            <p class="bc-layer-desc">{sign.birthChartContext.moonInteraction}</p>
+          </div>
+
+          <div class="bc-layer-box">
+            <span class="bc-layer-badge">🌅 The Ascendant (Persona)</span>
+            <h3 class="bc-layer-title">Outward Expression</h3>
+            <p class="bc-layer-desc">{sign.birthChartContext.risingInteraction}</p>
+          </div>
+        </div>
+
+        <div class="bc-actions-row">
+          <ContextualLink
+            href="/birth-chart"
+            title="Birth Chart &amp; Big Three Guide"
+            description="Understand how your Sun, Moon, and Ascendant work together in your personal astrology."
+            badge="Astrology Guide"
+            icon="🌌"
+          />
+          <ContextualLink
+            href="/tools/birth-chart"
+            title="Free Birth Chart Preview Tool"
+            description="Enter your birth date, time, and location to preview your astrological blueprint."
+            badge="Free Calculator"
+            icon="🧭"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Recurring Horoscopes Section -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🔮 Cosmic Timing &amp; Horoscopes</span>
+        <h2 class="section-heading">{sign.name} Horoscope &amp; Forecast Insights</h2>
+      </div>
+
+      <div class="horoscope-teaser-card glass-card">
+        <div class="horoscope-teaser-content">
+          <h3 class="teaser-heading">Personalized Planetary Timing for {sign.name}</h3>
+          <p class="teaser-text">
+            {sign.horoscopeFocus} AI Zodiac calculates your planetary transits and rising sign influences to deliver custom daily, weekly, monthly, and yearly guidance.
+          </p>
+          <div class="teaser-actions">
+            <a href="/horoscopes" class="btn btn-secondary">
+              <span>Explore All Horoscope Forecasts</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relevant Astrology Guides -->
+    {relatedArticles.length > 0 && (
+      <section class="hub-section">
+        <div class="section-title-wrap">
+          <span class="badge badge-gold">📖 Related Astrology Guides</span>
+          <h2 class="section-heading">Learn More About {sign.name} Astrology</h2>
+        </div>
+
+        <div class="guides-grid">
+          {relatedArticles.map((art) => {
+            const slug = art.id.replace(/\.[^/.]+$/, '');
+            return (
+              <a href={`/articles/${slug}`} class="guide-card glass-card">
+                <span class="guide-cluster-badge">{art.data.cluster}</span>
+                <h3 class="guide-title">{art.data.title}</h3>
+                <p class="guide-desc">{art.data.description}</p>
+                <div class="guide-footer">
+                  <span>Read Guide</span>
+                  <span>→</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Interactive Free Tools Layer -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🧭 Astrology Tools</span>
+        <h2 class="section-heading">Explore Personalized Calculators</h2>
+      </div>
+
+      <div class="tools-grid">
+        <ContextualLink
+          href={`/tools/zodiac-sign?sign=${sign.id}`}
+          title="Zodiac Sign Finder"
+          description="Verify your exact degree, element, and modality baseline."
+          badge="Sun Sign"
+          icon="☀️"
+        />
+        <ContextualLink
+          href={`/tools/compatibility?sign1=${sign.id}`}
+          title="Compatibility Calculator"
+          description={`Explore synastry dynamics for ${sign.name} pairings.`}
+          badge="Love Synastry"
+          icon="❤️"
+        />
+        <ContextualLink
+          href="/tools/birth-chart"
+          title="Birth Chart Preview"
+          description="Preview houses, ascendant, and complete planetary dimensions."
+          badge="Natal Chart"
+          icon="🌌"
+        />
+      </div>
+    </section>
+
+    <!-- 3-Level App-Acquisition Feature CTA -->
+    <FeatureCtaCard
+      mapping={featureMapping}
+      locationTag={`zodiac_hub_${sign.id}`}
+      secondaryHref={`/features/${featureMapping.featureSlug}`}
+      secondaryText="Learn About In-App Features"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .sign-hub-page {
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .breadcrumb-divider {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  /* Sign Hero */
+  .sign-hero {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--grad-surface);
+    border: 1px solid var(--border-active);
+    margin-bottom: 4rem;
+  }
+
+  .hero-main-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .sign-badge-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sign-icon-large {
+    width: 96px;
+    height: 96px;
+    border-radius: var(--radius-md);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .sign-hero-img {
+    object-fit: contain;
+  }
+
+  .sign-hero-symbol {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    font-size: 1.75rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-full);
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+  }
+
+  .sign-hero-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sign-meta-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .badge-subtle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-full);
+  }
+
+  .sign-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .sign-date-lead {
+    font-size: 1.15rem;
+    color: var(--accent-cyan);
+    font-weight: 600;
+  }
+
+  .sign-tagline {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .astrological-matrix {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .matrix-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .matrix-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .matrix-value {
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--text-highlight);
+  }
+
+  /* Section Layout */
+  .hub-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.75rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .section-lead-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    max-width: 860px;
+  }
+
+  .overview-text {
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  /* Dual Strengths/Growth Grid */
+  .traits-dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  .trait-column {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+  }
+
+  .strengths-card {
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+
+  .growth-card {
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .trait-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .trait-icon-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .strength-badge {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+
+  .growth-badge {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+  }
+
+  .trait-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .trait-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .trait-item {
+    font-size: 0.925rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .trait-title {
+    color: var(--text-primary);
+    margin-right: 0.35rem;
+  }
+
+  /* Communication Hub Card */
+  .communication-hub-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .comm-hub-summary {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .comm-hub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  .comm-sub-card {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .comm-sub-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .comm-sub-icon {
+    font-size: 1.15rem;
+  }
+
+  .comm-sub-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin: 0;
+  }
+
+  .comm-sub-text {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Compatibility */
+  .compatibility-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .compat-box {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+  }
+
+  .compat-subhead {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 0.75rem;
+  }
+
+  .compat-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .compat-link-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.15rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+
+  .compat-link-card:hover {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: var(--border-active);
+  }
+
+  .compat-card-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .compat-sign-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .compat-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    text-decoration: none;
+  }
+
+  .compat-name:hover {
+    text-decoration: underline;
+  }
+
+  .compat-symbol {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+  }
+
+  .compat-why {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .pair-guide-cta-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    text-decoration: none;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border-subtle);
+    transition: color var(--transition-fast);
+  }
+
+  .pair-guide-cta-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .compat-tool-cta {
+    margin-top: 1.5rem;
+  }
+
+  /* Birth Chart Context */
+  .birth-chart-context-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .bc-context-lead {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .bc-layers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .bc-layer-box {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .bc-layer-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .bc-layer-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .bc-layer-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .bc-actions-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* Horoscope Teaser */
+  .horoscope-teaser-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .teaser-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .teaser-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    max-width: 820px;
+  }
+
+  /* Guides */
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .guide-cluster-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .guide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* Tools Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 960px) {
+    .astrological-matrix {
+      grid-template-columns: 1fr 1fr;
+    }
+    .traits-dual-grid, .compatibility-grid, .comm-hub-grid, .bc-layers-grid, .bc-actions-row {
+      grid-template-columns: 1fr;
+    }
+    .guides-grid, .tools-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .sign-hero {
+      padding: 1.5rem;
+    }
+    .hero-main-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    .sign-title {
+      font-size: 2rem;
+    }
+    .astrological-matrix {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

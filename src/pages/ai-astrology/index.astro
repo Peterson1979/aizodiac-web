@@ -1,0 +1,373 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { FEATURE_CTA_MAPPINGS } from '@/lib/conversion/ctaMapper';
+import { getCollection } from 'astro:content';
+
+const canonicalUrl = buildCanonicalUrl('ai-astrology');
+
+const aiArticles = await getCollection('articles', ({ data }) => {
+  return !data.draft && (data.cluster === 'ai-astrology' || data.cluster === 'astrology-guides');
+});
+
+const aiCapabilities = [
+  {
+    title: 'Holistic Birth Data Synthesis',
+    desc: 'Traditional horoscopes rely solely on your Sun sign. AI Zodiac synthesizes your complete astrological coordinates—Sun, Moon, Rising, planetary houses, and real-time transits.',
+    icon: '🌌',
+  },
+  {
+    title: 'Natural Conversational Advisory',
+    desc: 'Ask nuanced, contextual questions about career crossroads, relationship timing, or personal development, and receive thoughtful, empathetic astrological reflections.',
+    icon: '🔮',
+  },
+  {
+    title: 'Precision Cosmic Timing',
+    desc: 'Instead of vague annual predictions, AI calculates exact transit angles (aspects) to identify supportive windows for action, creativity, and rest.',
+    icon: '⏱️',
+  },
+  {
+    title: 'Continuous Self-Discovery',
+    desc: 'Deepen your self-understanding through daily micro-reflections, numerology calculations, and Eastern lunar wisdom integrated into a single seamless experience.',
+    icon: '💡',
+  },
+];
+
+const sampleQuestions = [
+  'How does today’s planetary transit influence my communication and focus at work?',
+  'What are the key strengths and potential blind spots of my Sun and Rising combination?',
+  'How can I navigate emotional friction with a partner who has a Fire-dominant chart?',
+  'Which upcoming lunar phases offer the most supportive timing for creative launches?',
+];
+---
+
+<BaseLayout
+  title="AI Astrology Hub: Personalized Astrologer & Modern Intelligence | AI Zodiac"
+  description="Discover how AI Zodiac merges ancient astrological wisdom with advanced artificial intelligence for personalized birth chart synthesis, daily timing, and conversational guidance."
+  canonicalUrl={canonicalUrl}
+>
+  <div class="ai-astrology-hub-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">AI Astrology</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="hub-header">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">✦ Intelligent Astrology Layer</span>
+      </div>
+      <h1 class="hub-title">AI & Modern Astrology</h1>
+      <p class="hub-lead">
+        Discover the future of astrology. AI Zodiac uses advanced intelligence to translate intricate planetary mechanics and birth charts into accessible, personalized guidance.
+      </p>
+
+      <div class="quick-links-row">
+        <ContextualLink
+          href="/ask-ai"
+          title="Try the Ask AI Web Preview"
+          description="Explore interactive sample questions and discover the power of AI-assisted astrological guidance."
+          badge="Interactive Preview"
+          icon="🔮"
+        />
+        <ContextualLink
+          href="/features/ask-ai"
+          title="Ask the AI Astrologer Feature"
+          description="Learn about the dedicated conversational astrologer inside the AI Zodiac mobile app."
+          badge="App Feature"
+          icon="✨"
+        />
+      </div>
+    </header>
+
+    <!-- Core Capabilities Grid -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ The AI Zodiac Advantage</span>
+        <h2 class="section-heading">How Artificial Intelligence Transforms Astrology</h2>
+      </div>
+
+      <div class="capabilities-grid">
+        {aiCapabilities.map((cap) => (
+          <div class="cap-card glass-card">
+            <span class="cap-icon">{cap.icon}</span>
+            <h3 class="cap-title">{cap.title}</h3>
+            <p class="cap-desc">{cap.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Sample Questions Section -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">❓ Personalized Inquiries</span>
+        <h2 class="section-heading">What Can You Ask the AI Astrologer?</h2>
+      </div>
+
+      <p class="section-desc">
+        Explore example prompts designed to extract nuanced, actionable insights from your birth profile:
+      </p>
+
+      <div class="questions-list">
+        {sampleQuestions.map((q) => (
+          <div class="question-card glass-card">
+            <span class="q-icon">💬</span>
+            <p class="q-text">"{q}"</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Editorial Guides on AI & Astrology -->
+    {aiArticles.length > 0 && (
+      <section class="hub-section">
+        <div class="section-title-wrap">
+          <span class="badge badge-gold">📖 AI Astrology Guides</span>
+          <h2 class="section-heading">Articles on AI, Astrology & Ethics</h2>
+        </div>
+
+        <div class="guides-grid">
+          {aiArticles.map((art) => {
+            const slug = art.id.replace(/\.[^/.]+$/, '');
+            return (
+              <a href={`/articles/${slug}`} class="guide-card glass-card">
+                <span class="guide-cluster-badge">{art.data.cluster}</span>
+                <h3 class="guide-title">{art.data.title}</h3>
+                <p class="guide-desc">{art.data.description}</p>
+                <div class="guide-footer">
+                  <span>Read Guide</span>
+                  <span>→</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Acquisition CTA -->
+    <FeatureCtaCard
+      mapping={FEATURE_CTA_MAPPINGS.ask_the_ai}
+      locationTag="ai_astrology_hub_bottom_cta"
+      secondaryHref="/ask-ai"
+      secondaryText="Test Ask AI Web Preview"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .ai-astrology-hub-page {
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .breadcrumb-divider {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  .hub-header {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto 4rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1rem;
+  }
+
+  .hub-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hub-lead {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2.5rem;
+  }
+
+  .quick-links-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    text-align: left;
+  }
+
+  .hub-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.75rem;
+  }
+
+  .capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .cap-card {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cap-icon {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cap-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .cap-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .question-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .q-icon {
+    font-size: 1.35rem;
+    color: var(--accent-gold);
+    flex-shrink: 0;
+  }
+
+  .q-text {
+    font-size: 0.975rem;
+    color: var(--text-primary);
+    font-style: italic;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .guide-cluster-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .guide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 960px) {
+    .quick-links-row, .capabilities-grid, .guides-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hub-title {
+      font-size: 2.25rem;
+    }
+  }
+</style>

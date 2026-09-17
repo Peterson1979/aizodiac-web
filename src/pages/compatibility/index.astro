@@ -1,0 +1,602 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ZODIAC_SIGN_HUBS_LIST } from '@/data/zodiacSigns';
+import { CANDIDATE_COMPATIBILITY_PAIRS } from '@/data/compatibilityPairs';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { FEATURE_CTA_MAPPINGS } from '@/lib/conversion/ctaMapper';
+import { getCollection } from 'astro:content';
+
+import { COMPATIBILITY_PAIR_PAGES } from '@/data/compatibilityPairPages';
+
+const canonicalUrl = buildCanonicalUrl('compatibility');
+
+const priorityPairs = CANDIDATE_COMPATIBILITY_PAIRS.filter((p) => p.priority === 'P0' || p.priority === 'P1');
+
+const relationshipArticles = await getCollection('articles', ({ data }) => {
+  return !data.draft && data.cluster === 'relationships';
+});
+
+const elementalHarmonies = [
+  {
+    title: 'Fire & Air (Inspiration & Expansion)',
+    pair: 'Aries, Leo, Sagittarius + Gemini, Libra, Aquarius',
+    desc: 'Air fuels fire, sparking enthusiasm, spontaneous adventures, and vibrant intellectual conversations.',
+    icon: '🔥💨',
+  },
+  {
+    title: 'Earth & Water (Nourishment & Security)',
+    pair: 'Taurus, Virgo, Capricorn + Cancer, Scorpio, Pisces',
+    desc: 'Water softens and fertilizes Earth, while Earth provides steady containment and security for Water’s emotional depth.',
+    icon: '🌱💧',
+  },
+  {
+    title: 'Same Element Unions (Instant Rapport)',
+    pair: 'Fire + Fire, Earth + Earth, Air + Air, Water + Water',
+    desc: 'Shares instinctive emotional rhythm and core motivations, requiring mindful cultivation of complementary balance.',
+    icon: '✨',
+  },
+  {
+    title: 'Complementary Opposites (Polarity Attraction)',
+    pair: 'Aries-Libra, Taurus-Scorpio, Gemini-Sagittarius, etc.',
+    desc: 'Opposite signs sit 180° apart on the zodiac wheel, offering magnetic attraction and profound opportunities for mutual growth.',
+    icon: '☯️',
+  },
+];
+---
+
+<BaseLayout
+  title="Zodiac Compatibility Hub: Love, Synastry & Relationship Insights | AI Zodiac"
+  description="Explore zodiac love compatibility, elemental dynamics, communication harmonics, and synastry insights across all 12 signs in AI Zodiac."
+  canonicalUrl={canonicalUrl}
+>
+  <div class="compatibility-hub-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">Compatibility</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="hub-header">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">❤️ Relationship Synastry Layer</span>
+      </div>
+      <h1 class="hub-title">Zodiac Compatibility Hub</h1>
+      <p class="hub-lead">
+        Discover how astrological archetypes interact in romance, friendship, and communication. Explore elemental chemistry, mutual growth areas, and personalized synastry insights.
+      </p>
+
+      <!-- Quick Utilities -->
+      <div class="quick-utilities-grid">
+        <ContextualLink
+          href="/tools/compatibility"
+          title="Interactive Compatibility Preview"
+          description="Select any two zodiac signs to test elemental resonance and communication dynamics."
+          badge="Free Tool"
+          icon="❤️"
+        />
+        <ContextualLink
+          href="/zodiac-signs"
+          title="12 Zodiac Signs Hub"
+          description="Explore individual sign profiles, relationship styles, and ruling planets."
+          badge="Zodiac Hub"
+          icon="♈"
+        />
+        <ContextualLink
+          href="/birth-chart"
+          title="Birth Chart & Big Three"
+          description="Understand why true compatibility requires full birth charts beyond Sun signs."
+          badge="Natal Synastry"
+          icon="🌌"
+        />
+      </div>
+    </header>
+
+    <!-- Elemental Compatibility Principles -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Astrological Fundamentals</span>
+        <h2 class="section-heading">Elemental Dynamics in Love & Chemistry</h2>
+      </div>
+
+      <div class="harmonies-grid">
+        {elementalHarmonies.map((harmony) => (
+          <div class="harmony-card glass-card">
+            <div class="harmony-icon">{harmony.icon}</div>
+            <h3 class="harmony-title">{harmony.title}</h3>
+            <span class="harmony-pair">{harmony.pair}</span>
+            <p class="harmony-desc">{harmony.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Sign-by-Sign Compatibility Directory -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🧭 Explore by Sign</span>
+        <h2 class="section-heading">Zodiac Sign Compatibility Profiles</h2>
+      </div>
+
+      <p class="section-desc">
+        Select your sign to discover comprehensive relationship tendencies, best matches, and dynamic connections:
+      </p>
+
+      <div class="signs-compact-grid">
+        {ZODIAC_SIGN_HUBS_LIST.map((sign) => (
+          <a href={`/zodiac-signs/${sign.id}`} class="sign-compact-card glass-card">
+            <img src={sign.iconUrl} alt={`${sign.name} Icon`} width="36" height="36" />
+            <div class="sign-compact-meta">
+              <span class="sign-compact-name">{sign.name}</span>
+              <span class="sign-compact-element">{sign.element}</span>
+            </div>
+            <span class="sign-compact-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- High-Intent Compatibility Pairings Directory -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Priority Synastry Dynamics</span>
+        <h2 class="section-heading">Featured Zodiac Compatibility Matches</h2>
+      </div>
+
+      <p class="section-desc">
+        Explore in-depth synastry dynamics for the most searched zodiac combinations:
+      </p>
+
+      <div class="priority-pairs-grid">
+        {priorityPairs.map((pair) => {
+          const hasDedicatedPage = Boolean(COMPATIBILITY_PAIR_PAGES[pair.pairSlug]);
+          const cardHref = hasDedicatedPage
+            ? `/compatibility/${pair.pairSlug}`
+            : `/tools/compatibility?sign1=${pair.sign1}&sign2=${pair.sign2}`;
+          return (
+            <a
+              href={cardHref}
+              class="priority-pair-card glass-card"
+              title={`Explore ${pair.title}`}
+            >
+              <div class="pair-card-header">
+                <span class="pair-title-text">{pair.title}</span>
+                {hasDedicatedPage ? (
+                  <span class="pair-score-badge dedicated-badge">In-Depth Guide</span>
+                ) : (
+                  <span class="pair-score-badge">Synastry Match</span>
+                )}
+              </div>
+              <span class="pair-element-tag">{pair.elementMatch}</span>
+              <p class="pair-headline">{pair.headline}</p>
+              <p class="pair-summary-snippet">{pair.dynamicSummary}</p>
+              <div class="pair-card-footer">
+                <span>{hasDedicatedPage ? 'Explore Full In-Depth Guide' : 'Test Pair in Compatibility Tool'}</span>
+                <span>→</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Deeper Synastry / Birth Chart Context Bridge -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🌌 Complete Synastry</span>
+        <h2 class="section-heading">Beyond Sun Signs: The Role of Complete Birth Charts</h2>
+      </div>
+
+      <div class="synastry-intro-card glass-card">
+        <p class="synastry-intro-text">
+          Sun sign compatibility provides a foundational baseline for conscious values and motivations, but complete relationship synastry evaluates the entire birth chart. Moon sign connections reveal emotional security, Venus placements govern romantic expressions, and Mars drives passion and conflict resolution.
+        </p>
+        <div class="synastry-intro-actions">
+          <ContextualLink
+            href="/birth-chart"
+            title="Birth Chart & The Big Three Guide"
+            description="Learn how Sun, Moon, and Ascendant placements create a multi-dimensional personality map."
+            badge="Astrology Guide"
+            icon="🌌"
+          />
+          <ContextualLink
+            href="/articles/zodiac-compatibility-beyond-sun-signs"
+            title="Synastry Beyond Sun Signs"
+            description="Read our comprehensive educational guide on multi-planet relationship harmonics."
+            badge="Editorial Guide"
+            icon="📖"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Relationship Guides -->
+    {relationshipArticles.length > 0 && (
+      <section class="hub-section">
+        <div class="section-title-wrap">
+          <span class="badge badge-gold">📖 Relationship Knowledge</span>
+          <h2 class="section-heading">In-Depth Synastry & Compatibility Guides</h2>
+        </div>
+
+        <div class="guides-grid">
+          {relationshipArticles.map((art) => {
+            const slug = art.id.replace(/\.[^/.]+$/, '');
+            return (
+              <a href={`/articles/${slug}`} class="guide-card glass-card">
+                <span class="guide-cluster-badge">{art.data.cluster}</span>
+                <h3 class="guide-title">{art.data.title}</h3>
+                <p class="guide-desc">{art.data.description}</p>
+                <div class="guide-footer">
+                  <span>Read Guide</span>
+                  <span>→</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Acquisition CTA -->
+    <FeatureCtaCard
+      mapping={FEATURE_CTA_MAPPINGS.love_compatibility}
+      locationTag="compatibility_hub_bottom_cta"
+      secondaryHref="/tools/compatibility"
+      secondaryText="Test Free Compatibility Calculator"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .compatibility-hub-page {
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .breadcrumb-divider {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  .hub-header {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto 4rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1rem;
+  }
+
+  .hub-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hub-lead {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2.5rem;
+  }
+
+  .quick-utilities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    text-align: left;
+  }
+
+  .hub-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.75rem;
+  }
+
+  .harmonies-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .harmony-card {
+    padding: 1.75rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .harmony-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .harmony-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .harmony-pair {
+    font-size: 0.825rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+  }
+
+  .harmony-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .signs-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .sign-compact-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .sign-compact-card:hover {
+    border-color: var(--border-active);
+    transform: translateY(-2px);
+    background: rgba(139, 92, 246, 0.12);
+  }
+
+  .sign-compact-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sign-compact-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .sign-compact-element {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: capitalize;
+  }
+
+  .sign-compact-arrow {
+    color: var(--text-muted);
+    transition: transform var(--transition-fast);
+  }
+
+  .sign-compact-card:hover .sign-compact-arrow {
+    transform: translateX(3px);
+    color: var(--accent-cyan);
+  }
+
+  /* Priority Pairs Grid */
+  .priority-pairs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .priority-pair-card {
+    padding: 1.75rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all var(--transition-fast);
+  }
+
+  .priority-pair-card:hover {
+    border-color: var(--border-active);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .pair-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pair-title-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .priority-pair-card:hover .pair-title-text {
+    color: var(--accent-cyan);
+  }
+
+  .pair-score-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+  }
+
+  .pair-score-badge.dedicated-badge {
+    color: var(--accent-cyan);
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.35);
+  }
+
+  .synastry-intro-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .synastry-intro-text {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .synastry-intro-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .pair-element-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .pair-headline {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-highlight);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  .pair-summary-snippet {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    flex: 1;
+  }
+
+  .pair-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .guide-cluster-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .guide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 960px) {
+    .harmonies-grid, .guides-grid, .synastry-intro-actions {
+      grid-template-columns: 1fr;
+    }
+    .signs-compact-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hub-title {
+      font-size: 2.25rem;
+    }
+    .signs-compact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

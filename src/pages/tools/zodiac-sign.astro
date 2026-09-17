@@ -124,30 +124,45 @@ const toolJsonLd = {
           <p class="app-box-text">
             Your Sun sign is only the conscious foundation. The AI Zodiac Android app calculates your Moon sign, Rising sign, and 10 planetary houses for complete personal guidance.
           </p>
-          <a
-            href={toolPlayStoreUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary result-app-btn"
-            data-location="tool_zodiac_sign"
-          >
-            <span>Get AI Zodiac App</span>
-            <span>→</span>
-          </a>
+          <div class="result-actions-group">
+            <a
+              id="result-hub-btn"
+              href="/zodiac-signs"
+              class="btn btn-secondary result-hub-btn"
+            >
+              <span id="result-hub-text">Explore Zodiac Hub</span>
+              <span>→</span>
+            </a>
+            <a
+              href={toolPlayStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary result-app-btn"
+              data-location="tool_zodiac_sign"
+            >
+              <span>Get AI Zodiac App</span>
+              <span>→</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Educational Context Section -->
     <section class="educational-section">
-      <h2 class="edu-title">The Twelve Zodiac Archetypes</h2>
-      <p class="edu-desc">
-        In Western tropical astrology, the twelve zodiac signs correspond to the Sun’s position against the 360-degree celestial ecliptic at the moment of your birth. Each sign represents a unique synthesis of elemental energy and behavioral modality.
-      </p>
+      <div class="edu-header-row">
+        <div>
+          <h2 class="edu-title">The Twelve Zodiac Sign Hubs</h2>
+          <p class="edu-desc">
+            Explore complete archetype profiles, personality strengths, love compatibility, and daily horoscope guidance for all 12 signs:
+          </p>
+        </div>
+        <a href="/zodiac-signs" class="btn btn-secondary edu-hub-link">All 12 Signs Hub →</a>
+      </div>
 
       <div class="signs-overview-grid">
         {WESTERN_ZODIAC_SIGNS.map((sign) => (
-          <div class="glass-card mini-sign-card">
+          <a href={`/zodiac-signs/${sign.id}`} class="glass-card mini-sign-card" title={`View ${sign.name} Sign Profile`}>
             <div class="mini-sign-top">
               <img src={sign.iconUrl} alt={`${sign.name} Icon`} width="32" height="32" class="mini-sign-icon" loading="lazy" />
               <div class="mini-sign-titles">
@@ -157,7 +172,7 @@ const toolJsonLd = {
             </div>
             <span class="mini-date">{sign.dateRange}</span>
             <span class="mini-meta">{sign.element} • {sign.modality}</span>
-          </div>
+          </a>
         ))}
       </div>
     </section>
@@ -198,6 +213,13 @@ const toolJsonLd = {
         chip.textContent = trait;
         resultTraits.appendChild(chip);
       });
+
+      const resultHubBtn = document.getElementById('result-hub-btn');
+      const resultHubText = document.getElementById('result-hub-text');
+      if (resultHubBtn && resultHubText) {
+        resultHubBtn.href = `/zodiac-signs/${sign.id}`;
+        resultHubText.textContent = `Explore ${sign.name} Hub`;
+      }
 
       resultBox.style.display = 'block';
       resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -458,6 +480,17 @@ const toolJsonLd = {
     line-height: 1.6;
   }
 
+  .result-actions-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .result-hub-btn {
+    padding: 0.75rem 1.5rem;
+  }
+
   .result-app-btn {
     padding: 0.75rem 2rem;
   }
@@ -467,17 +500,32 @@ const toolJsonLd = {
     margin-top: 2rem;
   }
 
+  .edu-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
   .edu-title {
     font-size: 1.75rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .edu-desc {
     font-size: 1rem;
     color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 2rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 620px;
+  }
+
+  .edu-hub-link {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.875rem;
   }
 
   .signs-overview-grid {
@@ -490,6 +538,14 @@ const toolJsonLd = {
     padding: 1.25rem 1rem;
     display: flex;
     flex-direction: column;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .mini-sign-card:hover {
+    border-color: var(--border-active);
+    transform: translateY(-2px);
+    background: rgba(139, 92, 246, 0.12);
   }
 
   .mini-sign-top {

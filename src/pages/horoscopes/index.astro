@@ -1,0 +1,371 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ZODIAC_SIGN_HUBS_LIST } from '@/data/zodiacSigns';
+import { HOROSCOPE_TIERS } from '@/types/content';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { FEATURE_CTA_MAPPINGS } from '@/lib/conversion/ctaMapper';
+
+const canonicalUrl = buildCanonicalUrl('horoscopes');
+---
+
+<BaseLayout
+  title="Horoscopes Hub: Daily, Weekly, Monthly & Yearly Forecasts | AI Zodiac"
+  description="Explore daily, weekly, monthly, and yearly horoscope forecasts. Discover personalized cosmic timing and planetary transit guidance for all 12 zodiac signs in AI Zodiac."
+  canonicalUrl={canonicalUrl}
+>
+  <div class="horoscopes-hub-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">Horoscopes</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="hub-header">
+      <div class="badge-wrap">
+        <span class="badge badge-gold">🔮 Dynamic Forecast Layer</span>
+      </div>
+      <h1 class="hub-title">Horoscopes & Cosmic Timing</h1>
+      <p class="hub-lead">
+        Astrological timing is cyclical. Explore our 4-tier forecast architecture—from daily morning reflections to annual macro-blueprints calibrated to your zodiac sign and birth details.
+      </p>
+
+      <div class="quick-links-row">
+        <ContextualLink
+          href="/features/personal-horoscope"
+          title="Personalized Horoscopes in App"
+          description="Explore in-app daily forecast calibration tailored to your exact birth time & location."
+          badge="App Feature"
+          icon="✨"
+        />
+        <ContextualLink
+          href="/features/personal-calendar"
+          title="Personal Astro Calendar"
+          description="Track retrogrades, moon phases, and personal timing windows in real-time."
+          badge="Timing Engine"
+          icon="📅"
+        />
+      </div>
+    </header>
+
+    <!-- The 4 Forecast Tiers -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Forecast Architecture</span>
+        <h2 class="section-heading">Four Layers of Astrological Guidance</h2>
+      </div>
+
+      <div class="tiers-grid">
+        {HOROSCOPE_TIERS.map((tier) => (
+          <div class="tier-card glass-card">
+            <div class="tier-header-row">
+              <div class="tier-icon-box">
+                <img src={tier.icon} alt="" width="36" height="36" />
+              </div>
+              <span class="badge badge-subtle">{tier.frequency}</span>
+            </div>
+
+            <h3 class="tier-name">{tier.name}</h3>
+            <p class="tier-desc">{tier.description}</p>
+
+            <ul class="tier-values-list">
+              {tier.valueHighlights.map((val) => (
+                <li class="tier-val-item">
+                  <span class="dot">✦</span>
+                  <span>{val}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Sign-by-Sign Horoscope Directory -->
+    <section class="hub-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🧭 Select Your Sign</span>
+        <h2 class="section-heading">Zodiac Sign Forecast Profiles</h2>
+      </div>
+
+      <p class="section-desc">
+        Select your sign to view transit focus areas and discover personalized forecast guidance:
+      </p>
+
+      <div class="signs-grid">
+        {ZODIAC_SIGN_HUBS_LIST.map((sign) => (
+          <a href={`/zodiac-signs/${sign.id}`} class="sign-forecast-card glass-card">
+            <div class="card-top">
+              <img src={sign.iconUrl} alt="" width="40" height="40" />
+              <div class="card-titles">
+                <h3 class="sign-title">{sign.name}</h3>
+                <span class="sign-date">{sign.dateRange}</span>
+              </div>
+            </div>
+            <p class="focus-text">
+              <strong>Forecast Focus:</strong> {sign.horoscopeFocus}
+            </p>
+            <div class="card-cta">
+              <span>View {sign.name} Forecast Profile</span>
+              <span>→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Acquisition CTA -->
+    <FeatureCtaCard
+      mapping={FEATURE_CTA_MAPPINGS.personalized_horoscopes}
+      locationTag="horoscope_hub_bottom_cta"
+      secondaryHref="/features/personal-horoscope"
+      secondaryText="Explore Personalized Horoscope Feature"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .horoscopes-hub-page {
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .breadcrumb-divider {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  .hub-header {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto 4rem;
+  }
+
+  .badge-wrap {
+    margin-bottom: 1rem;
+  }
+
+  .hub-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hub-lead {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2.5rem;
+  }
+
+  .quick-links-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    text-align: left;
+  }
+
+  .hub-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.75rem;
+  }
+
+  /* Tiers Grid */
+  .tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .tier-card {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tier-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .tier-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge-subtle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-full);
+  }
+
+  .tier-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+  }
+
+  .tier-values-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .tier-val-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.825rem;
+    color: var(--text-highlight);
+  }
+
+  .dot {
+    color: var(--accent-cyan);
+  }
+
+  /* Signs Grid */
+  .signs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .sign-forecast-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .sign-forecast-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .card-titles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sign-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .sign-date {
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+  }
+
+  .focus-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 960px) {
+    .quick-links-row, .tiers-grid {
+      grid-template-columns: 1fr;
+    }
+    .signs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hub-title {
+      font-size: 2.25rem;
+    }
+    .signs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

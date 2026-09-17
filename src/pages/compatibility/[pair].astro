@@ -1,0 +1,1038 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { COMPATIBILITY_PAIR_PAGES_LIST } from '@/data/compatibilityPairPages';
+import { ZODIAC_SIGN_HUBS } from '@/data/zodiacSigns';
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+import ContextualLink from '@/components/cta/ContextualLink.astro';
+import FeatureCtaCard from '@/components/cta/FeatureCtaCard.astro';
+import { FEATURE_CTA_MAPPINGS } from '@/lib/conversion/ctaMapper';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return COMPATIBILITY_PAIR_PAGES_LIST.map((pair) => ({
+    params: { pair: pair.slug },
+    props: { pair },
+  }));
+}
+
+const { pair } = Astro.props;
+
+const canonicalUrl = buildCanonicalUrl(`compatibility/${pair.slug}`);
+
+const sign1 = ZODIAC_SIGN_HUBS[pair.sign1Id];
+const sign2 = ZODIAC_SIGN_HUBS[pair.sign2Id];
+
+// Fetch related articles for this pairing
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const relatedArticles = allArticles
+  .filter((art) => {
+    const slug = art.id.replace(/\.[^/.]+$/, '');
+    return pair.relatedArticleSlugs.includes(slug) || art.data.cluster === 'relationships';
+  })
+  .slice(0, 3);
+
+// Other featured pair pages
+const otherPairs = COMPATIBILITY_PAIR_PAGES_LIST.filter((p) => p.slug !== pair.slug);
+
+const pairJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: pair.title,
+  description: pair.seoDescription,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+  author: {
+    '@type': 'Organization',
+    name: 'AI Zodiac',
+    url: 'https://aizodiac.life',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'AI Zodiac',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://aizodiac.life/images/aizodiac_logo.png',
+    },
+  },
+};
+---
+
+<BaseLayout
+  title={pair.seoTitle}
+  description={pair.seoDescription}
+  canonicalUrl={canonicalUrl}
+  jsonLd={pairJsonLd}
+>
+  <div class="compatibility-pair-page container">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <a href="/compatibility" class="breadcrumb-link">Compatibility</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">{pair.title}</span>
+    </nav>
+
+    <!-- Pair Hero Banner -->
+    <header class="pair-hero glass-card">
+      <div class="hero-top-badges">
+        <span class="badge badge-gold">{pair.elementDynamic}</span>
+        <span class="badge badge-subtle">{pair.modalityDynamic}</span>
+      </div>
+
+      <div class="hero-signs-duo">
+        <a href={`/zodiac-signs/${sign1.id}`} class="hero-sign-box" title={`View ${sign1.name} Zodiac Sign Guide`}>
+          <div class="sign-icon-circle">
+            <img src={sign1.iconUrl} alt={`${sign1.name} Icon`} width="64" height="64" />
+          </div>
+          <span class="hero-sign-name">{sign1.name}</span>
+          <span class="hero-sign-element">{sign1.element.toUpperCase()} • {sign1.symbol}</span>
+        </a>
+
+        <div class="hero-connector">
+          <span class="connector-symbol">&amp;</span>
+          <span class="connector-label">Synastry</span>
+        </div>
+
+        <a href={`/zodiac-signs/${sign2.id}`} class="hero-sign-box" title={`View ${sign2.name} Zodiac Sign Guide`}>
+          <div class="sign-icon-circle">
+            <img src={sign2.iconUrl} alt={`${sign2.name} Icon`} width="64" height="64" />
+          </div>
+          <span class="hero-sign-name">{sign2.name}</span>
+          <span class="hero-sign-element">{sign2.element.toUpperCase()} • {sign2.symbol}</span>
+        </a>
+      </div>
+
+      <h1 class="pair-title">{pair.title}</h1>
+      <p class="pair-lead-summary">
+        An in-depth astrological analysis of how {sign1.name} and {sign2.name} interact in love, friendship, communication, and mutual life growth.
+      </p>
+
+      <div class="hero-actions">
+        <a href={`/tools/compatibility?sign1=${sign1.id}&sign2=${sign2.id}`} class="btn btn-secondary">
+          <span>Test in Free Compatibility Tool</span>
+          <span>🧭</span>
+        </a>
+        <a href="#deeper-astrology" class="btn btn-ghost">
+          <span>Explore Full Synastry</span>
+          <span>↓</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Section 2: Compatibility Overview -->
+    <section class="pair-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">✦ Astrological Dynamic</span>
+        <h2 class="section-heading">Compatibility Overview</h2>
+      </div>
+
+      <div class="prose-cosmic overview-prose">
+        {pair.overviewParagraphs.map((para) => (
+          <p>{para}</p>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section 3: What Attracts These Signs -->
+    <section class="pair-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🧲 Chemistry & Attraction</span>
+        <h2 class="section-heading">What Attracts {sign1.name} and {sign2.name} to Each Other</h2>
+      </div>
+
+      <div class="attraction-grid">
+        {pair.attractionFactors.map((factor, idx) => (
+          <div class="attraction-card glass-card">
+            <div class="card-num-badge">0{idx + 1}</div>
+            <h3 class="card-title">{factor.title}</h3>
+            <p class="card-desc">{factor.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section 4 & 5: Strengths and Challenges Grid -->
+    <section class="pair-section">
+      <div class="traits-dual-grid">
+        <!-- Strengths -->
+        <div class="trait-column glass-card strengths-card">
+          <div class="trait-header">
+            <span class="trait-icon-badge strength-badge">✦</span>
+            <h2 class="trait-heading">Strengths of the Relationship</h2>
+          </div>
+          <ul class="trait-list">
+            {pair.relationshipStrengths.map((s) => (
+              <li class="trait-item">
+                <strong class="trait-title">{s.title}:</strong>
+                <span class="trait-desc">{s.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Challenges -->
+        <div class="trait-column glass-card challenges-card">
+          <div class="trait-header">
+            <span class="trait-icon-badge challenge-badge">⚡</span>
+            <h2 class="trait-heading">Potential Challenges & Friction</h2>
+          </div>
+          <ul class="trait-list">
+            {pair.potentialChallenges.map((c) => (
+              <li class="trait-item">
+                <strong class="trait-title">{c.title}:</strong>
+                <span class="trait-desc">{c.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Communication Dynamics -->
+    <section class="pair-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">💬 Dialogue & Expression</span>
+        <h2 class="section-heading">Communication Dynamics</h2>
+      </div>
+
+      <div class="communication-box glass-card">
+        <p class="comm-overview-lead">{pair.communicationDynamics.overview}</p>
+
+        <div class="comm-styles-grid">
+          <div class="comm-style-col">
+            <h3 class="comm-style-title">{sign1.name} Communication Style</h3>
+            <p class="comm-style-desc">{pair.communicationDynamics.sign1Style}</p>
+          </div>
+          <div class="comm-style-col">
+            <h3 class="comm-style-title">{sign2.name} Communication Style</h3>
+            <p class="comm-style-desc">{pair.communicationDynamics.sign2Style}</p>
+          </div>
+        </div>
+
+        <div class="comm-bridge-banner">
+          <strong class="bridge-label">Bridge Strategy:</strong>
+          <span class="bridge-text">{pair.communicationDynamics.bridgeStrategy}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7 & 8: Love / Romantic Dynamics & Friendship -->
+    <section class="pair-section">
+      <div class="love-friendship-grid">
+        <div class="glass-card dynamics-card">
+          <div class="dynamics-header">
+            <span class="dynamics-icon">❤️</span>
+            <h2 class="dynamics-title">Love & Romantic Dynamics</h2>
+          </div>
+          <p class="dynamics-body">{pair.romanticDynamics}</p>
+        </div>
+
+        <div class="glass-card dynamics-card">
+          <div class="dynamics-header">
+            <span class="dynamics-icon">🤝</span>
+            <h2 class="dynamics-title">Friendship & Collaboration</h2>
+          </div>
+          <p class="dynamics-body">{pair.friendshipDynamics}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 9: What Each Sign Needs From The Other -->
+    <section class="pair-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🌱 Mutual Harmony</span>
+        <h2 class="section-heading">What Each Sign Needs from the Other</h2>
+      </div>
+
+      <div class="needs-dual-grid">
+        <div class="glass-card need-card">
+          <div class="need-header">
+            <img src={sign1.iconUrl} alt="" width="32" height="32" />
+            <h3 class="need-heading">What {sign1.name} Needs from {sign2.name}</h3>
+          </div>
+          <ul class="need-list">
+            {pair.mutualNeeds.sign1NeedsFromSign2.map((item) => (
+              <li class="need-item">{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="glass-card need-card">
+          <div class="need-header">
+            <img src={sign2.iconUrl} alt="" width="32" height="32" />
+            <h3 class="need-heading">What {sign2.name} Needs from {sign1.name}</h3>
+          </div>
+          <ul class="need-list">
+            {pair.mutualNeeds.sign2NeedsFromSign1.map((item) => (
+              <li class="need-item">{item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 10: Deeper Astrology Context & Synastry -->
+    <section id="deeper-astrology" class="pair-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🌌 Beyond Sun Signs</span>
+        <h2 class="section-heading">Deeper Astrology Context: Complete Synastry</h2>
+      </div>
+
+      <div class="synastry-deep-card glass-card">
+        <p class="synastry-lead-text">{pair.deeperAstrologyContext.summary}</p>
+
+        <div class="synastry-factors-list">
+          {pair.deeperAstrologyContext.synastryFactors.map((factor) => (
+            <div class="synastry-factor-row">
+              <span class="synastry-bullet">✦</span>
+              <p class="synastry-factor-text">{factor}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="synastry-tools-bridge">
+          <ContextualLink
+            href="/birth-chart"
+            title="Explore Birth Charts & The Big Three"
+            description="Learn how Sun, Moon, and Ascendant interact to shape authentic relationship compatibility."
+            badge="Astrology Guide"
+            icon="🌌"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 11: Related Compatibility Links -->
+    <section class="pair-section">
+      <div class="section-title-wrap">
+        <span class="badge badge-gold">🧭 More Pairings & Guides</span>
+        <h2 class="section-heading">Related Zodiac Compatibility Pages</h2>
+      </div>
+
+      <div class="related-pairs-grid">
+        {otherPairs.map((p) => {
+          const s1 = ZODIAC_SIGN_HUBS[p.sign1Id];
+          const s2 = ZODIAC_SIGN_HUBS[p.sign2Id];
+          return (
+            <a href={`/compatibility/${p.slug}`} class="related-pair-card glass-card">
+              <div class="related-pair-icons">
+                <img src={s1.iconUrl} alt="" width="28" height="28" />
+                <span class="related-plus">+</span>
+                <img src={s2.iconUrl} alt="" width="28" height="28" />
+              </div>
+              <h3 class="related-pair-title">{p.title}</h3>
+              <span class="related-element">{p.elementDynamic}</span>
+              <div class="related-footer">
+                <span>Read Full Compatibility Guide</span>
+                <span>→</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- Hub and Tools Links -->
+      <div class="hub-links-row">
+        <ContextualLink
+          href={`/zodiac-signs/${sign1.id}`}
+          title={`${sign1.name} Zodiac Guide`}
+          description={`Personality traits, dates, and complete archetype for ${sign1.name}.`}
+          badge="Zodiac Hub"
+          icon="♈"
+        />
+        <ContextualLink
+          href={`/zodiac-signs/${sign2.id}`}
+          title={`${sign2.name} Zodiac Guide`}
+          description={`Personality traits, dates, and complete archetype for ${sign2.name}.`}
+          badge="Zodiac Hub"
+          icon="♌"
+        />
+        <ContextualLink
+          href="/compatibility"
+          title="All Zodiac Compatibility Hub"
+          description="Explore elemental chemistry and matches across all 12 signs."
+          badge="Synastry Hub"
+          icon="❤️"
+        />
+      </div>
+    </section>
+
+    <!-- Related Educational Articles -->
+    {relatedArticles.length > 0 && (
+      <section class="pair-section">
+        <div class="section-title-wrap">
+          <span class="badge badge-gold">📖 Relationship Articles</span>
+          <h2 class="section-heading">Learn More About Astrological Synastry</h2>
+        </div>
+
+        <div class="guides-grid">
+          {relatedArticles.map((art) => {
+            const slug = art.id.replace(/\.[^/.]+$/, '');
+            return (
+              <a href={`/articles/${slug}`} class="guide-card glass-card">
+                <span class="guide-cluster-badge">{art.data.cluster}</span>
+                <h3 class="guide-title">{art.data.title}</h3>
+                <p class="guide-desc">{art.data.description}</p>
+                <div class="guide-footer">
+                  <span>Read Guide</span>
+                  <span>→</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Section 12: AI Zodiac App Synastry Feature CTA -->
+    <FeatureCtaCard
+      mapping={FEATURE_CTA_MAPPINGS.love_compatibility}
+      locationTag={`pair_page_${pair.slug}`}
+      secondaryHref={`/tools/compatibility?sign1=${sign1.id}&sign2=${sign2.id}`}
+      secondaryText={`Test ${sign1.name} & ${sign2.name} in Free Tool`}
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .compatibility-pair-page {
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--accent-cyan);
+  }
+
+  .breadcrumb-divider {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-current {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  /* Pair Hero */
+  .pair-hero {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    border-radius: var(--radius-lg);
+    background: var(--grad-surface);
+    border: 1px solid var(--border-active);
+    margin-bottom: 4rem;
+  }
+
+  .hero-top-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .badge-subtle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-full);
+  }
+
+  .hero-signs-duo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-sign-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: transform var(--transition-fast);
+  }
+
+  .hero-sign-box:hover {
+    transform: translateY(-4px);
+  }
+
+  .sign-icon-circle {
+    width: 84px;
+    height: 84px;
+    border-radius: var(--radius-full);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .hero-sign-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .hero-sign-element {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    letter-spacing: 0.05em;
+  }
+
+  .hero-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .connector-symbol {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    font-family: var(--font-display);
+  }
+
+  .connector-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .pair-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .pair-lead-summary {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 780px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-ghost:hover {
+    color: var(--accent-cyan);
+    border-color: var(--border-active);
+  }
+
+  /* Section Layout */
+  .pair-section {
+    margin-bottom: 4.5rem;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.75rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .overview-prose {
+    font-size: 1.075rem;
+    line-height: 1.8;
+  }
+
+  /* Attraction Grid */
+  .attraction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .attraction-card {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    position: relative;
+    border-color: rgba(139, 92, 246, 0.25);
+  }
+
+  .card-num-badge {
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    color: var(--accent-gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .card-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Traits Dual Grid */
+  .traits-dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  .trait-column {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .strengths-card {
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+
+  .challenges-card {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .trait-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .trait-icon-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .strength-badge {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+
+  .challenge-badge {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+  }
+
+  .trait-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .trait-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .trait-item {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .trait-title {
+    color: var(--text-primary);
+    margin-right: 0.35rem;
+  }
+
+  /* Communication Box */
+  .communication-box {
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .comm-overview-lead {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .comm-styles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .comm-style-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin-bottom: 0.5rem;
+  }
+
+  .comm-style-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .comm-bridge-banner {
+    padding: 1.25rem 1.5rem;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .bridge-label {
+    color: var(--accent-gold);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .bridge-text {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+
+  /* Love & Friendship Dynamics */
+  .love-friendship-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  .dynamics-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .dynamics-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .dynamics-icon {
+    font-size: 1.5rem;
+  }
+
+  .dynamics-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .dynamics-body {
+    font-size: 0.975rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Needs Dual Grid */
+  .needs-dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  .need-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .need-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .need-heading {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .need-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .need-item {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .need-item::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent-cyan);
+    font-weight: 700;
+  }
+
+  /* Synastry Deep Card */
+  .synastry-deep-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .synastry-lead-text {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+  }
+
+  .synastry-factors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .synastry-factor-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .synastry-bullet {
+    color: var(--accent-gold);
+    font-size: 1rem;
+    margin-top: 0.2rem;
+  }
+
+  .synastry-factor-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .synastry-tools-bridge {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* Related Pairs Grid */
+  .related-pairs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .related-pair-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .related-pair-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .related-pair-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .related-plus {
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .related-pair-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+  }
+
+  .related-element {
+    font-size: 0.8rem;
+    color: var(--accent-cyan);
+    margin-bottom: 1.25rem;
+  }
+
+  .related-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .hub-links-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* Guides Grid */
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .guide-cluster-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .guide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 960px) {
+    .attraction-grid, .related-pairs-grid, .hub-links-row, .guides-grid {
+      grid-template-columns: 1fr;
+    }
+    .traits-dual-grid, .love-friendship-grid, .needs-dual-grid, .comm-styles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pair-hero {
+      padding: 2rem 1.25rem;
+    }
+    .hero-signs-duo {
+      gap: 1.5rem;
+    }
+    .pair-title {
+      font-size: 2.15rem;
+    }
+    .sign-icon-circle {
+      width: 64px;
+      height: 64px;
+    }
+    .sign-icon-circle img {
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>
