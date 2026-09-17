@@ -1,0 +1,391 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy — AI Zodiac"
+  description="Privacy Policy for the AI Zodiac mobile application and website. Learn about our local-first storage, decentralized architecture, and privacy-focused data handling."
+>
+  <div class="legal-page-container">
+    <div class="container">
+      <div class="legal-breadcrumbs">
+        <a href="/" class="back-link">
+          <span>&larr;</span> Back to AI Zodiac Home
+        </a>
+      </div>
+
+      <article class="glass-card legal-card">
+        <header class="legal-header">
+          <div class="legal-badge-row">
+            <span class="badge badge-gold">Official Legal Policy</span>
+            <span class="legal-date">Last updated: September 17, 2026</span>
+          </div>
+          <h1 class="legal-title">AI Zodiac <span class="gradient-text">Privacy Policy</span></h1>
+          <p class="legal-lead">
+            This Privacy Policy describes how the <strong>AI Zodiac</strong> mobile application and its associated web services collect, process, and protect information when you use our services.
+          </p>
+        </header>
+
+        <div class="legal-content">
+          <section>
+            <h2>1. Introduction</h2>
+            <p>
+              We are committed to user privacy, transparency, and data minimization. This policy explains what information is stored on your device, what data is transmitted when requesting astrological insights, how backend processing functions, and how third-party advertising is handled.
+            </p>
+          </section>
+
+          <section>
+            <h2>2. Local Device Storage (No Cloud User Accounts)</h2>
+            <p>
+              AI Zodiac is designed with a decentralized, local-first storage architecture:
+            </p>
+            <ul>
+              <li><strong>Local Profile Storage:</strong> Birth and profile details entered in the application (such as your name or full name, gender, birth date, birth time, birth city, birth country, timezone, and calculated Western/Chinese zodiac signs) are saved exclusively on your Android device using private <code>SharedPreferences</code> storage.</li>
+              <li><strong>No Cloud User Accounts:</strong> The app does not require account creation, logins, passwords, or a persistent cloud database for user profiles.</li>
+              <li><strong>Local Data Control:</strong> You can edit or delete your profile information at any time directly in the app's Profile section, or remove all stored data by clearing app storage in Android settings or uninstalling the application.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>3. Information Transmitted for AI-Powered Astrology Features</h2>
+            <p>
+              When you actively request horoscope interpretations or interactive astrological calculations (such as Daily Horoscope, Personal Horoscope, Ascendant Calculation, Chinese Horoscope, Numerology, Love Compatibility, Personal Astro Calendar, or Ask the Stars), the application transmits necessary query inputs over secure HTTPS to the AI Zodiac backend.
+            </p>
+            <p>Depending on the specific feature you select, the transmitted information may include:</p>
+            <ul>
+              <li><strong>Birth &amp; Astrological Parameters:</strong> Birth date, birth time (or default time if marked unknown), birth city, birth country, timezone, and zodiac signs.</li>
+              <li><strong>Identity &amp; Profile Inputs:</strong> Name or full name (if provided) and gender.</li>
+              <li><strong>Feature-Specific Queries:</strong> Partner birth information (for love compatibility analysis, if entered), specific questions (for Ask the Stars), focus areas, calculation time periods (daily, weekly, monthly, yearly, or lifetime), and your chosen app language.</li>
+            </ul>
+            <div class="legal-notice-box">
+              <h3>Device &amp; Location Disclosures</h3>
+              <ul>
+                <li>The app does not request GPS, fine location, or coarse location permissions. Birth city and country are entered or selected manually by the user; precise GPS coordinates are not collected.</li>
+                <li>The app does not access or collect device hardware identifiers such as Android ID, IMEI, hardware serial numbers, or MAC addresses.</li>
+                <li>IP addresses are inherently transmitted at the network layer during standard HTTPS communication with the backend and integrated services.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>4. AI Processing &amp; Backend Infrastructure</h2>
+            <p>
+              To generate personalized astrological readings, the backend processes incoming calculation requests using reputable artificial intelligence and cloud infrastructure providers:
+            </p>
+            <ul>
+              <li><strong>AI Inference:</strong> <strong>Google Gemini</strong> and <strong>Groq</strong> AI APIs (for generating natural-language astrological interpretations and calculations).</li>
+              <li><strong>Backend Caching &amp; Rate Limiting:</strong> High-performance serverless Redis caching is utilized as backend infrastructure for operational rate limiting, abuse prevention, budget controls, and temporary caching of generated horoscope content to ensure fast response times and service stability. Backend infrastructure is not contacted directly by the mobile app.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>5. Advertising &ndash; Google AdMob</h2>
+            <p>
+              AI Zodiac displays advertisements using <strong>Google AdMob</strong>, an advertising service provided by <strong>Google LLC</strong>.
+            </p>
+            <p>
+              To serve banner and interstitial advertisements, prevent ad fraud, ensure security, and provide ad measurement, Google AdMob and its SDK may automatically collect and process certain device and usage information, including:
+            </p>
+            <ul>
+              <li>Device identifiers, including the Google Advertising ID (AAID) where available.</li>
+              <li>IP address and general network connection details.</li>
+              <li>Ad interaction, viewability, click, and impression data.</li>
+              <li>Diagnostic and technical performance data related to ad serving.</li>
+            </ul>
+            <p>
+              Google's data collection and processing activities are governed by Google's own Privacy Policy. For detailed information on how Google processes advertising data, please review:
+            </p>
+            <ul>
+              <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+              <li><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use our services</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>6. Analytics &amp; Tracking SDK Disclosures</h2>
+            <p>
+              The AI Zodiac mobile application itself does not integrate standalone analytics, crash tracking, or behavioral profiling SDKs such as Firebase Analytics, Firebase Crashlytics, Firebase App Check, Facebook/Meta SDK, AppsFlyer, Adjust, Branch, Mixpanel, Amplitude, or Segment.
+            </p>
+            <p>
+              Advertising-related data processing is conducted independently by Google AdMob as described in Section 5.
+            </p>
+          </section>
+
+          <section>
+            <h2>7. Data Retention</h2>
+            <ul>
+              <li><strong>On-Device Profile Data:</strong> Profile data remains in local storage on your device until you edit or remove it within the app, clear app data, or uninstall the app.</li>
+              <li><strong>Backend State:</strong> The backend does not maintain persistent user account databases. Ephemeral cache and rate-limiting entries expire automatically based on standard TTL configurations.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>8. Data Security</h2>
+            <p>
+              All communications between the mobile application and backend services are encrypted in transit using standard HTTPS / TLS (Transport Layer Security). We enforce fail-closed security controls and minimize server-side data retention to protect against unauthorized access.
+            </p>
+          </section>
+
+          <section>
+            <h2>9. User Rights &amp; Data Control</h2>
+            <p>
+              You have direct control over your information within AI Zodiac:
+            </p>
+            <ul>
+              <li>You can update, modify, or delete your birth information at any time directly in the app's Profile section.</li>
+              <li>You can reset or manage advertising identifiers and ad personalization through your Android device settings (under <strong>Google &gt; Ads</strong>).</li>
+              <li>You can delete all locally stored app data at any time through Android <strong>Settings &gt; Apps &gt; AI Zodiac &gt; Storage &gt; Clear Storage</strong>, or by uninstalling the app.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>10. Children's Privacy</h2>
+            <p>
+              AI Zodiac is not directed to children under the age of 13 (or under 16 in applicable jurisdictions), and we do not knowingly collect personal information from children. If you believe a child has provided personal information to the application, please contact us so that we can take appropriate steps.
+            </p>
+          </section>
+
+          <section>
+            <h2>11. Cookies &amp; Tracking on This Webpage</h2>
+            <p>
+              This website provides informational content, astrology tools, and official app documentation. Web analytics are configured solely for privacy-conscious aggregated traffic measurement and do not track personal user identities or sell personal data.
+            </p>
+          </section>
+
+          <section>
+            <h2>12. Changes to This Privacy Policy</h2>
+            <p>
+              We may update this Privacy Policy from time to time to reflect changes in application features or legal requirements. When updates occur, the "Last updated" date at the top of this document will be updated.
+            </p>
+          </section>
+
+          <section>
+            <h2>13. Contact Information</h2>
+            <p>
+              If you have questions, inquiries, or feedback regarding this Privacy Policy or data handling in AI Zodiac, you may contact us through our <a href="/contact">Contact Page</a> or via the official <a href="https://play.google.com/store/apps/details?id=com.oberon.aizodiac" target="_blank" rel="noopener noreferrer">AI Zodiac Google Play Store Listing</a>.
+            </p>
+          </section>
+        </div>
+
+        <div class="legal-crosslinks">
+          <h3 class="crosslinks-heading">Related Legal Documents</h3>
+          <div class="crosslinks-grid">
+            <a href="/terms-of-use" class="crosslink-card">
+              <span class="crosslink-title">Terms of Use &rarr;</span>
+              <span class="crosslink-desc">Terms governing app, website, and celestial insights usage</span>
+            </a>
+            <a href="/disclaimer" class="crosslink-card">
+              <span class="crosslink-title">AI &amp; Content Disclaimer &rarr;</span>
+              <span class="crosslink-desc">Entertainment boundaries and non-reliance guidelines</span>
+            </a>
+            <a href="/contact" class="crosslink-card">
+              <span class="crosslink-title">Contact &amp; Support &rarr;</span>
+              <span class="crosslink-desc">Get in touch with the AI Zodiac development team</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page-container {
+    padding: 3rem 0 5rem;
+    background: radial-gradient(circle at 50% 10%, rgba(139, 92, 246, 0.07) 0%, transparent 60%);
+  }
+
+  .legal-breadcrumbs {
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: #7dd3fc;
+    text-decoration: underline;
+  }
+
+  .legal-card {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3.5rem 3rem;
+  }
+
+  .legal-header {
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-date {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .legal-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-lead {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .legal-content section {
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-content h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--accent-purple);
+    padding-left: 0.85rem;
+  }
+
+  .legal-content p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .legal-content ul {
+    list-style: disc;
+    margin-left: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-content li {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+  }
+
+  .legal-content strong {
+    color: var(--text-highlight);
+    font-weight: 600;
+  }
+
+  .legal-content code {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent-cyan);
+  }
+
+  .legal-content a {
+    color: var(--accent-cyan);
+    text-decoration: underline;
+    transition: color var(--transition-fast);
+  }
+
+  .legal-content a:hover {
+    color: #7dd3fc;
+  }
+
+  .legal-notice-box {
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .legal-notice-box h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .legal-notice-box ul {
+    margin-bottom: 0;
+  }
+
+  .legal-crosslinks {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border-glass);
+  }
+
+  .crosslinks-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .crosslinks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .crosslink-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .crosslink-card:hover {
+    background: rgba(139, 92, 246, 0.12);
+    border-color: var(--accent-purple);
+    transform: translateY(-2px);
+  }
+
+  .crosslink-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .crosslink-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 768px) {
+    .legal-card {
+      padding: 2.25rem 1.5rem;
+    }
+  }
+</style>

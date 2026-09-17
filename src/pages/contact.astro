@@ -1,0 +1,360 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact & Support — AI Zodiac"
+  description="Contact and support channels for AI Zodiac. Inquiries regarding app features, privacy, feedback, and developer support."
+>
+  <div class="legal-page-container">
+    <div class="container">
+      <div class="legal-breadcrumbs">
+        <a href="/" class="back-link">
+          <span>&larr;</span> Back to AI Zodiac Home
+        </a>
+      </div>
+
+      <article class="glass-card legal-card">
+        <header class="legal-header">
+          <div class="legal-badge-row">
+            <span class="badge badge-gold">Official Support</span>
+            <span class="legal-date">Support: AI Zodiac Team</span>
+          </div>
+          <h1 class="legal-title">Contact &amp; <span class="gradient-text">Support</span></h1>
+          <p class="legal-lead">
+            The <strong>AI Zodiac</strong> mobile application and website are developed, operated, and maintained by the AI Zodiac team. We welcome your feedback, inquiries, and support requests.
+          </p>
+        </header>
+
+        <div class="legal-content">
+          <section>
+            <h2>Support &amp; App Information</h2>
+            <div class="contact-cards-grid">
+              <div class="contact-box glass-card">
+                <div class="contact-icon">📱</div>
+                <h3>Google Play Support</h3>
+                <p>For mobile app support, version updates, bug reports, and reviews:</p>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.oberon.aizodiac"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary contact-cta-btn"
+                  data-location="contact_page"
+                >
+                  AI Zodiac on Google Play
+                </a>
+              </div>
+
+              <div class="contact-box glass-card">
+                <div class="contact-icon">🛡️</div>
+                <h3>Privacy &amp; Data Inquiries</h3>
+                <p>For questions concerning data privacy, security, or legal notices, reach out via the official developer support channels on Google Play.</p>
+                <a href="/privacy-policy" class="btn btn-secondary contact-cta-btn">
+                  Read Privacy Policy
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+              <h3>How do I edit or delete my profile data?</h3>
+              <p>
+                AI Zodiac uses decentralized local storage on your Android device (private <code>SharedPreferences</code>). We do not operate cloud user accounts or password databases. You can update or delete your birth parameters directly inside the app's Profile screen at any time, or remove all data via Android <strong>Settings &gt; Apps &gt; AI Zodiac &gt; Storage &gt; Clear Storage</strong>.
+              </p>
+            </div>
+
+            <div class="faq-item">
+              <h3>How do I manage advertising preferences?</h3>
+              <p>
+                Advertisements in the Android app are delivered by Google AdMob. You can manage or reset your advertising ID and ad personalization at any time through your Android device settings under <strong>Settings &gt; Google &gt; Ads</strong>.
+              </p>
+            </div>
+
+            <div class="faq-item">
+              <h3>Are website cookies used?</h3>
+              <p>
+                No tracking cookies are stored for user profiling or marketing. Web analytics on this site are configured solely for privacy-conscious, aggregate traffic measurement without selling personal data.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Legal Documentation</h2>
+            <p>
+              Please review our full legal disclosures:
+            </p>
+            <ul>
+              <li><a href="/privacy-policy">Privacy Policy</a> &mdash; Detailed overview of data handling, Google AdMob, and local storage architecture.</li>
+              <li><a href="/terms-of-use">Terms of Use</a> &mdash; Terms and conditions governing the use of the app and website.</li>
+              <li><a href="/disclaimer">AI &amp; Content Disclaimer</a> &mdash; Boundaries of astrological interpretations and AI generative features.</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="legal-crosslinks">
+          <h3 class="crosslinks-heading">Related Pages</h3>
+          <div class="crosslinks-grid">
+            <a href="/features" class="crosslink-card">
+              <span class="crosslink-title">App Features &rarr;</span>
+              <span class="crosslink-desc">Explore personalized horoscopes, ascendant, and compatibility</span>
+            </a>
+            <a href="/tools" class="crosslink-card">
+              <span class="crosslink-title">Free Calculators &rarr;</span>
+              <span class="crosslink-desc">Instant birth chart preview and zodiac finder</span>
+            </a>
+            <a href="/articles" class="crosslink-card">
+              <span class="crosslink-title">Astrology Guides &rarr;</span>
+              <span class="crosslink-desc">Educational guides on signs, houses, and elements</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page-container {
+    padding: 3rem 0 5rem;
+    background: radial-gradient(circle at 50% 10%, rgba(139, 92, 246, 0.07) 0%, transparent 60%);
+  }
+
+  .legal-breadcrumbs {
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: #7dd3fc;
+    text-decoration: underline;
+  }
+
+  .legal-card {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3.5rem 3rem;
+  }
+
+  .legal-header {
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-date {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .legal-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-lead {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .legal-content section {
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-content h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    border-left: 3px solid var(--accent-purple);
+    padding-left: 0.85rem;
+  }
+
+  .legal-content p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .legal-content ul {
+    list-style: disc;
+    margin-left: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-content li {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+  }
+
+  .legal-content strong {
+    color: var(--text-highlight);
+    font-weight: 600;
+  }
+
+  .legal-content code {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent-cyan);
+  }
+
+  .legal-content a {
+    color: var(--accent-cyan);
+    text-decoration: underline;
+    transition: color var(--transition-fast);
+  }
+
+  .legal-content a:hover {
+    color: #7dd3fc;
+  }
+
+  .contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .contact-box {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-box h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-box p {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .contact-cta-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .faq-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .faq-item h3 {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-item p {
+    margin-bottom: 0;
+    font-size: 0.9375rem;
+  }
+
+  .legal-crosslinks {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border-glass);
+  }
+
+  .crosslinks-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .crosslinks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .crosslink-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .crosslink-card:hover {
+    background: rgba(139, 92, 246, 0.12);
+    border-color: var(--accent-purple);
+    transform: translateY(-2px);
+  }
+
+  .crosslink-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .crosslink-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 768px) {
+    .legal-card {
+      padding: 2.25rem 1.5rem;
+    }
+  }
+</style>

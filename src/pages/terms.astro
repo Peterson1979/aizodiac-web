@@ -1,0 +1,22 @@
+---
+import { buildCanonicalUrl } from '@/lib/seo/meta';
+
+const targetUrl = '/terms-of-use';
+const canonical = buildCanonicalUrl(targetUrl);
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting — AI Zodiac</title>
+    <meta http-equiv="refresh" content={`0; url=${targetUrl}`} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="noindex, follow" />
+    <script is:inline define:vars={{ targetUrl }}>
+      window.location.replace(targetUrl);
+    </script>
+  </head>
+  <body style="background: #04060e; color: #94a3b8; font-family: -apple-system, sans-serif; text-align: center; padding-top: 5rem;">
+    <p>Redirecting to <a href={targetUrl} style="color: #38bdf8; text-decoration: underline;">AI Zodiac Terms of Use</a>...</p>
+  </body>
+</html>
