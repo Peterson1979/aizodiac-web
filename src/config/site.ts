@@ -15,6 +15,7 @@ export interface SiteConfig {
   readonly googlePlayUrl: string;
   readonly getBaseUrl: () => string;
   readonly analytics: {
+    readonly googleMeasurementId?: string;
     readonly cloudflareWebAnalyticsToken?: string;
   };
 }
@@ -33,6 +34,7 @@ export const siteConfig: SiteConfig = {
     return rawUrl.replace(/\/+$/, '');
   },
   analytics: {
+    googleMeasurementId: import.meta.env.PUBLIC_GA_MEASUREMENT_ID || undefined,
     cloudflareWebAnalyticsToken: import.meta.env.PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN || undefined,
   },
 } as const;

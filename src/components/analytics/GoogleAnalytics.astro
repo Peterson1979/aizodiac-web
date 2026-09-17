@@ -1,0 +1,51 @@
+---
+/**
+ * AI Zodiac - Google Analytics 4 (GA4) Tag Component
+ * 
+ * Official Google tag (gtag.js) implementation.
+ * - Loads asynchronously in a privacy-conscious manner
+ * - Disables data transmission on localhost / development hostnames
+ * - Captures organic, direct, referral, social, and UTM campaign dimensions natively
+ */
+import { siteConfig } from '@/config/site';
+
+export interface Props {
+  readonly measurementId?: string | undefined;
+}
+
+const {
+  measurementId = siteConfig.analytics.googleMeasurementId,
+} = Astro.props;
+---
+
+{measurementId && (
+  <>
+    <!-- Google tag (gtag.js) -->
+    <script
+      is:inline
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+    ></script>
+    <script is:inline define:vars={{ measurementId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+
+      // Prevent tracking on localhost / local development environments
+      var isDevHost = window.location.hostname === 'localhost' || 
+                      window.location.hostname === '127.0.0.1' || 
+                      window.location.hostname.endsWith('.local');
+
+      if (isDevHost) {
+        window['ga-disable-' + measurementId] = true;
+      }
+
+      gtag('config', measurementId, {
+        send_page_view: true,
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
+  </>
+)}

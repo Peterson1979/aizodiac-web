@@ -1,10 +1,11 @@
 /**
- * AI Zodiac - Inbound UTM Tracking & Session Attribution Continuity
+ * AI Zodiac - Inbound UTM Tracking, Session Attribution & GA4 Conversion Measurement
  * 
  * Lightweight client-side script that:
- * 1. Captures inbound UTM parameters from window.location.search
+ * 1. Captures inbound UTM parameters from window.location.search without modifying the URL
  * 2. Persists campaign attribution in sessionStorage for the browsing session
  * 3. Enriches outbound Google Play Store CTAs with preserved campaign context
+ * 4. Emits the GA4 `play_store_click` conversion event on every Google Play click
  */
 
 export const INBOUND_UTM_STORAGE_KEY = 'aizodiac_inbound_utm';
@@ -44,6 +45,23 @@ export function extractInboundUtmParams(search: string): InboundUtmRecord | null
     };
   } catch {
     return null;
+  }
+}
+
+/**
+ * Programmatically dispatches a Google Play Store conversion event to GA4.
+ */
+export function trackPlayStoreClick(params: {
+  linkLocation: string;
+  linkUrl: string;
+  pagePath?: string;
+}): void {
+  if (typeof window !== 'undefined' && typeof (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag === 'function') {
+    (window as unknown as { gtag: (...args: unknown[]) => void }).gtag('event', 'play_store_click', {
+      link_location: params.linkLocation,
+      page_path: params.pagePath || window.location.pathname,
+      link_url: params.linkUrl,
+    });
   }
 }
 
@@ -121,6 +139,38 @@ export const INBOUND_UTM_INLINE_SCRIPT = `
     }
   }
 
+  function determineLinkLocation(linkEl) {
+    if (!linkEl) return 'cta';
+    try {
+      var explicit = linkEl.getAttribute('data-location') || 
+        (linkEl.closest && linkEl.closest('[data-location]') ? linkEl.closest('[data-location]').getAttribute('data-location') : null);
+      if (explicit) return explicit;
+
+      if (linkEl.closest('header, .site-header')) {
+        return linkEl.closest('.mobile-nav-drawer') ? 'mobile_drawer' : 'header';
+      }
+      if (linkEl.closest('footer, .site-footer')) {
+        return 'footer';
+      }
+      if (linkEl.closest('.hero-section, .hero-container, .hero-actions')) {
+        return 'hero';
+      }
+      if (linkEl.closest('.download-section, .download-card, .app-conversion-box')) {
+        return 'cta';
+      }
+      if (linkEl.closest('article, .article-content, .article-cta, .article-body')) {
+        return 'article';
+      }
+      if (linkEl.closest('.tool-card, .tools-callout, .tools-container, .tool-detail-wrap')) {
+        return 'tools';
+      }
+      if (linkEl.closest('.feature-detail-card, .feature-content, .features-grid')) {
+        return 'features';
+      }
+    } catch (e) {}
+    return 'cta';
+  }
+
   function enrichAllLinks() {
     var inbound = getStoredUtm();
     if (!inbound) return;
@@ -132,7 +182,7 @@ export const INBOUND_UTM_INLINE_SCRIPT = `
     } catch (e) {}
   }
 
-  // 1. Capture on initial page load
+  // 1. Capture on initial page load (preserves URL in browser)
   saveInboundUtm();
 
   // 2. Enhance links on DOM ready
@@ -142,7 +192,7 @@ export const INBOUND_UTM_INLINE_SCRIPT = `
     enrichAllLinks();
   }
 
-  // 3. Delegated click handler to intercept dynamic/late-rendered CTAs
+  // 3. Delegated click handler to intercept dynamic/late-rendered CTAs and track GA4 conversion
   document.addEventListener('click', function(e) {
     var target = e.target && e.target.closest ? e.target.closest('a') : null;
     if (target && target.href && target.href.indexOf(PLAY_STORE_HOST) !== -1) {
@@ -150,6 +200,17 @@ export const INBOUND_UTM_INLINE_SCRIPT = `
       if (inbound) {
         target.href = mergePlayStoreUrl(target.href, inbound);
       }
+
+      try {
+        var location = determineLinkLocation(target);
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'play_store_click', {
+            link_location: location,
+            page_path: window.location.pathname,
+            link_url: target.href
+          });
+        }
+      } catch (err) {}
     }
   }, true);
 })();

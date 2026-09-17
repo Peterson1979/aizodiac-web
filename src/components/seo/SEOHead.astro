@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '@/config/site';
 import { buildCanonicalUrl, generateWebSiteSchema, generateOrganizationSchema, type SEOProps } from '@/lib/seo/meta';
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics.astro';
 
 export interface Props extends SEOProps {
   readonly jsonLd?: Record<string, unknown> | Array<Record<string, unknown>> | undefined;
@@ -88,6 +89,9 @@ const cfAnalyticsToken = siteConfig.analytics.cloudflareWebAnalyticsToken;
 {schemasToRender.map((schema) => (
   <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
 ))}
+
+<!-- Google Analytics 4 (Official Google Tag) -->
+<GoogleAnalytics />
 
 <!-- Optional Cloudflare Web Analytics Beacon (Privacy-focused, zero-cookie) -->
 {cfAnalyticsToken && (
