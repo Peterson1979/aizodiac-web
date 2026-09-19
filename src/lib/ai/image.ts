@@ -5,11 +5,17 @@
  * Native Worker Binding: `AI`
  * 
  * Provides an isolated image-generation interface targeting Cloudflare Workers AI
- * via native Worker binding with strict cost protection guards.
+ * via native Worker binding with strict cost protection guards and non-retryable
+ * quota error classification.
  */
 
-import { assertImageGenerationAllowed, type GenerationUsageTracker } from '@/config/limits';
-import { getAIModelsConfig } from '@/config/ai';
+import {
+  assertImageGenerationAllowed,
+  CostProtectionError,
+  getDefaultUsageTracker,
+  type GenerationUsageTracker,
+} from '../../config/limits.ts';
+import { getAIModelsConfig } from '../../config/ai.ts';
 
 export interface ImageGenerationRequest {
   readonly prompt: string;
@@ -25,6 +31,8 @@ export interface ImageGenerationResponse {
   readonly mimeType: string;
   readonly modelUsed: string;
   readonly error?: string | undefined;
+  readonly isQuotaExceeded?: boolean | undefined;
+  readonly isRetryable?: boolean | undefined;
 }
 
 export interface AiBindingLike {
@@ -44,6 +52,38 @@ export interface ImageGeneratorService {
   ): Promise<ImageGenerationResponse>;
 }
 
+/**
+ * Classifies whether an error from Workers AI represents a quota exhaustion
+ * or payment required status, which must never be retried.
+ */
+export function isWorkersAIQuotaError(error: unknown): boolean {
+  if (!error) return false;
+  if (error instanceof CostProtectionError && error.isQuotaExceeded) return true;
+
+  const message = error instanceof Error ? error.message : String(error);
+  const lower = message.toLowerCase();
+
+  // HTTP status codes
+  if (lower.includes('402') || lower.includes('429')) return true;
+  // Cloudflare Workers AI specific error codes (4006 = daily quota reached, 10014 = limit exceeded)
+  if (lower.includes('4006') || lower.includes('10014')) return true;
+  // Common error strings
+  if (
+    lower.includes('quota') ||
+    lower.includes('rate limit') ||
+    lower.includes('ratelimit') ||
+    lower.includes('neuron') ||
+    lower.includes('daily limit') ||
+    lower.includes('insufficient credits') ||
+    lower.includes('payment required') ||
+    lower.includes('too many requests') ||
+    lower.includes('limit exceeded')
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService {
   private readonly modelId: string;
   private readonly aiBinding: AiBindingLike | undefined;
@@ -58,8 +98,23 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
     request: ImageGenerationRequest,
     tracker?: GenerationUsageTracker
   ): Promise<ImageGenerationResponse> {
+    const activeTracker = tracker ?? getDefaultUsageTracker();
+
     // 1. Guard with cost protection limits before making any API call
-    await assertImageGenerationAllowed(tracker);
+    try {
+      await assertImageGenerationAllowed(activeTracker);
+    } catch (err) {
+      const isQuota = isWorkersAIQuotaError(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      return {
+        success: false,
+        mimeType: 'image/png',
+        modelUsed: this.modelId,
+        error: errorMessage,
+        isQuotaExceeded: isQuota,
+        isRetryable: false,
+      };
+    }
 
     // 2. Validate native AI binding
     if (!this.aiBinding) {
@@ -72,6 +127,8 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
         mimeType: 'image/png',
         modelUsed: this.modelId,
         error: "Native Workers AI binding 'AI' not attached to current execution context.",
+        isQuotaExceeded: false,
+        isRetryable: false,
       };
     }
 
@@ -84,6 +141,15 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
         seed: request.seed,
       });
 
+      // Record successful generation in tracker
+      if (activeTracker.recordImageGeneration) {
+        try {
+          await activeTracker.recordImageGeneration();
+        } catch (trackerErr) {
+          console.warn(`[WorkersAIImageGenerator] Failed to record usage: ${trackerErr}`);
+        }
+      }
+
       // Format response based on Workers AI return payload
       if (typeof result === 'object' && result !== null && 'image' in result && typeof (result as { image?: string }).image === 'string') {
         return {
@@ -91,6 +157,8 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
           imageBase64: (result as { image: string }).image,
           mimeType: 'image/png',
           modelUsed: this.modelId,
+          isQuotaExceeded: false,
+          isRetryable: false,
         };
       }
 
@@ -103,6 +171,8 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
           imageBase64: base64,
           mimeType: 'image/png',
           modelUsed: this.modelId,
+          isQuotaExceeded: false,
+          isRetryable: false,
         };
       }
 
@@ -116,6 +186,8 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
           imageBase64: base64,
           mimeType: result.headers.get('content-type') || 'image/png',
           modelUsed: this.modelId,
+          isQuotaExceeded: false,
+          isRetryable: false,
         };
       }
 
@@ -124,14 +196,21 @@ export class CloudflareWorkersAIImageGenerator implements ImageGeneratorService 
         mimeType: 'image/png',
         modelUsed: this.modelId,
         error: 'Unexpected response format from Workers AI binding.',
+        isQuotaExceeded: false,
+        isRetryable: false,
       };
     } catch (err) {
+      const isQuota = isWorkersAIQuotaError(err);
       const errorMessage = err instanceof Error ? err.message : String(err);
       return {
         success: false,
         mimeType: 'image/png',
         modelUsed: this.modelId,
-        error: `Workers AI image generation failed: ${errorMessage}`,
+        error: isQuota
+          ? `Workers AI quota exhausted (non-retryable): ${errorMessage}`
+          : `Workers AI image generation failed: ${errorMessage}`,
+        isQuotaExceeded: isQuota,
+        isRetryable: !isQuota, // Quota exhaustion is strictly non-retryable
       };
     }
   }

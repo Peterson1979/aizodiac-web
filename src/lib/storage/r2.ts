@@ -4,7 +4,8 @@
  * Target Bucket: `aizodiac-assets` (Native Worker Binding: `MEDIA_BUCKET`)
  * 
  * Provides a decoupled media storage interface for uploading, resolving, and
- * managing website assets via native Cloudflare Worker R2Bucket binding.
+ * managing website assets via native Cloudflare Worker R2Bucket binding with
+ * deterministic key helpers and idempotent upload safeguards.
  */
 
 export interface MediaUploadOptions {
@@ -35,11 +36,27 @@ export interface R2BucketLike {
   delete(keys: string | string[]): Promise<void>;
 }
 
+export interface IdempotentUploadResult {
+  readonly url: string;
+  readonly uploaded: boolean;
+  readonly error?: string | undefined;
+}
+
 export interface MediaStorageService {
   /**
    * Uploads a media asset and returns its canonical public URL.
    */
   uploadMedia(key: string, data: Uint8Array | ArrayBuffer | Blob, options: MediaUploadOptions): Promise<string>;
+
+  /**
+   * Uploads a media asset idempotently, checking whether the asset key exists first.
+   * If the asset exists, avoids redundant Class A write operations.
+   */
+  uploadMediaIdempotent(
+    key: string,
+    data: Uint8Array | ArrayBuffer | Blob,
+    options: MediaUploadOptions
+  ): Promise<IdempotentUploadResult>;
 
   /**
    * Generates or resolves the public URL for a given asset key.
@@ -62,17 +79,42 @@ export interface R2Config {
   readonly publicBaseUrl: string;
 }
 
+function getEnvVar(key: string): string | undefined {
+  if (typeof process !== 'undefined' && process.env && process.env[key] !== undefined) {
+    return process.env[key];
+  }
+  if (typeof import.meta !== 'undefined' && import.meta.env && (import.meta.env as Record<string, string>)[key] !== undefined) {
+    return (import.meta.env as Record<string, string>)[key];
+  }
+  return undefined;
+}
+
 export function getR2Config(): R2Config {
   return {
-    bucketName: import.meta.env.R2_BUCKET_NAME || 'aizodiac-assets',
-    publicBaseUrl: (import.meta.env.R2_PUBLIC_BASE_URL || 'https://assets.aizodiac.workers.dev').replace(/\/+$/, ''),
+    bucketName: getEnvVar('R2_BUCKET_NAME') || 'aizodiac-assets',
+    publicBaseUrl: (getEnvVar('R2_PUBLIC_BASE_URL') || 'https://assets.aizodiac.workers.dev').replace(/\/+$/, ''),
   };
+}
+
+/**
+ * Builds a normalized, deterministic R2 object key from prefix, identifier/slug, and extension.
+ * Ensures consistent naming without illegal characters or directory traversal risk.
+ */
+export function buildDeterministicMediaKey(prefix: string, identifier: string, extension = 'webp'): string {
+  const cleanPrefix = prefix.replace(/^\/+|\/+$/g, '').toLowerCase();
+  const cleanIdentifier = identifier
+    .replace(/^\/+|\/+$/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, '-');
+  const cleanExt = extension.replace(/^\./, '').toLowerCase();
+  return cleanPrefix ? `${cleanPrefix}/${cleanIdentifier}.${cleanExt}` : `${cleanIdentifier}.${cleanExt}`;
 }
 
 /**
  * Cloudflare R2 Storage Service Implementation.
  * 
- * Uses native Worker `MEDIA_BUCKET` R2 binding with graceful local fallback.
+ * Uses native Worker `MEDIA_BUCKET` R2 binding with graceful local fallback
+ * and idempotent upload protection.
  */
 export class R2MediaStorage implements MediaStorageService {
   private readonly config: R2Config;
@@ -93,39 +135,85 @@ export class R2MediaStorage implements MediaStorageService {
     data: Uint8Array | ArrayBuffer | Blob,
     options: MediaUploadOptions
   ): Promise<string> {
+    const cleanKey = key.replace(/^\/+/, '');
+    if (!cleanKey) {
+      throw new Error('[R2MediaStorage] Media key cannot be empty.');
+    }
+
     if (this.bucket) {
-      await this.bucket.put(key, data, {
+      await this.bucket.put(cleanKey, data, {
         httpMetadata: {
           contentType: options.contentType,
           cacheControl: options.cacheControl,
         },
         customMetadata: options.customMetadata,
       });
-      return this.getPublicUrl(key);
+      return this.getPublicUrl(cleanKey);
     }
 
     // In local development without native binding, degrade safely
     console.warn(
       `[R2MediaStorage] Native R2 binding 'MEDIA_BUCKET' not attached in current runtime. ` +
-      `Media upload skipped for '${key}'. Target bucket: '${this.config.bucketName}'.`
+      `Media upload skipped for '${cleanKey}'. Target bucket: '${this.config.bucketName}'.`
     );
-    return this.getPublicUrl(key);
+    return this.getPublicUrl(cleanKey);
+  }
+
+  async uploadMediaIdempotent(
+    key: string,
+    data: Uint8Array | ArrayBuffer | Blob,
+    options: MediaUploadOptions
+  ): Promise<IdempotentUploadResult> {
+    const cleanKey = key.replace(/^\/+/, '');
+    if (!cleanKey) {
+      return { url: '', uploaded: false, error: 'Invalid or empty media key.' };
+    }
+
+    // 1. Idempotency check: if the asset already exists in R2, skip the upload
+    if (this.bucket) {
+      try {
+        const alreadyExists = await this.exists(cleanKey);
+        if (alreadyExists) {
+          return {
+            url: this.getPublicUrl(cleanKey),
+            uploaded: false,
+          };
+        }
+      } catch (err) {
+        console.warn(
+          `[R2MediaStorage] Exists check failed for '${cleanKey}': ${err instanceof Error ? err.message : String(err)}`
+        );
+      }
+    }
+
+    // 2. Perform upload
+    const url = await this.uploadMedia(cleanKey, data, options);
+    return {
+      url,
+      uploaded: Boolean(this.bucket),
+    };
   }
 
   async exists(key: string): Promise<boolean> {
+    const cleanKey = key.replace(/^\/+/, '');
+    if (!cleanKey) return false;
+
     if (this.bucket) {
-      const obj = await this.bucket.head(key);
+      const obj = await this.bucket.head(cleanKey);
       return obj !== null;
     }
     return false;
   }
 
   async deleteMedia(key: string): Promise<boolean> {
+    const cleanKey = key.replace(/^\/+/, '');
+    if (!cleanKey) return false;
+
     if (this.bucket) {
-      await this.bucket.delete(key);
+      await this.bucket.delete(cleanKey);
       return true;
     }
-    console.warn(`[R2MediaStorage] Delete skipped: native binding 'MEDIA_BUCKET' not attached for key '${key}'.`);
+    console.warn(`[R2MediaStorage] Delete skipped: native binding 'MEDIA_BUCKET' not attached for key '${cleanKey}'.`);
     return false;
   }
 }

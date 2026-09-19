@@ -4,11 +4,16 @@
  * Target Model: `openai/gpt-oss-120b` (or configured GROQ_MODEL)
  * 
  * Provides a clean interface for AI text generation with strict cost protection guards,
- * token length caps, and environment-driven credentials without third-party vendor lock-in.
+ * token length caps, fail-closed limit enforcement, and non-retryable quota handling.
  */
 
-import { assertTextGenerationAllowed, type GenerationUsageTracker } from '@/config/limits';
-import { getAIModelsConfig } from '@/config/ai';
+import {
+  assertTextGenerationAllowed,
+  CostProtectionError,
+  getDefaultUsageTracker,
+  type GenerationUsageTracker,
+} from '../../config/limits.ts';
+import { getAIModelsConfig } from '../../config/ai.ts';
 
 export interface TextPromptMessage {
   readonly role: 'system' | 'user' | 'assistant';
@@ -28,6 +33,8 @@ export interface TextGenerationResponse {
   readonly modelUsed: string;
   readonly totalTokens?: number | undefined;
   readonly error?: string | undefined;
+  readonly isQuotaExceeded?: boolean | undefined;
+  readonly isRetryable?: boolean | undefined;
 }
 
 export interface TextGeneratorService {
@@ -38,6 +45,23 @@ export interface TextGeneratorService {
     request: TextGenerationRequest,
     tracker?: GenerationUsageTracker
   ): Promise<TextGenerationResponse>;
+}
+
+export function isGroqQuotaError(statusOrMessage: number | string): boolean {
+  if (typeof statusOrMessage === 'number') {
+    return statusOrMessage === 402 || statusOrMessage === 429;
+  }
+  const lower = String(statusOrMessage).toLowerCase();
+  return (
+    lower.includes('402') ||
+    lower.includes('429') ||
+    lower.includes('rate_limit') ||
+    lower.includes('quota') ||
+    lower.includes('tokens per minute') ||
+    lower.includes('requests per day') ||
+    lower.includes('insufficient_quota') ||
+    lower.includes('too many requests')
+  );
 }
 
 export class GroqTextGenerator implements TextGeneratorService {
@@ -54,8 +78,22 @@ export class GroqTextGenerator implements TextGeneratorService {
     request: TextGenerationRequest,
     tracker?: GenerationUsageTracker
   ): Promise<TextGenerationResponse> {
+    const activeTracker = tracker ?? getDefaultUsageTracker();
+
     // 1. Enforce cost protection limits before making network calls
-    await assertTextGenerationAllowed(tracker, request.maxTokens);
+    try {
+      await assertTextGenerationAllowed(activeTracker, request.maxTokens);
+    } catch (err) {
+      const isQuota = err instanceof CostProtectionError && err.isQuotaExceeded;
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      return {
+        success: false,
+        modelUsed: this.modelId,
+        error: errorMessage,
+        isQuotaExceeded: isQuota,
+        isRetryable: false,
+      };
+    }
 
     // 2. Validate API key presence
     if (!this.apiKey) {
@@ -66,6 +104,8 @@ export class GroqTextGenerator implements TextGeneratorService {
         success: false,
         modelUsed: this.modelId,
         error: 'GROQ_API_KEY environment variable is missing.',
+        isQuotaExceeded: false,
+        isRetryable: false,
       };
     }
 
@@ -90,10 +130,13 @@ export class GroqTextGenerator implements TextGeneratorService {
 
       if (!response.ok) {
         const errText = await response.text();
+        const isQuota = isGroqQuotaError(response.status) || isGroqQuotaError(errText);
         return {
           success: false,
           modelUsed: this.modelId,
           error: `Groq API HTTP ${response.status}: ${errText}`,
+          isQuotaExceeded: isQuota,
+          isRetryable: !isQuota && response.status >= 500,
         };
       }
 
@@ -105,18 +148,32 @@ export class GroqTextGenerator implements TextGeneratorService {
       const data = (await response.json()) as GroqApiResponse;
       const content = data.choices?.[0]?.message?.content || '';
 
+      // Record successful usage in tracker
+      if (activeTracker.recordTextGeneration) {
+        try {
+          await activeTracker.recordTextGeneration(data.usage?.total_tokens);
+        } catch (trackerErr) {
+          console.warn(`[GroqTextGenerator] Failed to record usage: ${trackerErr}`);
+        }
+      }
+
       return {
         success: true,
         text: content,
         modelUsed: this.modelId,
         totalTokens: data.usage?.total_tokens,
+        isQuotaExceeded: false,
+        isRetryable: false,
       };
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
+      const isQuota = isGroqQuotaError(errorMessage);
       return {
         success: false,
         modelUsed: this.modelId,
         error: `Text generation failed: ${errorMessage}`,
+        isQuotaExceeded: isQuota,
+        isRetryable: !isQuota,
       };
     }
   }

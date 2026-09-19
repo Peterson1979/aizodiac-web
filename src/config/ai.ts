@@ -12,14 +12,24 @@ export interface AIModelsConfig {
   };
 }
 
+function getEnvVar(key: string): string | undefined {
+  if (typeof process !== 'undefined' && process.env && process.env[key] !== undefined) {
+    return process.env[key];
+  }
+  if (typeof import.meta !== 'undefined' && import.meta.env && (import.meta.env as Record<string, string>)[key] !== undefined) {
+    return (import.meta.env as Record<string, string>)[key];
+  }
+  return undefined;
+}
+
 export function getAIModelsConfig(): AIModelsConfig {
   return {
     groq: {
-      defaultModel: import.meta.env.GROQ_MODEL || 'openai/gpt-oss-120b',
-      apiKey: import.meta.env.GROQ_API_KEY || undefined,
+      defaultModel: getEnvVar('GROQ_MODEL') || 'openai/gpt-oss-120b',
+      apiKey: getEnvVar('GROQ_API_KEY') || undefined,
     },
     workersAi: {
-      defaultImageModel: import.meta.env.WORKERS_AI_IMAGE_MODEL || '@cf/black-forest-labs/flux-1-schnell',
+      defaultImageModel: getEnvVar('WORKERS_AI_IMAGE_MODEL') || '@cf/black-forest-labs/flux-1-schnell',
     },
   };
 }
